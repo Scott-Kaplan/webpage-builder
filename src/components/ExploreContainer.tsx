@@ -3,7 +3,17 @@ import { useIonViewDidEnter } from '@ionic/react';
 interface ContainerProps { }
 
 function writeText() {
-  var text = document.getElementById("boldStuff")!
+
+  // this prevents <div id="tag"></div> from being created more than once
+  if (document.getElementById("write_text"))
+    return
+
+  var d1 = document.getElementById('main')!
+  //insertAjacentHTML documented here -
+  // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
+  // and https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+  d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
+  var text = document.getElementById("write_text")!
   text.innerHTML = "left mouse click"
   var sheet = document.createElement('style')
   sheet.innerHTML = "div {color:blue;overflow:hidden;}";
@@ -23,8 +33,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   });
 
   return (
-    <div className="container">
-      <div id="boldStuff"></div>
+    <div className="container" id="main">
       {/* <input type='button' onClick={changeText} value='Change Text' /> */}
     </div>
   );
