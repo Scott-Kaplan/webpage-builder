@@ -18,6 +18,10 @@ function writeText() {
   var sheet = document.createElement('style')
   sheet.innerHTML = "div {color:blue;overflow:hidden;}";
   document.body.appendChild(sheet);
+
+  const cssObj = window.getComputedStyle(text,null)
+  console.log(cssObj.color) // prints "rgb(0, 0, 255)"
+  console.log(cssObj.overflow) // prints "hidden"
 }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
