@@ -2,7 +2,19 @@ import './ExploreContainer.css';
 import { useIonViewDidEnter } from '@ionic/react';
 interface ContainerProps { }
 
-function writeText() {
+function RightMousePrintHtml() {
+  var d1 = document.getElementById('main')!
+  // this is correct
+  //console.log(d1)
+  //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
+
+/*
+  left off here:  need to get rid of blank with line separator at the top
+*/ 
+
+}
+
+function leftMouseWriteText() {
 
   // this prevents <div id="tag"></div> from being created more than once
   if (document.getElementById("write_text"))
@@ -19,9 +31,10 @@ function writeText() {
   sheet.innerHTML = "div {color:blue;overflow:hidden;}";
   document.body.appendChild(sheet);
 
-  const cssObj = window.getComputedStyle(text,null)
-  console.log(cssObj.color) // prints "rgb(0, 0, 255)"
-  console.log(cssObj.overflow) // prints "hidden"
+  // this works great
+  // const cssObj = window.getComputedStyle(text,null)
+  // console.log(cssObj.color) // prints "rgb(0, 0, 255)"
+  // console.log(cssObj.overflow) // prints "hidden"
 }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
@@ -31,8 +44,15 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
         // console.log('left mouse click');
-        writeText();
+        leftMouseWriteText();
       }
+    }, false);
+
+    // capture right mouse click
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      console.log('right mouse click');
+      RightMousePrintHtml();
     }, false);
   });
 
