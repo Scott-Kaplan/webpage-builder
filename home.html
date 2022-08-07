@@ -1,0 +1,37 @@
+<body>
+    <div id="root">
+        <ion-app class="md ion-page">
+            <ion-router-outlet>
+                <div class="ion-page" style="z-index: 101;">
+                    <ion-header role="banner" class="md header-md header-collapse-none">
+                        <!---->
+                        <ion-toolbar class="toolbar-title-default md in-toolbar">
+                            <ion-title class="md title-default">Blank</ion-title>
+                        </ion-toolbar>
+                    </ion-header>
+                    <ion-content fullscreen="true" class="md content-ltr"
+                        style="--offset-top:56px; --offset-bottom:0px;">
+                        <ion-header collapse="condense" role="banner" class="md header-md header-collapse-condense">
+                            <!---->
+                            <ion-toolbar class="toolbar-title-large md in-toolbar">
+                                <ion-title size="large" class="md title-large">Blank</ion-title>
+                            </ion-toolbar>
+                        </ion-header>
+                        <div class="container" id="main">
+                            <div id="write_text">left mouse click</div>
+                        </div>
+                    </ion-content>
+                </div>
+            </ion-router-outlet>
+        </ion-app>
+    </div>
+
+
+
+    <style>
+        div {
+            color: blue;
+            overflow: hidden;
+        }
+    </style>
+</body>
