@@ -1,17 +1,26 @@
 import './ExploreContainer.css';
+import { doc, setDoc } from "firebase/firestore";
+import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
+import { app } from '../firebase'
+console.log(app) // do this or get run time error
+
+
 interface ContainerProps { }
+
+async function test(msg: HTMLElement) {
+  // need this next line otherwise get HTMLDivElement object can't be saved to Firebase
+  var divTree = msg.outerHTML 
+  await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
+    name: divTree
+  });
+}
 
 function RightMousePrintHtml() {
   var d1 = document.getElementById('main')!
-  // this is correct
   //console.log(d1)
   //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
-
-/*
-  left off here:  need to get rid of blank with line separator at the top
-*/ 
-
+  test(d1)
 }
 
 function leftMouseWriteText() {
@@ -64,3 +73,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 };
 
 export default ExploreContainer;
+
+
+/*
+  TODO
+  left off here:  need to get rid of blank with line separator at the top
+*/ 
