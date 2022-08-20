@@ -5,52 +5,14 @@ import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
 console.log(app) // do this or get run time error
 
-
 interface ContainerProps { }
 
 async function test(msg: HTMLElement) {
-  // need this next line otherwise get HTMLDivElement object can't be saved to Firebase
+  // need this next line otherwise HTMLDivElement object can't be saved to Firebase
   var divTree = msg.outerHTML
-  //console.log(msg.dataset)
-  // console.log(msg.getAttributeNames())
-  // console.log(msg.getAttributeNS)
-  // console.log(msg.getAttributeNode)
-  // console.log(msg.DOCUMENT_NODE)
-  // console.log(msg.childNodes)
-  // console.log(msg.children)
-  // console.log(msg.getElementsByClassName)
-  // console.log(msg.getElementsByTagName)
-  // console.log(msg.getElementsByTagNameNS)
-  // console.log(msg.getRootNode())
-
-  //var data1 = {divTree} // just adds divTree to string, still a string - doesn't help
-  // without this next line, nothing comes out when read
-  // with this line all it does is add divTree to the string
-  // but it is still a string
-  // var json1 = JSON.stringify(data1)
-  // console.log(json1)
-
-  // {"<div class=\"container\" id=\"main\"><div id=\"write_text\">left mouse click</div></div>"}  
-
-  // convert divTree to object
-  // var divTreeObj = JSON.parse(divTree) // error
-  // console.log(typeof divTreeObj)
-  // var divTreeArray = divTree.split('') // just puts '' around every character
-  // console.log(typeof divTreeArray)
-  // console.log(divTreeArray)
-
-  //const myelement = (<div className="container" id="main"><div id="write_text">left mouse click</div></div>)
-
-  const myelement = {
-    // "main": {
-      "html": "<div class=\"container\" id=\"main\"><div id=\"write_text\">left mouse click</div></div>"
-    // }
-  }
 
   await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
-    //name: divTree // original
-    //name: json1 // just puts divTree at the beginning, same as otherwise
-    name: myelement
+    name: divTree
   });
 }
 
