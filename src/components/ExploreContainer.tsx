@@ -38,6 +38,27 @@ function leftMouseWriteText() {
   if (document.getElementById("write_text"))
     return
 
+  // assuming there is button already on the screen
+  // dynamically change the background color of the button
+  /*
+     1 get boundry of button
+     2 is cursor within the boundry
+     3 yes - get element
+  */
+
+  // steps of how to get here
+  // hover over the click me button
+  // left click
+  // the last element is "buttonid"
+  LEFT OFF HERE
+  // try the 132 answer with green checkmark to try and get "buttonid"
+  var elements = document.querySelectorAll(':hover');
+  //console.log(elements.length) // this displays 9
+  
+
+
+
+
   var d1 = document.getElementById('main')!
   //insertAjacentHTML documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
@@ -76,6 +97,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
   return (
     <div className="container" id="main">
+      <input type='button' id="buttonid" value='click me' />
       {/* <input type='button' onClick={changeText} value='Change Text' /> */}
     </div>
   );
