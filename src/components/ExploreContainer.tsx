@@ -1,3 +1,12 @@
+/*
+  left click creates and element and right click saves it to the database
+  if add functionality to reload it from the database (at startup)
+  it wipes everything else out
+  so, lets say add a button with regular ionic code and want to change
+  the css on it.  how would one do that?
+  how would one change the background color below or above the button?
+*/
+
 import './ExploreContainer.css';
 import { doc, setDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
