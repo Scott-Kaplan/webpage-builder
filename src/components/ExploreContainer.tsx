@@ -50,15 +50,26 @@ function leftMouseWriteText() {
   // hover over the click me button
   // left click
   // the last element is "buttonid"
-  LEFT OFF HERE
+  //LEFT OFF HERE
   // try the 132 answer with green checkmark to try and get "buttonid"
+  //https://stackoverflow.com/questions/5684811/in-queryselector-how-to-get-the-first-and-get-the-last-elements-what-traversal
   var elements = document.querySelectorAll(':hover');
-  //console.log(elements.length) // this displays 9
+  var first = elements[0]
+  var last = elements[elements.length - 1]
+
+  console.log('length',elements.length)
+  console.log('first',first)
+  console.log('last',last)
+
+  // can't search in an element, so this next line converts it to a string
+  let howdy = last.outerHTML 
+  console.log('howdy',howdy)
+  // get the position of 
+  LEFT OFF HERE
+  let startPosition = howdy.search("id=")
+  console.log('start position of id',startPosition)
+  console.log('id = ', howdy.substring(startPosition+3,))
   
-
-
-
-
   var d1 = document.getElementById('main')!
   //insertAjacentHTML documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
