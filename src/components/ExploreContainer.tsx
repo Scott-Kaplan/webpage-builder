@@ -65,9 +65,12 @@ function leftMouseWriteText() {
   let howdy = last.outerHTML 
   console.log('howdy',howdy)
   // get the position of 
-  LEFT OFF HERE
+  
   let startPosition = howdy.search("id=")
   console.log('start position of id',startPosition)
+  https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
+  LEFT OFF HERE
+
   console.log('id = ', howdy.substring(startPosition+3,))
   
   var d1 = document.getElementById('main')!
