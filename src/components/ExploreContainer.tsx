@@ -50,29 +50,27 @@ function leftMouseWriteText() {
   // hover over the click me button
   // left click
   // the last element is "buttonid"
-  //LEFT OFF HERE
   // try the 132 answer with green checkmark to try and get "buttonid"
   //https://stackoverflow.com/questions/5684811/in-queryselector-how-to-get-the-first-and-get-the-last-elements-what-traversal
   var elements = document.querySelectorAll(':hover');
   var first = elements[0]
   var last = elements[elements.length - 1]
 
-  console.log('length',elements.length)
-  console.log('first',first)
-  console.log('last',last)
+  console.log('length', elements.length)
+  console.log('first', first)
+  console.log('last', last)
 
-  // can't search in an element, so this next line converts it to a string
-  let howdy = last.outerHTML 
-  console.log('howdy',howdy)
-  // get the position of 
+  // convert element to a string
+  let howdy = last.outerHTML
   
-  let startPosition = howdy.search("id=")
-  console.log('start position of id',startPosition)
-  https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence
-  LEFT OFF HERE
+  //search for id="whatever", then trim to just capture "whatever"
+  var pattern1 = /id="[^"]*"/g
+  var current = pattern1.exec(howdy)!
+  let text9 = current.toString()
+  let text1 = text9.substring(4)
+  let text2 = text1.substring(0, text1.length - 1)
+  console.log(text2)
 
-  console.log('id = ', howdy.substring(startPosition+3,))
-  
   var d1 = document.getElementById('main')!
   //insertAjacentHTML documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
