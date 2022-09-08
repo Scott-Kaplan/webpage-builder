@@ -7,6 +7,27 @@
   how would one change the background color below or above the button?
 */
 
+/*
+  TODO
+  when left click, bring up a menu with these two options -
+  
+  LEFT OFF HERE
+  - serach google "w3schools javascript menu"
+  - but takes up the whole screen
+  // curtain menu https://www.w3schools.com/howto/howto_js_curtain_menu.asp
+  // maybe do a search on sizeable curtain menu
+  // do this instead - search menu at cursor click javascript
+  // which yielded this - https://htmldom.dev/show-a-custom-context-menu-at-clicked-position/
+  // click the code folder button and see the entire source code.
+
+  [1] delete
+  [2] modify
+  when right click, bring up a menu with these two options -
+  [1] put into designer mode
+  [2] put into regular mode
+  [3] write to firebase
+*/
+
 import './ExploreContainer.css';
 import { doc, setDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
@@ -16,7 +37,7 @@ console.log(app) // do this or get run time error
 
 interface ContainerProps { }
 
-async function test(msg: HTMLElement) {
+async function writeToFirebase(msg: HTMLElement) {
   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
   var divTree = msg.outerHTML
 
@@ -29,7 +50,7 @@ function RightMousePrintHtml() {
   var d1 = document.getElementById('main')!
   //console.log(d1)
   //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
-  test(d1)
+  writeToFirebase(d1)
 }
 
 function leftMouseWriteText() {
@@ -63,13 +84,15 @@ function leftMouseWriteText() {
   // convert element to a string
   let howdy = last.outerHTML
   
-  //search for id="whatever", then trim to just capture "whatever"
+  //search for id="whatever", then trim to just get "whatever"
   var pattern1 = /id="[^"]*"/g
   var current = pattern1.exec(howdy)!
   let text9 = current.toString()
   let text1 = text9.substring(4)
   let text2 = text1.substring(0, text1.length - 1)
   console.log(text2)
+
+
 
   var d1 = document.getElementById('main')!
   //insertAjacentHTML documented here -
