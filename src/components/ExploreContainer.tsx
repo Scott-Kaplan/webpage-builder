@@ -33,6 +33,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
+import { workers } from 'cluster';
 console.log(app) // do this or get run time error
 
 interface ContainerProps { }
@@ -53,8 +54,42 @@ function RightMousePrintHtml() {
   writeToFirebase(d1)
 }
 
-function leftMouseWriteText() {
+function initializeMenuPopup() {
+  const ele = document.getElementById('element')!;
+  const menu = document.getElementById('menu')!;
+  
 
+  LEFT OFF HERE
+  //when change "contextmenu" to 'click" this function run but the menu
+  //doesn't pop up
+  ele.addEventListener('contextmenu', function (e) {
+    console.log('addeventListener')
+    e.preventDefault();
+
+    const rect = ele.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Set the position for menu
+    menu.style.top = `${y}px`;
+    menu.style.left = `${x}px`;
+
+    // Show the menu
+    menu.classList.remove('container__menu--hidden');
+
+    document.addEventListener('click', documentClickHandler);
+  });
+  // Hide the menu when clicking outside of it
+  const documentClickHandler = function (e: any) {
+    const isClickedOutside = !menu.contains(e.target);
+    if (isClickedOutside) {
+      menu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', documentClickHandler);
+    }
+  };
+}
+
+function leftMouseWriteText() {
   // this prevents <div id="tag"></div> from being created more than once
   if (document.getElementById("write_text"))
     return
@@ -83,7 +118,7 @@ function leftMouseWriteText() {
 
   // convert element to a string
   let howdy = last.outerHTML
-  
+
   //search for id="whatever", then trim to just get "whatever"
   var pattern1 = /id="[^"]*"/g
   var current = pattern1.exec(howdy)!
@@ -114,6 +149,7 @@ function leftMouseWriteText() {
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
   useIonViewDidEnter(() => {  // after the page initially loads
+    initializeMenuPopup()
     // capture left mouse click
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
@@ -132,8 +168,18 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
   return (
     <div className="container" id="main">
+
+      <div className="container__trigger" id="element">Right-click me</div>
       <input type='button' id="buttonid" value='click me' />
-      {/* <input type='button' onClick={changeText} value='Change Text' /> */}
+      <ul id="menu" className="container__menu container__menu--hidden">
+        <li className="container__item">First action</li>
+        <li className="container__item">Second action</li>
+        <li className="container__divider"></li>
+        <li className="container__item">Yet another action</li>
+      </ul>
+
+      {/* this works but doesn't launch menu of options */}
+      {/* <input type='button' id="buttonid" value='click me' /> */}
     </div>
   );
 };

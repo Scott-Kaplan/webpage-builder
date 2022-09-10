@@ -22,3 +22,57 @@
 .container a {
   text-decoration: none;
 }
+
+
+/* add support for popping up menu of options when clicking left cursor button */
+/*  */
+/*  */
+/*  */
+/*  */
+
+.container__trigger {
+  /* Center the content */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  /* Size */
+  height: 16rem;
+  width: 16rem;
+
+  /* Misc */
+  border: 1px solid #cbd5e0;
+}
+
+.container__menu {
+  /* Absolute position */
+  position: absolute;
+
+  /* Reset */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  /* Misc */
+  border: 1px solid #cbd5e0;
+  border-radius: 0.25rem;
+  background-color: #f7fafc;
+}
+
+.container__menu--hidden {
+  display: none;
+}
+
+.container__item {
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+.container__item:hover {
+  background-color: #bee3f8;
+}
+
+.container__divider {
+  border-bottom: 1px solid #cbd5e0;
+  height: 1px;
+}
