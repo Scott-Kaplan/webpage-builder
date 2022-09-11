@@ -8,16 +8,8 @@
 */
 
 /*
-  TODO
-  when left click, bring up a menu with these two options -
-  
-  LEFT OFF HERE
-  - serach google "w3schools javascript menu"
-  - but takes up the whole screen
-  // curtain menu https://www.w3schools.com/howto/howto_js_curtain_menu.asp
-  // maybe do a search on sizeable curtain menu
-  // do this instead - search menu at cursor click javascript
-  // which yielded this - https://htmldom.dev/show-a-custom-context-menu-at-clicked-position/
+  when left click, bring up a menu -
+  https://htmldom.dev/show-a-custom-context-menu-at-clicked-position/
   // click the code folder button and see the entire source code.
 
   [1] delete
@@ -38,31 +30,30 @@ console.log(app) // do this or get run time error
 
 interface ContainerProps { }
 
-async function writeToFirebase(msg: HTMLElement) {
-  // need this next line otherwise HTMLDivElement object can't be saved to Firebase
-  var divTree = msg.outerHTML
+// async function writeToFirebase(msg: HTMLElement) {
+//   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
+//   var divTree = msg.outerHTML
 
-  await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
-    name: divTree
-  });
-}
+//   await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
+//     name: divTree
+//   });
+// }
 
 function RightMousePrintHtml() {
   var d1 = document.getElementById('main')!
   //console.log(d1)
   //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
-  writeToFirebase(d1)
+  // writeToFirebase(d1)
 }
 
 function initializeMenuPopup() {
   const ele = document.getElementById('element')!;
   const menu = document.getElementById('menu')!;
-  
 
-  LEFT OFF HERE
-  //when change "contextmenu" to 'click" this function run but the menu
-  //doesn't pop up
-  ele.addEventListener('contextmenu', function (e) {
+  // 'contextmenu' is for right click
+  //ele.addEventListener('contextmenu', function (e) {
+
+  ele.addEventListener('click', function (e) {
     console.log('addeventListener')
     e.preventDefault();
 
@@ -81,8 +72,19 @@ function initializeMenuPopup() {
   });
   // Hide the menu when clicking outside of it
   const documentClickHandler = function (e: any) {
+    // console.log('hello')
+    // console.log(document.getElementById('menu')?.innerText)
+    
+    // none of these worked
+    //console.log(document.getElementById('menu')?.innerText.)
+    // var ee = document.getElementById("selectElementID");
+    // var value=ee.options[ee.selectedIndex].value;// get selected option value
+    // var text=e.options[hello.selectedIndex].text;
+
+    return
     const isClickedOutside = !menu.contains(e.target);
     if (isClickedOutside) {
+      console.log('outside the box')
       menu.classList.add('container__menu--hidden');
       document.removeEventListener('click', documentClickHandler);
     }
@@ -172,10 +174,25 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
       <div className="container__trigger" id="element">Right-click me</div>
       <input type='button' id="buttonid" value='click me' />
       <ul id="menu" className="container__menu container__menu--hidden">
+
+
+
+
+
+{/* 
+LEFT OFF HERE
+implement the top answer and test it
+https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
+ */}
+
+
+
+
+
         <li className="container__item">First action</li>
         <li className="container__item">Second action</li>
         <li className="container__divider"></li>
-        <li className="container__item">Yet another action</li>
+        <li className="container__item">Cancel</li>
       </ul>
 
       {/* this works but doesn't launch menu of options */}
