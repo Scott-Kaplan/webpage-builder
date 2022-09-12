@@ -180,7 +180,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         <li className="container__item">Cancel</li>
         {/*  
         LEFT OFF HERE
-        add right click to enable or cancel designer mode
+        modify right click to enable or cancel designer mode
 
         */}
       </ul>
