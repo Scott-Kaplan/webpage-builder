@@ -52,9 +52,10 @@ function initializeMenuPopup() {
 
   // 'contextmenu' is for right click
   //ele.addEventListener('contextmenu', function (e) {
-
+  // this function is executed when move the cursor from its previous position and left clicking
+  // so as not to select an option in the popup
   ele.addEventListener('click', function (e) {
-    console.log('addeventListener')
+    console.log('moved popup')
     e.preventDefault();
 
     const rect = ele.getBoundingClientRect();
@@ -72,14 +73,12 @@ function initializeMenuPopup() {
   });
   // Hide the menu when clicking outside of it
   const documentClickHandler = function (e: any) {
-    // console.log('hello')
-    // console.log(document.getElementById('menu')?.innerText)
-    
-    // none of these worked
-    //console.log(document.getElementById('menu')?.innerText.)
-    // var ee = document.getElementById("selectElementID");
-    // var value=ee.options[ee.selectedIndex].value;// get selected option value
-    // var text=e.options[hello.selectedIndex].text;
+    console.log(e.target.innerText) // prints the selection made
+    if (e.target.innerText === 'Cancel') {
+      console.log('outside the box')
+      menu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', documentClickHandler);
+    }
 
     return
     const isClickedOutside = !menu.contains(e.target);
@@ -127,7 +126,7 @@ function leftMouseWriteText() {
   let text9 = current.toString()
   let text1 = text9.substring(4)
   let text2 = text1.substring(0, text1.length - 1)
-  console.log(text2)
+  console.log('high there',text2)
 
 
 
@@ -170,33 +169,21 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
   return (
     <div className="container" id="main">
+      <div className="container__trigger" id="element"></div>
+      {/* <div className="container__trigger" id="element">Right-click me</div> */}
 
-      <div className="container__trigger" id="element">Right-click me</div>
       <input type='button' id="buttonid" value='click me' />
       <ul id="menu" className="container__menu container__menu--hidden">
-
-
-
-
-
-{/* 
-LEFT OFF HERE
-implement the top answer and test it
-https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
- */}
-
-
-
-
-
         <li className="container__item">First action</li>
         <li className="container__item">Second action</li>
         <li className="container__divider"></li>
         <li className="container__item">Cancel</li>
-      </ul>
+        {/*  
+        LEFT OFF HERE
+        add right click to enable or cancel designer mode
 
-      {/* this works but doesn't launch menu of options */}
-      {/* <input type='button' id="buttonid" value='click me' /> */}
+        */}
+      </ul>
     </div>
   );
 };
