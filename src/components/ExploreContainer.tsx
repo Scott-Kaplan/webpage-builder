@@ -40,13 +40,45 @@ interface ContainerProps { }
 // }
 
 function RightMousePrintHtml() {
-  var d1 = document.getElementById('main')!
+  // var d1 = document.getElementById('main')!
   //console.log(d1)
   //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
   // writeToFirebase(d1)
+  const ele2 = document.getElementById('element')!;
+  const menu2 = document.getElementById('menu2')!;
+
+  // 'contextmenu' is for right click
+  ele2.addEventListener('contextmenu', function (e) {
+    console.log('right click menu')
+    e.preventDefault();
+
+    const rect = ele2.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Set the position for menu
+    menu2.style.top = `${y}px`;
+    menu2.style.left = `${x}px`;
+
+    // Show the menu
+    menu2.classList.remove('container__menu--hidden');
+
+    document.addEventListener('click', documentClickHandler);
+  });
+  // Hide the menu when clicking outside of it
+  const documentClickHandler = function (e: any) {
+    console.log(e.target.innerText) // prints the selection made
+    if (e.target.innerText === 'disable designer') {
+      console.log('close the right click menu')
+      menu2.classList.add('container__menu--hidden');
+      document.removeEventListener('click', documentClickHandler);
+    }
+  }
 }
 
-function initializeMenuPopup() {
+
+
+function initializeLeftClickMenu() {
   const ele = document.getElementById('element')!;
   const menu = document.getElementById('menu')!;
 
@@ -126,7 +158,7 @@ function leftMouseWriteText() {
   let text9 = current.toString()
   let text1 = text9.substring(4)
   let text2 = text1.substring(0, text1.length - 1)
-  console.log('high there',text2)
+  console.log('high there', text2)
 
 
 
@@ -150,7 +182,13 @@ function leftMouseWriteText() {
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
   useIonViewDidEnter(() => {  // after the page initially loads
-    initializeMenuPopup()
+    initializeLeftClickMenu()
+
+    /// LEFT OFF HERE
+    /*
+    move RIghtMousePrintHtml contents into a newly created initializeRightClickMenu()
+    */ 
+
     // capture left mouse click
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
@@ -178,12 +216,14 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         <li className="container__item">Second action</li>
         <li className="container__divider"></li>
         <li className="container__item">Cancel</li>
-        {/*  
-        LEFT OFF HERE
-        modify right click to enable or cancel designer mode
-
-        */}
       </ul>
+
+      <ul id="menu2" className="container__menu container__menu--hidden">
+        <li className="container__item">enable designer</li>
+        <li className="container__divider"></li>
+        <li className="container__item">disable designer</li>
+      </ul>
+
     </div>
   );
 };
@@ -193,5 +233,5 @@ export default ExploreContainer;
 
 /*
   TODO
-  left off here:  need to get rid of blank with line separator at the top
+  [1] need to get rid of blank with line separator at the top
 */
