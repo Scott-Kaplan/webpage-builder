@@ -182,8 +182,6 @@ function leftMouseWriteText() {
   let text2 = text1.substring(0, text1.length - 1)
   console.log('high there', text2)
 
-
-
   var d1 = document.getElementById('main')!
   //insertAjacentHTML documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
