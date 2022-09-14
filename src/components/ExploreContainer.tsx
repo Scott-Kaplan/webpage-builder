@@ -44,6 +44,20 @@ function RightMousePrintHtml() {
   //console.log(d1)
   //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
   // writeToFirebase(d1)
+}
+
+// Hide the menu when clicking outside of it
+const documentClickHandler1 = function (e: any) {
+  const menu2 = document.getElementById('menu2')!;
+  console.log(e.target.innerText) // prints the selection made
+  if (e.target.innerText === 'disable designer') {
+    console.log('close the right click menu')
+    menu2.classList.add('container__menu--hidden');
+    document.removeEventListener('click', documentClickHandler1);
+  }
+}
+
+function initializeRightClickMenu() {
   const ele2 = document.getElementById('element')!;
   const menu2 = document.getElementById('menu2')!;
 
@@ -63,20 +77,18 @@ function RightMousePrintHtml() {
     // Show the menu
     menu2.classList.remove('container__menu--hidden');
 
-    document.addEventListener('click', documentClickHandler);
+    document.addEventListener('click', documentClickHandler1);
   });
-  // Hide the menu when clicking outside of it
-  const documentClickHandler = function (e: any) {
-    console.log(e.target.innerText) // prints the selection made
-    if (e.target.innerText === 'disable designer') {
-      console.log('close the right click menu')
-      menu2.classList.add('container__menu--hidden');
-      document.removeEventListener('click', documentClickHandler);
-    }
-  }
+  // // Hide the menu when clicking outside of it
+  // const documentClickHandler1 = function (e: any) {
+  //   console.log(e.target.innerText) // prints the selection made
+  //   if (e.target.innerText === 'disable designer') {
+  //     console.log('close the right click menu')
+  //     menu2.classList.add('container__menu--hidden');
+  //     document.removeEventListener('click', documentClickHandler1);
+  //   }
+  // }
 }
-
-
 
 function initializeLeftClickMenu() {
   const ele = document.getElementById('element')!;
@@ -152,6 +164,16 @@ function leftMouseWriteText() {
   // convert element to a string
   let howdy = last.outerHTML
 
+  /*
+  LEFT OFF HERE
+  these next 2 lines work.
+  test left menu and right menu and vice versa
+  and ensure they both work in harmony
+
+  */
+  if (howdy.includes('enable designer')) return
+  if (howdy.includes('disable designer')) return
+
   //search for id="whatever", then trim to just get "whatever"
   var pattern1 = /id="[^"]*"/g
   var current = pattern1.exec(howdy)!
@@ -183,16 +205,15 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
   useIonViewDidEnter(() => {  // after the page initially loads
     initializeLeftClickMenu()
-
-    /// LEFT OFF HERE
-    /*
-    move RIghtMousePrintHtml contents into a newly created initializeRightClickMenu()
-    */ 
+    initializeRightClickMenu()
 
     // capture left mouse click
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
-        // console.log('left mouse click');
+        //console.log(e) prints the entire planet
+        // console.log(this)
+        //console.log('AT_TARGET',e.AT_TARGET);
+        documentClickHandler1(e)
         leftMouseWriteText();
       }
     }, false);
