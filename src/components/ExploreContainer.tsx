@@ -46,12 +46,52 @@ function RightMousePrintHtml() {
   // writeToFirebase(d1)
 }
 
-// Hide the menu when clicking outside of it
+// Hide the left mouse click popup when left clicking an option
+// or right clicking to bring up the right click popup
+const documentClickHandler = function (e: any) {
+  const menu = document.getElementById('menu')!;
+  console.log(e.target.innerText) // prints the selection made
+
+  // the user left clicked on "Cancel"
+  if (e.target.innerText === 'Cancel') {
+    menu.classList.add('container__menu--hidden');
+    document.removeEventListener('click', documentClickHandler);
+  }
+
+  /*
+  LEFT OFF HERE
+  the directly below code, when enabled prevents the left popup from ever coming up
+  so find another way to close the left popup when right clicking outside
+  of the left mouse popup
+  */ 
+  
+  // the user right clicked to bring up the right click menu,
+  // so close the left click menu first before doing that
+  // else {
+  //   menu.classList.add('container__menu--hidden');
+  //   document.removeEventListener('click', documentClickHandler);
+  // }
+}
+
+// Hide the right mouse click popup when left clicking
 const documentClickHandler1 = function (e: any) {
   const menu2 = document.getElementById('menu2')!;
   console.log(e.target.innerText) // prints the selection made
+
+  // the user left clicked on "disable designer"
   if (e.target.innerText === 'disable designer') {
-    console.log('close the right click menu')
+    menu2.classList.add('container__menu--hidden');
+    document.removeEventListener('click', documentClickHandler1);
+  }
+  // the user left clicked on "enable designer"
+  else if (e.target.innerText === 'enable designer') {
+    //console.log('close the right click menu')
+    menu2.classList.add('container__menu--hidden');
+    document.removeEventListener('click', documentClickHandler1);
+  }
+  // the user left clicked outside of the right click menu popup
+  // so close the right click menu popup
+  else {
     menu2.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler1);
   }
@@ -115,23 +155,22 @@ function initializeLeftClickMenu() {
 
     document.addEventListener('click', documentClickHandler);
   });
-  // Hide the menu when clicking outside of it
-  const documentClickHandler = function (e: any) {
-    console.log(e.target.innerText) // prints the selection made
-    if (e.target.innerText === 'Cancel') {
-      console.log('outside the box')
-      menu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', documentClickHandler);
-    }
-
-    return
-    const isClickedOutside = !menu.contains(e.target);
-    if (isClickedOutside) {
-      console.log('outside the box')
-      menu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', documentClickHandler);
-    }
-  };
+  // // Hide the menu when clicking outside of it
+  // const documentClickHandler = function (e: any) {
+  //   console.log(e.target.innerText) // prints the selection made
+  //   if (e.target.innerText === 'Cancel') {
+  //     console.log('outside the box')
+  //     menu.classList.add('container__menu--hidden');
+  //     document.removeEventListener('click', documentClickHandler);
+  //   }
+  //   return
+  //   const isClickedOutside = !menu.contains(e.target);
+  //   if (isClickedOutside) {
+  //     console.log('outside the box')
+  //     menu.classList.add('container__menu--hidden');
+  //     document.removeEventListener('click', documentClickHandler);
+  //   }
+  // };
 }
 
 function leftMouseWriteText() {
@@ -164,13 +203,6 @@ function leftMouseWriteText() {
   // convert element to a string
   let howdy = last.outerHTML
 
-  /*
-  LEFT OFF HERE
-  these next 2 lines work.
-  test left menu and right menu and vice versa
-  and ensure they both work in harmony
-
-  */
   if (howdy.includes('enable designer')) return
   if (howdy.includes('disable designer')) return
 
