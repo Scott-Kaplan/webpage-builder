@@ -28,6 +28,8 @@ import { app } from '../firebase'
 import { workers } from 'cluster';
 console.log(app) // do this or get run time error
 
+var leftPopupPresent = false
+
 interface ContainerProps { }
 
 // async function writeToFirebase(msg: HTMLElement) {
@@ -46,8 +48,10 @@ function RightMousePrintHtml() {
   // writeToFirebase(d1)
 }
 
-// Hide the left mouse click popup when left clicking an option
-// or right clicking to bring up the right click popup
+// Hide the left mouse click popup when
+// [a] left clicking an option
+// or 
+// [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
   const menu = document.getElementById('menu')!;
   console.log(e.target.innerText) // prints the selection made
@@ -63,11 +67,18 @@ const documentClickHandler = function (e: any) {
   the directly below code, when enabled prevents the left popup from ever coming up
   so find another way to close the left popup when right clicking outside
   of the left mouse popup
-  */ 
-  
+  */
+
   // the user right clicked to bring up the right click menu,
   // so close the left click menu first before doing that
   // else {
+  //   menu.classList.add('container__menu--hidden');
+  //   document.removeEventListener('click', documentClickHandler);
+  // }
+
+  // the user click the right mouse button, because want to bring up the right popup
+  // if the left popup is up close it first
+  // else if (leftPopupPresent) {
   //   menu.classList.add('container__menu--hidden');
   //   document.removeEventListener('click', documentClickHandler);
   // }
@@ -89,9 +100,17 @@ const documentClickHandler1 = function (e: any) {
     menu2.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler1);
   }
-  // the user left clicked outside of the right click menu popup
-  // so close the right click menu popup
+
+  // use case:
+  /*
+  bring up right popup
+  bring up left popup
+  verify --> right popup should close
+  passes
+  */
   else {
+    // close the right popup, because want the left popup only to appear
+    // otherwise both popups will appear at the same time
     menu2.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler1);
   }
@@ -118,6 +137,22 @@ function initializeRightClickMenu() {
     menu2.classList.remove('container__menu--hidden');
 
     document.addEventListener('click', documentClickHandler1);
+
+    // use case:
+    /*
+    bring up left popup
+    launch right popup
+    verify --> left popup should close
+    passes
+    */
+    if (leftPopupPresent) {
+      // close the left popup, because want the right popup only to appear
+      // otherwise both popups will appear at the same time
+      const menu = document.getElementById('menu')!;
+      menu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', documentClickHandler);
+      leftPopupPresent = false
+    }
   });
   // // Hide the menu when clicking outside of it
   // const documentClickHandler1 = function (e: any) {
@@ -154,6 +189,9 @@ function initializeLeftClickMenu() {
     menu.classList.remove('container__menu--hidden');
 
     document.addEventListener('click', documentClickHandler);
+
+    leftPopupPresent = true
+
   });
   // // Hide the menu when clicking outside of it
   // const documentClickHandler = function (e: any) {
