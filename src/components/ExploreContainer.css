@@ -40,13 +40,17 @@
 /* 
 left off here
 modify height so that it takes the entire available window height
+probably can't do this in javascript because if user resizes the window it won't
+work.  also can
+
+inherit for height doesn't seem to work
 */
 
   /* Size */
-  height: 16rem;
-  /* height: fit-content(1000em); not adjustable
-  /* height: 90%; drawers sliver and menu's don't come up */
-  width: 16rem;
+  /* height: 16rem; */
+  height: 1024px;
+  /* width: 16rem; */
+  /* width: inherit; */
 
   /* Misc */
   border: 1px solid #cbd5e0;

@@ -162,6 +162,22 @@ function initializeRightClickMenu() {
 }
 
 function initializeLeftClickMenu() {
+
+// doesn't work.  get null with the last 2 lines
+//   var win = window,
+//   doc = document,
+//   docElem = doc.documentElement,
+//   body = doc.getElementsByTagName('body')[0],
+//   x = win.innerWidth || docElem.clientWidth || body.clientWidth,
+//   y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
+// //alert(x + ' × ' + y); 1024 x 1016
+// const theWidth = document.getElementById('container__trigger')!
+// const theHeight = document.getElementById('container__trigger')!
+// theWidth.style.width=`${x}`
+// theHeight.style.height=`${y}`
+
+
+
   const ele = document.getElementById('element')!;
   const menu = document.getElementById('menu')!;
 
