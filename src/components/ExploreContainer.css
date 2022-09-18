@@ -36,8 +36,16 @@
   display: flex;
   justify-content: center;
 
+
+/* 
+left off here
+modify height so that it takes the entire available window height
+*/
+
   /* Size */
   height: 16rem;
+  /* height: fit-content(1000em); not adjustable
+  /* height: 90%; drawers sliver and menu's don't come up */
   width: 16rem;
 
   /* Misc */
