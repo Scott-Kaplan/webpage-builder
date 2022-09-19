@@ -270,13 +270,45 @@ function leftMouseWriteText() {
   let text2 = text1.substring(0, text1.length - 1)
   console.log('high there', text2)
 
-  var d1 = document.getElementById('main')!
+  // puts it to the direct right of the click me button
+  var d1 = document.getElementById('element')!
+  d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
+
+  // puts it to the direct left of the click me button
+  //var d1 = document.getElementById('element')!
+  //d1.insertAdjacentHTML('afterbegin', '<div id="write_text"></div>')
+
+  // puts it at the bottom, below the trigger window
+  //var d1 = document.getElementById('element')!
+  //d1.insertAdjacentHTML('afterend', '<div id="write_text"></div>')
+  
+  // doesn't put it anywhere
+  //var d1 = document.getElementById('element')!
+  //d1.insertAdjacentHTML('beforebegin', '<div id="write_text"></div>')
+
   //insertAjacentHTML documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
   // and https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
-  d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
+  
+  // puts it at the bottom, below the trigger window
+  //var d1 = document.getElementById('main')!
+  //d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
+  
+  //does nothing
+  //var d1 = document.getElementById('main')!
+  //d1.insertAdjacentHTML('afterbegin', '<div id="write_text"></div>')
+  
+  //both of these put in upper left corner
+  //var d1 = document.getElementById('main')!
+  //d1.insertAdjacentHTML('afterend', '<div id="write_text"></div>')
+  //d1.insertAdjacentHTML('beforebegin', '<div id="write_text"></div>')
+
+
+  // DON'T WORRY THAT THE click me BUTTON IS NOT CENTERED BECAUSE
+  // IT WON'T BE THERE.  JUST A TEST FOR NOW.  ALL CHOICES WILL BE IN THE
+  // LEFT POPUP AND RIGHT POPUP.
   var text = document.getElementById("write_text")!
-  text.innerHTML = "left mouse click"
+  text.innerHTML = "<br><br><br><br><br>left mouse click"
   var sheet = document.createElement('style')
   sheet.innerHTML = "div {color:blue;overflow:hidden;}";
   document.body.appendChild(sheet);
