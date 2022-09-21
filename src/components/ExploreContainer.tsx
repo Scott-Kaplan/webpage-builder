@@ -21,6 +21,12 @@
 */
 
 import './ExploreContainer.css';
+
+// test
+import React, { useState, useEffect } from 'react'
+//import ReactDOM from "react-dom"
+// end
+
 import { doc, setDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
@@ -75,7 +81,7 @@ const documentClickHandler = function (e: any) {
 
 // Hide the right popup when left clicking
 const documentClickHandler1 = function (e: any) {
-  
+
   // this works
   resizeCssTagNamed_container__trigger()
 
@@ -167,18 +173,18 @@ function initializeRightClickMenu() {
 
 function initializeLeftClickMenu() {
 
-// doesn't work.  get null with the last 2 lines
-//   var win = window,
-//   doc = document,
-//   docElem = doc.documentElement,
-//   body = doc.getElementsByTagName('body')[0],
-//   x = win.innerWidth || docElem.clientWidth || body.clientWidth,
-//   y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
-// //alert(x + ' × ' + y); 1024 x 1016
-// const theWidth = document.getElementById('container__trigger')!
-// const theHeight = document.getElementById('container__trigger')!
-// theWidth.style.width=`${x}`
-// theHeight.style.height=`${y}`
+  // doesn't work.  get null with the last 2 lines
+  //   var win = window,
+  //   doc = document,
+  //   docElem = doc.documentElement,
+  //   body = doc.getElementsByTagName('body')[0],
+  //   x = win.innerWidth || docElem.clientWidth || body.clientWidth,
+  //   y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
+  // //alert(x + ' × ' + y); 1024 x 1016
+  // const theWidth = document.getElementById('container__trigger')!
+  // const theHeight = document.getElementById('container__trigger')!
+  // theWidth.style.width=`${x}`
+  // theHeight.style.height=`${y}`
 
 
 
@@ -304,7 +310,7 @@ function leftMouseWriteText() {
   // puts it at the bottom, below the trigger window
   //var d1 = document.getElementById('element')!
   //d1.insertAdjacentHTML('afterend', '<div id="write_text"></div>')
-  
+
   // doesn't put it anywhere
   //var d1 = document.getElementById('element')!
   //d1.insertAdjacentHTML('beforebegin', '<div id="write_text"></div>')
@@ -312,15 +318,15 @@ function leftMouseWriteText() {
   //insertAjacentHTML documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
   // and https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
-  
+
   // puts it at the bottom, below the trigger window
   //var d1 = document.getElementById('main')!
   //d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
-  
+
   //does nothing
   //var d1 = document.getElementById('main')!
   //d1.insertAdjacentHTML('afterbegin', '<div id="write_text"></div>')
-  
+
   //both of these put in upper left corner
   //var d1 = document.getElementById('main')!
   //d1.insertAdjacentHTML('afterend', '<div id="write_text"></div>')
@@ -343,6 +349,48 @@ function leftMouseWriteText() {
 }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
+
+  // test
+  //
+  function debounce(fn, ms) {
+    let timer;
+    return _ => {
+      clearTimeout(timer);
+      timer = setTimeout(_ => {
+        timer = null;
+        fn.apply(this, arguments);
+      }, ms);
+    };
+  }
+
+  const [dimensions, setDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth
+  });
+  /* 
+    Argument of type '() => (_: any) => void' is not assignable to parameter of type 'EffectCallback'.
+    Type '(_: any) => void' is not assignable to type 'void | Destructor'.
+    Type '(_: any) => void' is not assignable to type 'Destructor'.ts(2345)  
+  */
+
+    // LEFT OFF HERE.  FIX THIS ERROR
+  useEffect(() => {
+    const debouncedHandleResize = debounce(function handleResize() {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
+    }, 1000);
+
+    window.addEventListener("resize", debouncedHandleResize);
+
+    return (_: any) => {
+      window.removeEventListener("resize", debouncedHandleResize);
+    };
+  });
+  //
+  // end
+
 
   useIonViewDidEnter(() => {  // after the page initially loads
     initializeLeftClickMenu()
@@ -370,6 +418,14 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   return (
     <div className="container" id="main">
       <div className="container__trigger" id="element">
+
+        {/* test */}
+        <div>
+          Rendered at {dimensions.width} x {dimensions.height}
+        </div>
+        {/* end */}
+
+
         {/* <div className="container__trigger" id="element">Right-click me</div> */}
 
         <input type='button' id="buttonid" value='click me' />
