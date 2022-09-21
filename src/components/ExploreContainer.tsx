@@ -75,6 +75,10 @@ const documentClickHandler = function (e: any) {
 
 // Hide the right popup when left clicking
 const documentClickHandler1 = function (e: any) {
+  
+  // this works
+  resizeCssTagNamed_container__trigger()
+
   const menu2 = document.getElementById('menu2')!;
   const menu = document.getElementById('menu')!;
   console.log(e.target.innerText) // prints the selection made
@@ -221,6 +225,25 @@ function initializeLeftClickMenu() {
   //     document.removeEventListener('click', documentClickHandler);
   //   }
   // };
+}
+
+
+
+//TODO;
+/*
+google: 
+continuously display container size when resizing window
+https://www.pluralsight.com/guides/re-render-react-component-on-window-resize
+running example: https://codesandbox.io/s/condescending-https-z6fmh
+*/
+
+// this works as written
+// changes the css height and other fields of 'element' which is css attribute
+// container__trigger
+function resizeCssTagNamed_container__trigger() {
+  var containerTriggerCss = document.getElementById('element')!
+  containerTriggerCss.style.height = '100px'
+  console.log('resizeCssTagNamed_container__trigger() executed')
 }
 
 function leftMouseWriteText() {

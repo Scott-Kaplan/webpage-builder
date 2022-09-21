@@ -36,16 +36,6 @@
   display: flex;
   justify-content: center;
 
-
-/* 
-left off here
-modify height so that it takes the entire available window height
-probably can't do this in javascript because if user resizes the window it won't
-work.  also can
-
-inherit for height doesn't seem to work
-*/
-
   /* Size */
   /* height: 16rem; */
   height: 1024px;
