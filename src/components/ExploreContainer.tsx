@@ -358,6 +358,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
       clearTimeout(timer);
       timer = setTimeout(_ => {
         timer = null;
+        //LEFT OFF HERE - resolve these errors
         /*
         Two compiler errors
         'this' implicitly has type 'any' because it does not have a type annotation.ts(2683)
