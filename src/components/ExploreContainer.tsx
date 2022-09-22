@@ -352,12 +352,20 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
   // test
   //
-  function debounce(fn, ms) {
-    let timer;
-    return _ => {
+  function debounce(fn: any, ms: any) {
+    let timer: any;
+    return (_: any) => {
       clearTimeout(timer);
       timer = setTimeout(_ => {
         timer = null;
+        /*
+        Two compiler errors
+        'this' implicitly has type 'any' because it does not have a type annotation.ts(2683)
+        ExploreContainer.tsx(355, 12): An outer value of 'this' is shadowed by this container.
+
+        The 'arguments' object cannot be referenced in an arrow function in ES3 and ES5.
+        Consider using a standard function expression.ts(2496)
+        */
         fn.apply(this, arguments);
       }, ms);
     };
@@ -368,12 +376,18 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     width: window.innerWidth
   });
   /* 
+    "useEffect(() =>" had this error
     Argument of type '() => (_: any) => void' is not assignable to parameter of type 'EffectCallback'.
     Type '(_: any) => void' is not assignable to type 'void | Destructor'.
     Type '(_: any) => void' is not assignable to type 'Destructor'.ts(2345)  
-  */
 
-    // LEFT OFF HERE.  FIX THIS ERROR
+    the fix for this was 
+    changed 
+    return (_: any) => {
+    to
+    return () => {
+    }
+  */
   useEffect(() => {
     const debouncedHandleResize = debounce(function handleResize() {
       setDimensions({
@@ -384,7 +398,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
     window.addEventListener("resize", debouncedHandleResize);
 
-    return (_: any) => {
+    return () => {
       window.removeEventListener("resize", debouncedHandleResize);
     };
   });
