@@ -83,7 +83,7 @@ const documentClickHandler = function (e: any) {
 const documentClickHandler1 = function (e: any) {
 
   // this works
-  resizeCssTagNamed_container__trigger()
+  //resizeCssTagNamed_container__trigger()
 
   const menu2 = document.getElementById('menu2')!;
   const menu = document.getElementById('menu')!;
@@ -248,7 +248,13 @@ running example: https://codesandbox.io/s/condescending-https-z6fmh
 // container__trigger
 function resizeCssTagNamed_container__trigger() {
   var containerTriggerCss = document.getElementById('element')!
-  containerTriggerCss.style.height = '100px'
+  // containerTriggerCss.style.height = '100px'
+
+  /*
+  left off here.  fix these two errors
+  */
+  containerTriggerCss.style.height = window.innerHeight;
+  containerTriggerCss.style.width = window.innerWidth;
   console.log('resizeCssTagNamed_container__trigger() executed')
 }
 
@@ -352,22 +358,40 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
   // test
   //
-  function debounce(fn: any, ms: any) {
-    let timer: any;
-    return (_: any) => {
-      clearTimeout(timer);
-      timer = setTimeout(_ => {
-        timer = null;
-        //LEFT OFF HERE - resolve these errors
-        /*
-        Two compiler errors
-        'this' implicitly has type 'any' because it does not have a type annotation.ts(2683)
-        ExploreContainer.tsx(355, 12): An outer value of 'this' is shadowed by this container.
+  // function debounce(fn: any, ms: any) {
+  //   let timer: any;
+  //   return (_: any) => {
+  //     clearTimeout(timer);
+  //     timer = setTimeout(_ => {
+  //       timer = null;
 
-        The 'arguments' object cannot be referenced in an arrow function in ES3 and ES5.
-        Consider using a standard function expression.ts(2496)
-        */
-        fn.apply(this, arguments);
+  //       /*
+  //       Two compiler errors
+
+  //       'this' implicitly has type 'any' because it does not have a type annotation.ts(2683)
+  //       ExploreContainer.tsx(355, 12): An outer value of 'this' is shadowed by this container.
+
+  //       The 'arguments' object cannot be referenced in an arrow function in ES3 and ES5.
+  //       Consider using a standard function expression.ts(2496)
+
+  //       What fixed these errors in converting this block of code to javascript (working code is below)
+  //       https://extendsclass.com/typescript-to-javascript.html
+
+  //       */
+
+  //       fn.apply(this, arguments);
+  //     }, ms);
+  //   };
+  // }
+
+  function debounce(this: any, fn: any, ms: any) {
+    var _this = this;
+    var timer: any;
+    return function (_: any) {
+      clearTimeout(timer);
+      timer = setTimeout(function (_) {
+        timer = null;
+        fn.apply(_this, arguments);
       }, ms);
     };
   }
@@ -376,6 +400,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     height: window.innerHeight,
     width: window.innerWidth
   });
+
   /* 
     "useEffect(() =>" had this error
     Argument of type '() => (_: any) => void' is not assignable to parameter of type 'EffectCallback'.
@@ -395,7 +420,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         height: window.innerHeight,
         width: window.innerWidth
       });
-    }, 1000);
+    }, 100); // updates 100 ms
 
     window.addEventListener("resize", debouncedHandleResize);
 
@@ -429,6 +454,8 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
       RightMousePrintHtml();
     }, false);
   });
+
+  resizeCssTagNamed_container__trigger()
 
   return (
     <div className="container" id="main">
