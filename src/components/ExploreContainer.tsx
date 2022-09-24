@@ -35,6 +35,7 @@ import { workers } from 'cluster';
 console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
+var fullyLoaded = false
 
 interface ContainerProps { }
 
@@ -247,14 +248,20 @@ running example: https://codesandbox.io/s/condescending-https-z6fmh
 // changes the css height and other fields of 'element' which is css attribute
 // container__trigger
 function resizeCssTagNamed_container__trigger() {
-  var containerTriggerCss = document.getElementById('element')!
+  // var containerTriggerCss = document.getElementById('element')!
   // containerTriggerCss.style.height = '100px'
 
+  document.getElementById('element')!.style.height = '100px'
+
   /*
-  left off here.  fix these two errors
+  left off here.  assign the above line to 
+  window.innerHeight.toString(); but the x,y coordinates may not equal pixels.
+  research this then make the subsitution.  The below 3 lines do successfully change
+  everytime the screen is resized.
   */
-  containerTriggerCss.style.height = window.innerHeight;
-  containerTriggerCss.style.width = window.innerWidth;
+  //console.log('containerTriggerCss.style.height = ',containerTriggerCss.style.height)
+  //containerTriggerCss.style.height = window.innerHeight.toString();
+  //containerTriggerCss.style.width = window.innerWidth.toString()
   console.log('resizeCssTagNamed_container__trigger() executed')
 }
 
@@ -426,6 +433,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
     return () => {
       window.removeEventListener("resize", debouncedHandleResize);
+      resizeCssTagNamed_container__trigger()
     };
   });
   //
@@ -433,6 +441,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
 
   useIonViewDidEnter(() => {  // after the page initially loads
+    resizeCssTagNamed_container__trigger()
     initializeLeftClickMenu()
     initializeRightClickMenu()
 
@@ -453,9 +462,10 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
       console.log('right mouse click');
       RightMousePrintHtml();
     }, false);
+    fullyLoaded = true
   });
 
-  resizeCssTagNamed_container__trigger()
+  //resizeCssTagNamed_container__trigger()
 
   return (
     <div className="container" id="main">
@@ -464,6 +474,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         {/* test */}
         <div>
           Rendered at {dimensions.width} x {dimensions.height}
+          {/* {`${fullyLoaded}: ${resizeCssTagNamed_container__trigger()}`} */}
         </div>
         {/* end */}
 
