@@ -244,25 +244,21 @@ https://www.pluralsight.com/guides/re-render-react-component-on-window-resize
 running example: https://codesandbox.io/s/condescending-https-z6fmh
 */
 
-// this works as written
-// changes the css height and other fields of 'element' which is css attribute
-// container__trigger
+
+// This function changes the css height & width of container where the popup can appear.
+// it matches the size of the browser window.  If the browser window is made larger
+// or smaller the container size will match it.
+/*
+left off here
+the vertical scroll bar is still visible because it is set to 1024px.
+but what if scroll down below 1024.  Can't go below this.
+If multi page will want it to be greater than 1024, so increase from there
+But how large to make it and maybe it is Ok to have the scroll bar there
+*/
 function resizeCssTagNamed_container__trigger() {
-  // var containerTriggerCss = document.getElementById('element')!
-  // containerTriggerCss.style.height = '100px'
-
-  document.getElementById('element')!.style.height = '100px'
-
-  /*
-  left off here.  assign the above line to 
-  window.innerHeight.toString(); but the x,y coordinates may not equal pixels.
-  research this then make the subsitution.  The below 3 lines do successfully change
-  everytime the screen is resized.
-  */
-  //console.log('containerTriggerCss.style.height = ',containerTriggerCss.style.height)
-  //containerTriggerCss.style.height = window.innerHeight.toString();
-  //containerTriggerCss.style.width = window.innerWidth.toString()
-  console.log('resizeCssTagNamed_container__trigger() executed')
+  document.getElementById('element')!.style.height = window.innerHeight.toString()
+  document.getElementById('element')!.style.width = window.innerWidth.toString()
+  console.log('resized container')
 }
 
 function leftMouseWriteText() {

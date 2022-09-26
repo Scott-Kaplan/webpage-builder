@@ -36,9 +36,13 @@
   display: flex;
   justify-content: center;
 
+  /* height: 100px; */
+  /* height: inherit; */
   /* Size */
   /* height: 16rem; */
   height: 1024px;
+  height: 20vmin;
+  /* width: 768px; */
   /* width: 16rem; */
   /* width: inherit; */
 
