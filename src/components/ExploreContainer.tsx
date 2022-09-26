@@ -1,41 +1,12 @@
-/*
-  left click creates and element and right click saves it to the database
-  if add functionality to reload it from the database (at startup)
-  it wipes everything else out
-  so, lets say add a button with regular ionic code and want to change
-  the css on it.  how would one do that?
-  how would one change the background color below or above the button?
-*/
-
-/*
-  when left click, bring up a menu -
-  https://htmldom.dev/show-a-custom-context-menu-at-clicked-position/
-  // click the code folder button and see the entire source code.
-
-  [1] delete
-  [2] modify
-  when right click, bring up a menu with these two options -
-  [1] put into designer mode
-  [2] put into regular mode
-  [3] write to firebase
-*/
-
 import './ExploreContainer.css';
-
-// test
 import React, { useState, useEffect } from 'react'
-//import ReactDOM from "react-dom"
-// end
-
 import { doc, setDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
-import { workers } from 'cluster';
 console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
-var fullyLoaded = false
 
 interface ContainerProps { }
 
@@ -83,9 +54,6 @@ const documentClickHandler = function (e: any) {
 // Hide the right popup when left clicking
 const documentClickHandler1 = function (e: any) {
 
-  // this works
-  //resizeCssTagNamed_container__trigger()
-
   const menu2 = document.getElementById('menu2')!;
   const menu = document.getElementById('menu')!;
   console.log(e.target.innerText) // prints the selection made
@@ -108,13 +76,11 @@ const documentClickHandler1 = function (e: any) {
     document.removeEventListener('click', documentClickHandler1);
   }
 
-  // use case:
-  /*
-  bring up right popup
-  bring up left popup
-  verify --> right popup should close
-  passes
-  */
+  // Test case:
+  // [1] bring up right popup
+  // [2] bring up left popup
+  // [3] verify --> the right popup should close
+  // passes
   else {
     // close the right popup, because want the left popup only to appear
     // otherwise both popups will appear at the same time
@@ -145,13 +111,11 @@ function initializeRightClickMenu() {
 
     document.addEventListener('click', documentClickHandler1);
 
-    // use case:
-    /*
-    bring up left popup
-    launch right popup
-    verify --> left popup should close
-    passes
-    */
+    // Test case:
+    // [1] bring up left popup
+    // [2] launch right popup
+    // [3] verify --> left popup should close
+    //  passes
     if (leftPopupPresent) {
       // close the left popup, because want the right popup only to appear
       // otherwise both popups will appear at the same time
@@ -161,41 +125,16 @@ function initializeRightClickMenu() {
       leftPopupPresent = false
     }
   });
-  // // Hide the menu when clicking outside of it
-  // const documentClickHandler1 = function (e: any) {
-  //   console.log(e.target.innerText) // prints the selection made
-  //   if (e.target.innerText === 'disable designer') {
-  //     console.log('close the right click menu')
-  //     menu2.classList.add('container__menu--hidden');
-  //     document.removeEventListener('click', documentClickHandler1);
-  //   }
-  // }
 }
 
 function initializeLeftClickMenu() {
 
-  // doesn't work.  get null with the last 2 lines
-  //   var win = window,
-  //   doc = document,
-  //   docElem = doc.documentElement,
-  //   body = doc.getElementsByTagName('body')[0],
-  //   x = win.innerWidth || docElem.clientWidth || body.clientWidth,
-  //   y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
-  // //alert(x + ' × ' + y); 1024 x 1016
-  // const theWidth = document.getElementById('container__trigger')!
-  // const theHeight = document.getElementById('container__trigger')!
-  // theWidth.style.width=`${x}`
-  // theHeight.style.height=`${y}`
-
-
-
   const ele = document.getElementById('element')!;
   const menu = document.getElementById('menu')!;
 
-  // 'contextmenu' is for right click
-  //ele.addEventListener('contextmenu', function (e) {
-  // this function is executed when move the cursor from its previous position and left clicking
-  // so as not to select an option in the popup
+  // This function is executed when the user moves the left popup.
+  // proceedurally the user moves the cursor from its previous position and left clicks.
+  // This function is not executed when the user selects an option from the left popup.
   ele.addEventListener('click', function (e) {
     console.log('moved popup')
     e.preventDefault();
@@ -212,37 +151,12 @@ function initializeLeftClickMenu() {
     menu.classList.remove('container__menu--hidden');
 
     document.addEventListener('click', documentClickHandler);
-
     leftPopupPresent = true
-
   });
-  // // Hide the menu when clicking outside of it
-  // const documentClickHandler = function (e: any) {
-  //   console.log(e.target.innerText) // prints the selection made
-  //   if (e.target.innerText === 'Cancel') {
-  //     console.log('outside the box')
-  //     menu.classList.add('container__menu--hidden');
-  //     document.removeEventListener('click', documentClickHandler);
-  //   }
-  //   return
-  //   const isClickedOutside = !menu.contains(e.target);
-  //   if (isClickedOutside) {
-  //     console.log('outside the box')
-  //     menu.classList.add('container__menu--hidden');
-  //     document.removeEventListener('click', documentClickHandler);
-  //   }
-  // };
 }
 
+// LEFT OFF HERE with cleanup
 
-
-//TODO;
-/*
-google: 
-continuously display container size when resizing window
-https://www.pluralsight.com/guides/re-render-react-component-on-window-resize
-running example: https://codesandbox.io/s/condescending-https-z6fmh
-*/
 
 
 // This function changes the css height & width of container where the popup can appear.
@@ -458,7 +372,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
       console.log('right mouse click');
       RightMousePrintHtml();
     }, false);
-    fullyLoaded = true
   });
 
   //resizeCssTagNamed_container__trigger()
@@ -470,7 +383,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         {/* test */}
         <div>
           Rendered at {dimensions.width} x {dimensions.height}
-          {/* {`${fullyLoaded}: ${resizeCssTagNamed_container__trigger()}`} */}
         </div>
         {/* end */}
 
@@ -501,4 +413,16 @@ export default ExploreContainer;
 /*
   TODO
   [1] need to get rid of blank with line separator at the top
+*/
+
+/*
+  when left click, bring up a menu -
+  https://htmldom.dev/show-a-custom-context-menu-at-clicked-position/
+  then click the code folder button and see the entire source code.
+*/
+
+/*
+  Display container size while resizing the window
+  https://www.pluralsight.com/guides/re-render-react-component-on-window-resize
+  running example: https://codesandbox.io/s/condescending-https-z6fmh
 */

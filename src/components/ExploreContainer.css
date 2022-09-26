@@ -24,12 +24,7 @@
 }
 
 
-/* add support for popping up menu of options when clicking left cursor button */
-/*  */
-/*  */
-/*  */
-/*  */
-
+/* Start Support for being able to bring up a pop up menu */
 .container__trigger {
   /* Center the content */
   align-items: center;
@@ -41,7 +36,8 @@
   /* Size */
   /* height: 16rem; */
   height: 1024px;
-  height: 20vmin;
+  height: 4096px; /* this determines how much of a vertical browser scroll bar there is */
+  /* height: 20vmin; */
   /* width: 768px; */
   /* width: 16rem; */
   /* width: inherit; */
@@ -82,3 +78,4 @@
   border-bottom: 1px solid #cbd5e0;
   height: 1px;
 }
+/* END Support for being able to bring up a pop up menu */
