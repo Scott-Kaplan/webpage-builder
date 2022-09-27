@@ -155,20 +155,11 @@ function initializeLeftClickMenu() {
   });
 }
 
-// LEFT OFF HERE with cleanup
-
-
-
 // This function changes the css height & width of container where the popup can appear.
 // it matches the size of the browser window.  If the browser window is made larger
 // or smaller the container size will match it.
-/*
-left off here
-the vertical scroll bar is still visible because it is set to 1024px.
-but what if scroll down below 1024.  Can't go below this.
-If multi page will want it to be greater than 1024, so increase from there
-But how large to make it and maybe it is Ok to have the scroll bar there
-*/
+// This function though does not impact the vertical scroll bar
+// which is defined in ExploreContainer.css, the height property in .container__trigger
 function resizeCssTagNamed_container__trigger() {
   document.getElementById('element')!.style.height = window.innerHeight.toString()
   document.getElementById('element')!.style.width = window.innerWidth.toString()
@@ -176,7 +167,7 @@ function resizeCssTagNamed_container__trigger() {
 }
 
 function leftMouseWriteText() {
-  // this prevents <div id="tag"></div> from being created more than once
+  // this prevents  <div id="tag"></div>  from being created more than once
   if (document.getElementById("write_text"))
     return
 
@@ -222,43 +213,20 @@ function leftMouseWriteText() {
   let text2 = text1.substring(0, text1.length - 1)
   console.log('high there', text2)
 
-  // puts it to the direct right of the click me button
+  // Display text directly to the right of the click me button
+  // Note: the following attempts were unfavorable
+  //   'afterbegin' -- displayed text directly to the left of the click me button
+  //   'afterend' -- displayed text at the very bottom of the page (after the trigger window) 
+  //   'beforebegin' -- doesn't display the text anywhere
   var d1 = document.getElementById('element')!
-  d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
-
-  // puts it to the direct left of the click me button
-  //var d1 = document.getElementById('element')!
-  //d1.insertAdjacentHTML('afterbegin', '<div id="write_text"></div>')
-
-  // puts it at the bottom, below the trigger window
-  //var d1 = document.getElementById('element')!
-  //d1.insertAdjacentHTML('afterend', '<div id="write_text"></div>')
-
-  // doesn't put it anywhere
-  //var d1 = document.getElementById('element')!
-  //d1.insertAdjacentHTML('beforebegin', '<div id="write_text"></div>')
-
-  //insertAjacentHTML documented here -
+  // insertAjacentHTML is documented here -
   // https://stackoverflow.com/questions/6304453/javascript-append-html-to-container-element-without-innerhtml
   // and https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
-
-  // puts it at the bottom, below the trigger window
-  //var d1 = document.getElementById('main')!
-  //d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
-
-  //does nothing
-  //var d1 = document.getElementById('main')!
-  //d1.insertAdjacentHTML('afterbegin', '<div id="write_text"></div>')
-
-  //both of these put in upper left corner
-  //var d1 = document.getElementById('main')!
-  //d1.insertAdjacentHTML('afterend', '<div id="write_text"></div>')
-  //d1.insertAdjacentHTML('beforebegin', '<div id="write_text"></div>')
-
+  d1.insertAdjacentHTML('beforeend', '<div id="write_text"></div>')
 
   // DON'T WORRY THAT THE click me BUTTON IS NOT CENTERED BECAUSE
   // IT WON'T BE THERE.  JUST A TEST FOR NOW.  ALL CHOICES WILL BE IN THE
-  // LEFT POPUP AND RIGHT POPUP.
+  // LEFT POPUP AND RIGHT POPUP FROM WHERE TO SELECT FROM.
   var text = document.getElementById("write_text")!
   text.innerHTML = "<br><br><br><br><br>left mouse click"
   var sheet = document.createElement('style')
@@ -272,34 +240,6 @@ function leftMouseWriteText() {
 }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
-
-  // test
-  //
-  // function debounce(fn: any, ms: any) {
-  //   let timer: any;
-  //   return (_: any) => {
-  //     clearTimeout(timer);
-  //     timer = setTimeout(_ => {
-  //       timer = null;
-
-  //       /*
-  //       Two compiler errors
-
-  //       'this' implicitly has type 'any' because it does not have a type annotation.ts(2683)
-  //       ExploreContainer.tsx(355, 12): An outer value of 'this' is shadowed by this container.
-
-  //       The 'arguments' object cannot be referenced in an arrow function in ES3 and ES5.
-  //       Consider using a standard function expression.ts(2496)
-
-  //       What fixed these errors in converting this block of code to javascript (working code is below)
-  //       https://extendsclass.com/typescript-to-javascript.html
-
-  //       */
-
-  //       fn.apply(this, arguments);
-  //     }, ms);
-  //   };
-  // }
 
   function debounce(this: any, fn: any, ms: any) {
     var _this = this;
@@ -318,19 +258,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     width: window.innerWidth
   });
 
-  /* 
-    "useEffect(() =>" had this error
-    Argument of type '() => (_: any) => void' is not assignable to parameter of type 'EffectCallback'.
-    Type '(_: any) => void' is not assignable to type 'void | Destructor'.
-    Type '(_: any) => void' is not assignable to type 'Destructor'.ts(2345)  
-
-    the fix for this was 
-    changed 
-    return (_: any) => {
-    to
-    return () => {
-    }
-  */
   useEffect(() => {
     const debouncedHandleResize = debounce(function handleResize() {
       setDimensions({
@@ -346,9 +273,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
       resizeCssTagNamed_container__trigger()
     };
   });
-  //
-  // end
-
 
   useIonViewDidEnter(() => {  // after the page initially loads
     resizeCssTagNamed_container__trigger()
@@ -358,6 +282,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     // capture left mouse click
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
+
+// LEFT OFF HERE: continue cleanup
+
         //console.log(e) prints the entire planet
         // console.log(this)
         //console.log('AT_TARGET',e.AT_TARGET);
