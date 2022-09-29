@@ -50,6 +50,25 @@
   /* Absolute position */
   position: absolute;
 
+/* LEFT OFF HERE
+"absolute" puts the menu where the cursor is.  This is fine
+until it goes to the extreme position of the container and then the menu 
+only partially appears on it.  Instead move to a non absolute position when
+this case occurs so the pop up menu will always be visible
+https://www.w3schools.com/cssref/playit.asp?filename=playcss_position&preval=fixed
+*/
+
+
+
+  /* these do nothing */
+  /* left: 200px; */
+  /* top: 50px; */
+
+  /* position: static; - appears to the right of button */
+  /* this does nothing */
+  /* left: 100px;
+  top: 150px;   */
+
   /* Reset */
   list-style-type: none;
   margin: 0;

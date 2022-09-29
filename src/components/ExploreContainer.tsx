@@ -146,6 +146,8 @@ function initializeLeftClickMenu() {
     // Set the position for menu
     menu.style.top = `${y}px`;
     menu.style.left = `${x}px`;
+    // console.log('menu.style.top = ',y,'px')
+    // console.log('menu.style.left = ',x,'px')
 
     // Show the menu
     menu.classList.remove('container__menu--hidden');
@@ -282,12 +284,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     // capture left mouse click
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
-
-// LEFT OFF HERE: continue cleanup
-
-        //console.log(e) prints the entire planet
-        // console.log(this)
-        //console.log('AT_TARGET',e.AT_TARGET);
         documentClickHandler1(e)
         leftMouseWriteText();
       }
@@ -301,20 +297,13 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     }, false);
   });
 
-  //resizeCssTagNamed_container__trigger()
-
   return (
     <div className="container" id="main">
       <div className="container__trigger" id="element">
 
-        {/* test */}
         <div>
           Rendered at {dimensions.width} x {dimensions.height}
         </div>
-        {/* end */}
-
-
-        {/* <div className="container__trigger" id="element">Right-click me</div> */}
 
         <input type='button' id="buttonid" value='click me' />
         <ul id="menu" className="container__menu container__menu--hidden">
