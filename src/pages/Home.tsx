@@ -6,9 +6,9 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        {/* <IonToolbar>
           <IonTitle>Blank</IonTitle>
-        </IonToolbar>
+        </IonToolbar> */}
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">

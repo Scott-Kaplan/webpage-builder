@@ -144,8 +144,8 @@ function initializeLeftClickMenu() {
     const y = e.clientY - rect.top;
 
     // Set the position for menu
-    menu.style.top = `${y}px`;
-    menu.style.left = `${x}px`;
+    menu.style.top = `${y+100}px`;
+    menu.style.left = `${x+100}px`;
     // console.log('menu.style.top = ',y,'px')
     // console.log('menu.style.left = ',x,'px')
 
