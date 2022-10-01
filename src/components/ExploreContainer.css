@@ -5,6 +5,15 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+
+  /*
+  left off here. make button and added text not appear in the middle of the 
+  4096px height.  instead make it appear where clicking
+  google: add vertical scrollbar to whole page
+  https://stackoverflow.com/questions/18183296/how-can-i-add-a-vertical-scrollbar-to-my-div-automatically
+  */
+  height: 100%;   
+  overflow-y : scroll;
 }
 
 .container strong {
@@ -32,11 +41,15 @@
 
   /* Size */
 
+  /* min-height: 200%; */
+
   /* height: 1024px; */
-  height: 4096px; /* LEFT OFF HERE - the vertical bar seems to have gone away.  this determines how much of a vertical browser scroll bar there is */
+  height: 4096px; 
 
   /* Misc */
   border: 1px solid #cbd5e0;
+
+  /* does nothing overflow-y: auto;  */
 }
 
 .container__menu {
