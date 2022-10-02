@@ -43,6 +43,11 @@ const documentClickHandler = function (e: any) {
   if (e.target.innerText === 'First action') {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
+
+    // left off here - add text at specific x,y coordinates
+    // https://stackoverflow.com/questions/614962/how-to-insert-an-element-in-div-at-position-x-y
+    // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+
   }
   // the user left clicked on "Second action"
   if (e.target.innerText === 'Second action') {
@@ -144,8 +149,10 @@ function initializeLeftClickMenu() {
     const y = e.clientY - rect.top;
 
     // Set the position for menu
-    menu.style.top = `${y+100}px`;
-    menu.style.left = `${x+100}px`;
+    menu.style.top = `${y}px`;
+    menu.style.left = `${x}px`;
+    // menu.style.top = `${y+100}px`;
+    // menu.style.left = `${x+100}px`;
     // console.log('menu.style.top = ',y,'px')
     // console.log('menu.style.left = ',x,'px')
 
@@ -233,6 +240,7 @@ function leftMouseWriteText() {
   text.innerHTML = "<br><br><br><br><br>left mouse click"
   var sheet = document.createElement('style')
   sheet.innerHTML = "div {color:blue;overflow:hidden;}";
+  // sheet.innerHTML = "div {float: right;color:blue;overflow:hidden;}";
   document.body.appendChild(sheet);
 
   // this works great
