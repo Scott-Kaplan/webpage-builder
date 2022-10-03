@@ -44,10 +44,29 @@ const documentClickHandler = function (e: any) {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
 
-    // left off here - add text at specific x,y coordinates
+    // add text at specific x,y coordinates
     // https://stackoverflow.com/questions/614962/how-to-insert-an-element-in-div-at-position-x-y
     // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
 
+    var d1 = document.getElementById('element')!
+    d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
+
+    var text = document.getElementById("test_text")!
+    text.innerHTML = "Test"
+    // left off here
+    // try to find a way to modify the div for test_text without
+    // using the next 3 lines.  because it may override the whole document
+    // might need to disable right click so can look at the chrome inspector
+    // and modify the css through the browser to see if can change the location
+    // off "Test"
+    var sheet = document.createElement('style')
+
+    sheet.innerHTML = "div {top: 100px;color:blue;overflow:hidden;}";
+    document.body.appendChild(sheet);
+
+    // this removes the scroll bar and no ability to bring up any menus
+    // sheet.innerHTML = "div {position: absolute;top: 100px;right: 100px;}";
+    //document.body.appendChild(sheet);
   }
   // the user left clicked on "Second action"
   if (e.target.innerText === 'Second action') {
