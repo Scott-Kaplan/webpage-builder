@@ -48,19 +48,25 @@ const documentClickHandler = function (e: any) {
     // https://stackoverflow.com/questions/614962/how-to-insert-an-element-in-div-at-position-x-y
     // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
 
+    // get node list of all divs on the page and print the list
+    let divNodeList = document.querySelectorAll("div")
+    console.log(divNodeList)
+    
+    // LEFT OFF HERE
+    // instead of doing the next 2 lines, add it before the node that
+    // want it to be in order of
     var d1 = document.getElementById('element')!
-    d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
+    // d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
+    d1.insertAdjacentHTML('beforeend', '<div class="foo" id="test_text"></div>')
 
     var text = document.getElementById("test_text")!
     // text is an HTML Element
     text.innerHTML = "Test"
-    console.log('height including padding and border: ',text.offsetHeight)
-    console.log('width including padding and border: ',text.offsetWidth)
 
-    // the issue is these next 3 lines make changes to the entire page
-    // like turning the text red.  Don't want that.  Just want to make 
-    // changes to the word "Test".
-    // left off here - drawer border around div.
+    // console.log('height including padding and border: ',text.offsetHeight)
+    // console.log('width including padding and border: ',text.offsetWidth)
+
+    // drawer border around div.
     // https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-style
     var sheet = document.createElement('style')
     sheet.innerHTML = "div {top: 100px;color:red;overflow:hidden;}";
@@ -330,7 +336,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     <div className="container" id="main">
       <div className="container__trigger" id="element">
 
-        <div>
+        <div id="rendered info">
           Rendered at {dimensions.width} x {dimensions.height}
         </div>
 

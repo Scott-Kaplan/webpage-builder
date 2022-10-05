@@ -30,6 +30,16 @@
   text-decoration: none;
 }
 
+.foo {
+  color: green;
+  border: 5px solid blue;
+  /* border-inline-style: dashed; */
+  /* background-color: yellow; */
+  top: 0px;
+  width: 120px;
+  height: 120px;  
+}
+
 /* Start Support for being able to bring up a pop up menu */
 .container__trigger {
   /* Center the content */
