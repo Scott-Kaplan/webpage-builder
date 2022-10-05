@@ -52,16 +52,18 @@ const documentClickHandler = function (e: any) {
     d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
 
     var text = document.getElementById("test_text")!
+    // text is an HTML Element
     text.innerHTML = "Test"
-    // left off here
-    // try to find a way to modify the div for test_text without
-    // using the next 3 lines.  because it may override the whole document
-    // might need to disable right click so can look at the chrome inspector
-    // and modify the css through the browser to see if can change the location
-    // off "Test"
-    var sheet = document.createElement('style')
+    console.log('height including padding and border: ',text.offsetHeight)
+    console.log('width including padding and border: ',text.offsetWidth)
 
-    sheet.innerHTML = "div {top: 100px;color:blue;overflow:hidden;}";
+    // the issue is these next 3 lines make changes to the entire page
+    // like turning the text red.  Don't want that.  Just want to make 
+    // changes to the word "Test".
+    // left off here - drawer border around div.
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-style
+    var sheet = document.createElement('style')
+    sheet.innerHTML = "div {top: 100px;color:red;overflow:hidden;}";
     document.body.appendChild(sheet);
 
     // this removes the scroll bar and no ability to bring up any menus
