@@ -50,14 +50,24 @@ const documentClickHandler = function (e: any) {
 
     // get node list of all divs on the page and print the list
     let divNodeList = document.querySelectorAll("div")
-    console.log(divNodeList)
-    
+    // all divs on the page
+    //console.log(divNodeList)
+
+    // this correctly yielded "rendered info"
+    //console.log(divNodeList.item(4).id)
+
     // LEFT OFF HERE
+    // how to append a childnode to a specific position
+    // follow the green checked answer on this link 
+    // https://stackoverflow.com/questions/5882768/how-to-append-a-childnode-to-a-specific-position
+    var parentElement = document.getElementById('element')!
+    parentElement.insertBefore
     // instead of doing the next 2 lines, add it before the node that
     // want it to be in order of
     var d1 = document.getElementById('element')!
     // d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
     d1.insertAdjacentHTML('beforeend', '<div class="foo" id="test_text"></div>')
+
 
     var text = document.getElementById("test_text")!
     // text is an HTML Element
