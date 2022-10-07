@@ -50,8 +50,9 @@ const documentClickHandler = function (e: any) {
 
     // get node list of all divs on the page and print the list
     let divNodeList = document.querySelectorAll("div")
+
     // all divs on the page
-    //console.log(divNodeList)
+    console.log('by query selector\n',divNodeList)
 
     // this correctly yielded "rendered info"
     //console.log(divNodeList.item(4).id)
@@ -60,13 +61,31 @@ const documentClickHandler = function (e: any) {
     // how to append a childnode to a specific position
     // follow the green checked answer on this link 
     // https://stackoverflow.com/questions/5882768/how-to-append-a-childnode-to-a-specific-position
-    var parentElement = document.getElementById('element')!
-    parentElement.insertBefore
+    //var parentElement = document.getElementById('element')!
+
+    var allDivTags = document.getElementsByTagName("div")
+    console.log('by tag name\n',allDivTags)
+
+    console.log(document.getElementsByTagName('div').lastElement[]
+
+
+    // gives execution errors
+    // create a new, plain div
+    // var sp1 = document.createElement('<div class="foo" id="test_text"></div>')
+    // var sp1 = document.createElement("<div>")
+    // get the reference element
+    //var sp2 = document.getElementById("rendered info")!
+    // get the parent element
+    //var parentDiv = sp2.parentNode!
+    // insert the new element into before sp2
+    //parentDiv.insertBefore(sp1,sp2)
+
+    //parentElement.insertBefore
     // instead of doing the next 2 lines, add it before the node that
     // want it to be in order of
-    var d1 = document.getElementById('element')!
+    //var d1 = document.getElementById('element')!
     // d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
-    d1.insertAdjacentHTML('beforeend', '<div class="foo" id="test_text"></div>')
+    //d1.insertAdjacentHTML('beforeend', '<div class="foo" id="test_text"></div>')
 
 
     var text = document.getElementById("test_text")!
