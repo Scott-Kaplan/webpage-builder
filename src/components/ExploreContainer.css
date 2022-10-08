@@ -40,6 +40,10 @@
   height: 120px;  
 }
 
+/* .renderedInfoClass {
+  font-size: 12px;
+} */
+
 /* Start Support for being able to bring up a pop up menu */
 .container__trigger {
   /* Center the content */

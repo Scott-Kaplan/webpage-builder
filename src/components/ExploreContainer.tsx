@@ -57,17 +57,30 @@ const documentClickHandler = function (e: any) {
     // this correctly yielded "rendered info"
     //console.log(divNodeList.item(4).id)
 
-    // LEFT OFF HERE
     // how to append a childnode to a specific position
     // follow the green checked answer on this link 
+    // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_node_appendchild2
     // https://stackoverflow.com/questions/5882768/how-to-append-a-childnode-to-a-specific-position
     //var parentElement = document.getElementById('element')!
 
     var allDivTags = document.getElementsByTagName("div")
     console.log('by tag name\n',allDivTags)
 
-    console.log(document.getElementsByTagName('div').lastElement[]
+    // console.log(document.getElementsByTagName('div').lastElement[]
 
+    // LEFT OFF HERE    
+    //THIS WORKS
+    // google how to insert a child before firstchild
+    var d1 = document.getElementById('element')!.firstChild
+    console.log('first child = ',d1)  
+
+
+// does nothing
+// const sp1 = document.createElement('p')
+// sp1.innerText = 'howdy'
+// const target = document.querySelector('#renderedInfoClass')
+// target?.parentNode?.insertBefore(sp1,target)
+// 
 
     // gives execution errors
     // create a new, plain div
@@ -88,9 +101,9 @@ const documentClickHandler = function (e: any) {
     //d1.insertAdjacentHTML('beforeend', '<div class="foo" id="test_text"></div>')
 
 
-    var text = document.getElementById("test_text")!
+    //var text = document.getElementById("test_text")!
     // text is an HTML Element
-    text.innerHTML = "Test"
+    //text.innerHTML = "Test"
 
     // console.log('height including padding and border: ',text.offsetHeight)
     // console.log('width including padding and border: ',text.offsetWidth)
@@ -365,7 +378,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     <div className="container" id="main">
       <div className="container__trigger" id="element">
 
-        <div id="rendered info">
+        <div className="renderedInfoClass" id="rendered info">
           Rendered at {dimensions.width} x {dimensions.height}
         </div>
 
