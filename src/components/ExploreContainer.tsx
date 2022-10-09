@@ -47,40 +47,36 @@ const documentClickHandler = function (e: any) {
     // add text at specific x,y coordinates
     // https://stackoverflow.com/questions/614962/how-to-insert-an-element-in-div-at-position-x-y
     // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
-
-    // get node list of all divs on the page and print the list
-    let divNodeList = document.querySelectorAll("div")
-
-    // all divs on the page
-    console.log('by query selector\n',divNodeList)
-
-    // this correctly yielded "rendered info"
+    
+    // prints all divs
+    //var allDivTags = document.getElementsByTagName("div")
+    //console.log('by tag name\n',allDivTags)
+    //let divNodeList = document.querySelectorAll("div")
+    //console.log('by query selector\n',divNodeList)
     //console.log(divNodeList.item(4).id)
 
-    // how to append a childnode to a specific position
-    // follow the green checked answer on this link 
-    // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_node_appendchild2
-    // https://stackoverflow.com/questions/5882768/how-to-append-a-childnode-to-a-specific-position
-    //var parentElement = document.getElementById('element')!
 
-    var allDivTags = document.getElementsByTagName("div")
-    console.log('by tag name\n',allDivTags)
+    // parent div
+    var parentDiv = document.getElementById('element')!
 
-    // console.log(document.getElementsByTagName('div').lastElement[]
-
-    // LEFT OFF HERE    
-    //THIS WORKS
-    // google how to insert a child before firstchild
+    // bottom div
     var d1 = document.getElementById('element')!.firstChild
-    console.log('first child = ',d1)  
+    console.log('first child = ',d1)
 
+    // new div to insert
+    var sp1 = document.createElement('div')
+    sp1.style.width = "100px";
+    sp1.style.height = "100px";
+    sp1.style.background = "red";
+    sp1.style.color = "white";
+    sp1.innerHTML = "Hello";
 
-// does nothing
-// const sp1 = document.createElement('p')
-// sp1.innerText = 'howdy'
-// const target = document.querySelector('#renderedInfoClass')
-// target?.parentNode?.insertBefore(sp1,target)
-// 
+    // insert the new div
+    parentDiv.insertBefore(sp1,d1)
+
+    // left off here
+    // the above works. Figure out how to add class="foo" and id="test_text"
+    // to the above if it makes sense.  then do a cleanup of this file
 
     // gives execution errors
     // create a new, plain div
