@@ -65,6 +65,9 @@ const documentClickHandler = function (e: any) {
 
     // new div to insert
     var sp1 = document.createElement('div')
+    sp1.setAttribute("id","id_you_like") // create an id with name
+    // left off here add a classname and put the below properties in it.
+    // then cleanup this file
     sp1.style.width = "100px";
     sp1.style.height = "100px";
     sp1.style.background = "red";
@@ -73,10 +76,6 @@ const documentClickHandler = function (e: any) {
 
     // insert the new div
     parentDiv.insertBefore(sp1,d1)
-
-    // left off here
-    // the above works. Figure out how to add class="foo" and id="test_text"
-    // to the above if it makes sense.  then do a cleanup of this file
 
     // gives execution errors
     // create a new, plain div
