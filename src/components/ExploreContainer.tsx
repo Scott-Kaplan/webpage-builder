@@ -26,6 +26,8 @@ function RightMousePrintHtml() {
   // writeToFirebase(d1)
 }
 
+
+
 // Hide the left mouse click popup when
 // [a] left clicking an option
 // or 
@@ -66,7 +68,15 @@ const documentClickHandler = function (e: any) {
     // new div to insert
     var sp1 = document.createElement('div')
     sp1.setAttribute("id","id_you_like") // create an id with name
-    // left off here add a classname and put the below properties in it.
+    sp1.classList.add("foo") // add the class "foo" to the div with id="id_you_like"
+    let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+    collection1[0].style.backgroundColor = "red"
+    //the above two lines were generated from reading these links
+    //https://www.w3schools.com/jsref/met_document_getelementsbyclassname.asp
+    //https://stackoverflow.com/questions/58773652/ts2339-property-style-does-not-exist-on-type-element
+
+    // left off here 
+    // add a classname and put the below properties in it.
     // then cleanup this file
     sp1.style.width = "100px";
     sp1.style.height = "100px";
