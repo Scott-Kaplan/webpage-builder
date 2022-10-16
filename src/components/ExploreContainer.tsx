@@ -46,10 +46,6 @@ const documentClickHandler = function (e: any) {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
 
-    // add text at specific x,y coordinates
-    // https://stackoverflow.com/questions/614962/how-to-insert-an-element-in-div-at-position-x-y
-    // https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
-    
     // prints all divs
     //var allDivTags = document.getElementsByTagName("div")
     //console.log('by tag name\n',allDivTags)
@@ -57,71 +53,31 @@ const documentClickHandler = function (e: any) {
     //console.log('by query selector\n',divNodeList)
     //console.log(divNodeList.item(4).id)
 
-
-    // parent div
+    // get parent div
     var parentDiv = document.getElementById('element')!
-
-    // bottom div
+    // get bottom div within the parent div
     var d1 = document.getElementById('element')!.firstChild
-    console.log('first child = ',d1)
-
-    // new div to insert
+    console.log('first child = ', d1)
+    // create a new div
     var sp1 = document.createElement('div')
-    sp1.setAttribute("id","id_you_like") // create an id with name
-    sp1.classList.add("foo") // add the class "foo" to the div with id="id_you_like"
-    let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
-    collection1[0].style.backgroundColor = "red"
-    //the above two lines were generated from reading these links
-    //https://www.w3schools.com/jsref/met_document_getelementsbyclassname.asp
-    //https://stackoverflow.com/questions/58773652/ts2339-property-style-does-not-exist-on-type-element
-
-    // left off here 
-    // add a classname and put the below properties in it.
-    // then cleanup this file
-    sp1.style.width = "100px";
-    sp1.style.height = "100px";
-    sp1.style.background = "red";
-    sp1.style.color = "white";
+    // create an id for the div
+    sp1.setAttribute("id", "id_you_like")
+    // create a class for the div
+    sp1.classList.add("foo")
+    // create text to display in the div
     sp1.innerHTML = "Hello";
-
-    // insert the new div
-    parentDiv.insertBefore(sp1,d1)
-
-    // gives execution errors
-    // create a new, plain div
-    // var sp1 = document.createElement('<div class="foo" id="test_text"></div>')
-    // var sp1 = document.createElement("<div>")
-    // get the reference element
-    //var sp2 = document.getElementById("rendered info")!
-    // get the parent element
-    //var parentDiv = sp2.parentNode!
-    // insert the new element into before sp2
-    //parentDiv.insertBefore(sp1,sp2)
-
-    //parentElement.insertBefore
-    // instead of doing the next 2 lines, add it before the node that
-    // want it to be in order of
-    //var d1 = document.getElementById('element')!
-    // d1.insertAdjacentHTML('beforeend', '<div id="test_text"></div>')
-    //d1.insertAdjacentHTML('beforeend', '<div class="foo" id="test_text"></div>')
-
-
-    //var text = document.getElementById("test_text")!
-    // text is an HTML Element
-    //text.innerHTML = "Test"
-
-    // console.log('height including padding and border: ',text.offsetHeight)
-    // console.log('width including padding and border: ',text.offsetWidth)
-
-    // drawer border around div.
-    // https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-style
-    var sheet = document.createElement('style')
-    sheet.innerHTML = "div {top: 100px;color:red;overflow:hidden;}";
-    document.body.appendChild(sheet);
-
-    // this removes the scroll bar and no ability to bring up any menus
-    // sheet.innerHTML = "div {position: absolute;top: 100px;right: 100px;}";
-    //document.body.appendChild(sheet);
+    // insert the newly created div before the bottom div in the parent div
+    parentDiv.insertBefore(sp1, d1)
+    // create class properties for the newly created div   
+    let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+    collection1[0].style.width = "200px"
+    collection1[0].style.height = "100px"
+    collection1[0].style.background = "red"
+    collection1[0].style.color = "white"
+    // display dimmensions of div
+    var text = document.getElementById("id_you_like")!
+    console.log('height including padding and border: ',text.offsetHeight)
+    console.log('width including padding and border: ',text.offsetWidth)
   }
   // the user left clicked on "Second action"
   if (e.target.innerText === 'Second action') {
@@ -407,11 +363,8 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
 export default ExploreContainer;
 
-
-/*
-  TODO
-  [1] need to get rid of blank with line separator at the top
-*/
+// LEFT OFF HERE
+// finish cleanup
 
 /*
   when left click, bring up a menu -
