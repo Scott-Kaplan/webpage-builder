@@ -8,6 +8,9 @@ console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
 
+var xStartPositionOfDiv;
+var yStartPositionOfDiv;
+
 interface ContainerProps { }
 
 // async function writeToFirebase(msg: HTMLElement) {
@@ -33,6 +36,11 @@ function RightMousePrintHtml() {
 // or 
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
+  //console.log('x position = ',e.clientX)
+  //console.log('y position = ',e.clientY)
+
+  
+  // console.log("START FUNCTION")
   const menu = document.getElementById('menu')!;
   console.log(e.target.innerText) // prints the selection made
 
@@ -70,7 +78,17 @@ const documentClickHandler = function (e: any) {
     parentDiv.insertBefore(sp1, d1)
     // create class properties for the newly created div   
     let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
-    collection1[0].style.width = "200px"
+    collection1[0].style.position = "absolute"
+    // left off here
+    // these should be the x,y position of where the cursor is when the left
+    // menu first comes up, not the position of the cursor, when the user
+    // makes a selection.  When this function first executes, but before
+    // the user makes a selection is the correct x,y coordinate.
+    // somehow store this and use it here.
+    console.log('x1 position = ',e.clientX)
+    console.log('y1 position = ',e.clientY)
+    collection1[0].style.left = `${e.clientX}px` //"200px"
+    collection1[0].style.top = `${e.clientY}px` //"200px"
     collection1[0].style.height = "100px"
     collection1[0].style.background = "red"
     collection1[0].style.color = "white"
@@ -84,6 +102,7 @@ const documentClickHandler = function (e: any) {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
   }
+  // console.log("END FUNCTION")
 }
 
 // Hide the right popup when left clicking
@@ -171,7 +190,7 @@ function initializeLeftClickMenu() {
   // proceedurally the user moves the cursor from its previous position and left clicks.
   // This function is not executed when the user selects an option from the left popup.
   ele.addEventListener('click', function (e) {
-    console.log('moved popup')
+    // console.log('moved popup')
     e.preventDefault();
 
     const rect = ele.getBoundingClientRect();
@@ -228,9 +247,9 @@ function leftMouseWriteText() {
   var first = elements[0]
   var last = elements[elements.length - 1]
 
-  console.log('length', elements.length)
-  console.log('first', first)
-  console.log('last', last)
+  //console.log('length', elements.length)
+  //console.log('first', first)
+  //console.log('last', last)
 
   // convert element to a string
   let howdy = last.outerHTML
