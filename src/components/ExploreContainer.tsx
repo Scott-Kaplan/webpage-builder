@@ -58,6 +58,30 @@ const documentClickHandler = function (e: any) {
 
     // get parent div
     var parentDiv = document.getElementById('element')!
+
+    var testDiv = document.getElementById('main')
+
+    // left off here - ensure that this is accurate
+    var topWindowXPosition = e.clientY
+    console.log('topWindowXPosition = ',`${topWindowXPosition}px`)
+    var xPositionFromVerticalScroll = testDiv?.scrollTop
+    console.log('xPositionFromVerticalScroll = ',`${xPositionFromVerticalScroll}px`)
+    var combinedXPostions = topWindowXPosition+xPositionFromVerticalScroll
+    console.log('combinedXPositions = ',`${combinedXPostions}px`)
+
+
+    //console.log('left = ',testDiv?.scrollLeft)
+    //console.log('top = ',testDiv?.scrollTop)
+
+
+    //const x = e.clientX
+    // const yy = e.scrollTop // undefined
+    //const y = e.clientY
+    //console.log('x pos = ', x)
+    //console.log('y pos = ', y)
+    //console.log('scroll top pos = ',yy)
+
+
     // get bottom div within the parent div
     var d1 = document.getElementById('element')!.firstChild
     //console.log('first child = ', d1)
@@ -216,7 +240,7 @@ function initializeLeftClickMenu() {
 function resizeCssTagNamed_container__trigger() {
   document.getElementById('element')!.style.height = window.innerHeight.toString()
   document.getElementById('element')!.style.width = window.innerWidth.toString()
-  // console.log('resized container')
+  //console.log('resized container')
 }
 
 function leftMouseWriteText() {
@@ -376,10 +400,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 };
 
 export default ExploreContainer;
-
-// LEFT OFF HERE
-// when scrolling down the page and left click, then create div.
-// the div appears in the first screen before scrolling down
 
 /*
   when left click, bring up a menu -
