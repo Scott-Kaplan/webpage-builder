@@ -8,8 +8,8 @@ console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
 
-var xStartPositionOfDiv;
-var yStartPositionOfDiv;
+var xStartPositionOfDiv: any;
+var yStartPositionOfDiv: any;
 
 interface ContainerProps { }
 
@@ -36,21 +36,16 @@ function RightMousePrintHtml() {
 // or 
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
-  //console.log('x position = ',e.clientX)
-  //console.log('y position = ',e.clientY)
-
-  
-  // console.log("START FUNCTION")
   const menu = document.getElementById('menu')!;
-  console.log(e.target.innerText) // prints the selection made
+  //console.log(e.target.innerText) // prints the selection made
 
   // the user left clicked on "Cancel"
   if (e.target.innerText === 'Cancel') {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
   }
-  // the user left clicked on "First action"
-  if (e.target.innerText === 'First action') {
+  // the user left clicked on "Create div"
+  else if (e.target.innerText === 'Create div') {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
 
@@ -65,7 +60,7 @@ const documentClickHandler = function (e: any) {
     var parentDiv = document.getElementById('element')!
     // get bottom div within the parent div
     var d1 = document.getElementById('element')!.firstChild
-    console.log('first child = ', d1)
+    //console.log('first child = ', d1)
     // create a new div
     var sp1 = document.createElement('div')
     // create an id for the div
@@ -78,31 +73,31 @@ const documentClickHandler = function (e: any) {
     parentDiv.insertBefore(sp1, d1)
     // create class properties for the newly created div   
     let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+    // these 3 lines create the new div at the position
+    // where the upper left corner that the left menu popup is at
     collection1[0].style.position = "absolute"
-    // left off here
-    // these should be the x,y position of where the cursor is when the left
-    // menu first comes up, not the position of the cursor, when the user
-    // makes a selection.  When this function first executes, but before
-    // the user makes a selection is the correct x,y coordinate.
-    // somehow store this and use it here.
-    console.log('x1 position = ',e.clientX)
-    console.log('y1 position = ',e.clientY)
-    collection1[0].style.left = `${e.clientX}px` //"200px"
-    collection1[0].style.top = `${e.clientY}px` //"200px"
+    collection1[0].style.left = `${xStartPositionOfDiv}px`
+    collection1[0].style.top = `${yStartPositionOfDiv}px`
     collection1[0].style.height = "100px"
     collection1[0].style.background = "red"
     collection1[0].style.color = "white"
     // display dimmensions of div
     var text = document.getElementById("id_you_like")!
-    console.log('height including padding and border: ',text.offsetHeight)
-    console.log('width including padding and border: ',text.offsetWidth)
+    // console.log('height including padding and border: ', text.offsetHeight)
+    // console.log('width including padding and border: ', text.offsetWidth)
   }
   // the user left clicked on "Second action"
-  if (e.target.innerText === 'Second action') {
+  else if (e.target.innerText === 'Second action') {
     menu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
   }
-  // console.log("END FUNCTION")
+  else {
+    // store the x and y coordinates in pixels of where the left popup menu starts
+    xStartPositionOfDiv = e.clientX
+    yStartPositionOfDiv = e.clientY
+    // console.log('ELSE x position = ', e.clientX)
+    // console.log('ELSE y position = ', e.clientY)
+  }
 }
 
 // Hide the right popup when left clicking
@@ -110,7 +105,7 @@ const documentClickHandler1 = function (e: any) {
 
   const menu2 = document.getElementById('menu2')!;
   const menu = document.getElementById('menu')!;
-  console.log(e.target.innerText) // prints the selection made
+  //console.log(e.target.innerText) // prints the selection made
 
   // the user left clicked on "disable designer"
   if (e.target.innerText === 'disable designer') {
@@ -149,7 +144,7 @@ function initializeRightClickMenu() {
 
   // 'contextmenu' is for right click
   ele2.addEventListener('contextmenu', function (e) {
-    console.log('right click menu')
+    //console.log('right click menu')
     e.preventDefault();
 
     const rect = ele2.getBoundingClientRect();
@@ -221,7 +216,7 @@ function initializeLeftClickMenu() {
 function resizeCssTagNamed_container__trigger() {
   document.getElementById('element')!.style.height = window.innerHeight.toString()
   document.getElementById('element')!.style.width = window.innerWidth.toString()
-  console.log('resized container')
+  // console.log('resized container')
 }
 
 function leftMouseWriteText() {
@@ -259,7 +254,7 @@ function leftMouseWriteText() {
   // in the pattern1 line below
   if (howdy.includes('enable designer')) return
   if (howdy.includes('disable designer')) return
-  if (howdy.includes('First action')) return
+  if (howdy.includes('Create div')) return
   if (howdy.includes('Second action')) return
   if (howdy.includes('Cancel')) return
 
@@ -269,7 +264,7 @@ function leftMouseWriteText() {
   let text9 = current.toString()
   let text1 = text9.substring(4)
   let text2 = text1.substring(0, text1.length - 1)
-  console.log('high there', text2)
+  //console.log('high there', text2)
 
   // Display text directly to the right of the click me button
   // Note: the following attempts were unfavorable
@@ -349,7 +344,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     // capture right mouse click
     document.addEventListener('contextmenu', function (e) {
       e.preventDefault();
-      console.log('right mouse click');
+      //console.log('right mouse click');
       RightMousePrintHtml();
     }, false);
   });
@@ -358,13 +353,13 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     <div className="container" id="main">
       <div className="container__trigger" id="element">
 
-        <div className="renderedInfoClass" id="rendered info">
+        {/* <div className="renderedInfoClass" id="rendered info">
           Rendered at {dimensions.width} x {dimensions.height}
-        </div>
+        </div> */}
 
-        <input type='button' id="buttonid" value='click me' />
+        {/* <input type='button' id="buttonid" value='click me' /> */}
         <ul id="menu" className="container__menu container__menu--hidden">
-          <li className="container__item">First action</li>
+          <li className="container__item">Create div</li>
           <li className="container__item">Second action</li>
           <li className="container__divider"></li>
           <li className="container__item">Cancel</li>
@@ -383,7 +378,8 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 export default ExploreContainer;
 
 // LEFT OFF HERE
-// finish cleanup
+// when scrolling down the page and left click, then create div.
+// the div appears in the first screen before scrolling down
 
 /*
   when left click, bring up a menu -
