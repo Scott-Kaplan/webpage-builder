@@ -62,9 +62,9 @@ const documentClickHandler = function (e: any) {
     var testDiv = document.getElementById('main')
 
     var yPositionFromVerticalScroll = testDiv?.scrollTop
-    var combinedYPositions = yStartPositionOfDiv+yPositionFromVerticalScroll
+    var combinedYPositions = yStartPositionOfDiv + yPositionFromVerticalScroll
     var xPositionFromVerticalScroll = testDiv?.scrollLeft
-    var combinedXPositions = xStartPositionOfDiv+xPositionFromVerticalScroll
+    var combinedXPositions = xStartPositionOfDiv + xPositionFromVerticalScroll
     //console.log(`${combinedXPositions},${combinedYPositions}`)
 
     // get bottom div within the parent div
@@ -201,9 +201,12 @@ function initializeLeftClickMenu() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-// left off here
-// ensure that left and right menu always appears within the viewable window
-
+    // left off here
+    // ensure that left and right menu always appears within the viewable window
+    var leftClickMenuWidth = menu.offsetWidth
+    var leftClickMenuHeight = menu.offsetHeight
+    console.log('menu width = ', leftClickMenuWidth)
+    console.log('menu height = ', leftClickMenuHeight)
 
     // Set the position for menu
     menu.style.top = `${y}px`;
