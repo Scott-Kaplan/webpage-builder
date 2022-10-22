@@ -61,26 +61,11 @@ const documentClickHandler = function (e: any) {
 
     var testDiv = document.getElementById('main')
 
-    // left off here - ensure that this is accurate
-    var topWindowXPosition = e.clientY
-    console.log('topWindowXPosition = ',`${topWindowXPosition}px`)
-    var xPositionFromVerticalScroll = testDiv?.scrollTop
-    console.log('xPositionFromVerticalScroll = ',`${xPositionFromVerticalScroll}px`)
-    var combinedXPostions = topWindowXPosition+xPositionFromVerticalScroll
-    console.log('combinedXPositions = ',`${combinedXPostions}px`)
-
-
-    //console.log('left = ',testDiv?.scrollLeft)
-    //console.log('top = ',testDiv?.scrollTop)
-
-
-    //const x = e.clientX
-    // const yy = e.scrollTop // undefined
-    //const y = e.clientY
-    //console.log('x pos = ', x)
-    //console.log('y pos = ', y)
-    //console.log('scroll top pos = ',yy)
-
+    var yPositionFromVerticalScroll = testDiv?.scrollTop
+    var combinedYPositions = yStartPositionOfDiv+yPositionFromVerticalScroll
+    var xPositionFromVerticalScroll = testDiv?.scrollLeft
+    var combinedXPositions = xStartPositionOfDiv+xPositionFromVerticalScroll
+    //console.log(`${combinedXPositions},${combinedYPositions}`)
 
     // get bottom div within the parent div
     var d1 = document.getElementById('element')!.firstChild
@@ -100,8 +85,8 @@ const documentClickHandler = function (e: any) {
     // these 3 lines create the new div at the position
     // where the upper left corner that the left menu popup is at
     collection1[0].style.position = "absolute"
-    collection1[0].style.left = `${xStartPositionOfDiv}px`
-    collection1[0].style.top = `${yStartPositionOfDiv}px`
+    collection1[0].style.left = `${combinedXPositions}px`
+    collection1[0].style.top = `${combinedYPositions}px`
     collection1[0].style.height = "100px"
     collection1[0].style.background = "red"
     collection1[0].style.color = "white"
@@ -215,6 +200,10 @@ function initializeLeftClickMenu() {
     const rect = ele.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+
+// left off here
+// ensure that left and right menu always appears within the viewable window
+
 
     // Set the position for menu
     menu.style.top = `${y}px`;
