@@ -10,6 +10,7 @@ var leftPopupPresent = false
 
 var xStartPositionOfDiv: any;
 var yStartPositionOfDiv: any;
+//var widthOfLeftClickMenu: any; // made no difference
 
 interface ContainerProps { }
 
@@ -198,19 +199,28 @@ function initializeLeftClickMenu() {
     e.preventDefault();
 
     const rect = ele.getBoundingClientRect();
+    var xPositionOfCursor = e.clientX
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
     // left off here
     // ensure that left and right menu always appears within the viewable window
-    var leftClickMenuWidth = menu.offsetWidth
-    var leftClickMenuHeight = menu.offsetHeight
-    console.log('menu width = ', leftClickMenuWidth)
-    console.log('menu height = ', leftClickMenuHeight)
+    var widthOfLeftClickMenu = menu.offsetWidth
+    var widthOfWindow = rect.width
+    // made no difference widthOfLeftClickMenu = menu.offsetWidth
+    console.log('x position at cursor = ', e.clientX)
+    console.log('menu width = ', widthOfLeftClickMenu)
+    console.log('windows width = ', widthOfWindow)
+    //var leftClickMenuHeight = menu.offsetHeight
+    //console.log('menu height = ', leftClickMenuHeight)
 
     // Set the position for menu
     menu.style.top = `${y}px`;
-    menu.style.left = `${x}px`;
+    // menu.style.left = `${x}px`;
+    if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfWindow)
+      menu.style.left = `${x - widthOfLeftClickMenu}px`;
+    else
+      menu.style.left = `${x}px`
     // menu.style.top = `${y+100}px`;
     // menu.style.left = `${x+100}px`;
     // console.log('menu.style.top = ',y,'px')
@@ -348,6 +358,12 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     resizeCssTagNamed_container__trigger()
     initializeLeftClickMenu()
     initializeRightClickMenu()
+
+    // menu.offsetWidth is initially zero.  The 2nd time and on it is fine
+    //const menu = document.getElementById('menu')!;
+    // made no differencevar widthOfLeftClickMenu = menu.offsetWidth
+    //widthOfLeftClickMenu = menu.offsetWidth
+    //console.log('initial widthOfLeftClickMenu = ',widthOfLeftClickMenu)
 
     // capture left mouse click
     document.addEventListener('click', function (e) {
