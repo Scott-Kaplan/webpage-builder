@@ -198,16 +198,36 @@ function initializeLeftClickMenu() {
     e.preventDefault();
 
     const rect = ele.getBoundingClientRect();
+    
     var xPositionOfCursor = e.clientX
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    var widthOfLeftClickMenu = menu.offsetWidth
+    var x = xPositionOfCursor - rect.left;
 
+    
+
+    var yPositionOfCursor = e.clientY
+
+    //console.log('e.screenY = ', e.screenY)
+    //console.log(e.pageY)
+    //console.log(e.clientY)
+    //console.log(e.offsetY)
+console.log(window.innerHeight)
+
+
+    console.log('yPositionOfCursor = ',yPositionOfCursor)
+    var heightOfLeftClickMenu = menu.offsetHeight
+    var y = yPositionOfCursor - rect.top;
     // left off here
     // the x position works great
-    // now finish the y position
+    // now finish the y position.  It is the window.innerHeight above that gives
+    // the viewable height of the browser window.
     // then do the same thing for the right menu
-    var widthOfLeftClickMenu = menu.offsetWidth
-    var widthOfWindow = rect.width
+    
+    var widthOfBrowserWindow = rect.width
+    var heightOfBrowserWindow = rect.height
+    //console.log('rect.y = ',rect.y)
+    //console.log('rect.top = ',rect.top)
+    console.log('height of browser window = ',heightOfBrowserWindow)
     
     // If the first left click done by the user is too close to outside the
     // viewable window, the menu will appear at least partially off the screen.
@@ -221,12 +241,18 @@ function initializeLeftClickMenu() {
     if (widthOfLeftClickMenu === 0)
       widthOfLeftClickMenu = 130
       
-    // Set the x and y position of the menu
-    menu.style.top = `${y}px`;
-    if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfWindow)
+    // Set the x position of the menu
+    if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfBrowserWindow)
       menu.style.left = `${x - widthOfLeftClickMenu}px`;
     else
       menu.style.left = `${x}px`
+    // Set the y position of the menu
+    if ((yPositionOfCursor + heightOfLeftClickMenu) >= heightOfBrowserWindow)
+      menu.style.top = `${y - heightOfLeftClickMenu}px`;
+    else
+      menu.style.top = `${y}px`
+
+
     // menu.style.top = `${y+100}px`;
     // menu.style.left = `${x+100}px`;
     // console.log('menu.style.top = ',y,'px')
