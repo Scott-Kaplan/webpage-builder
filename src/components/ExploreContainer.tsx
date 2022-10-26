@@ -199,64 +199,47 @@ function initializeLeftClickMenu() {
 
     const rect = ele.getBoundingClientRect();
     
+    // left off here
+    // get drawn div to persist
+    // calculate and start the right click menu for x & y coordinates
+ 
+    /* CALCULATE & START THE LEFT CLICK MENU AT THIS X COORDINATE */
     var xPositionOfCursor = e.clientX
     var widthOfLeftClickMenu = menu.offsetWidth
-    var x = xPositionOfCursor - rect.left;
-
-    
-
-    var yPositionOfCursor = e.clientY
-
-    //console.log('e.screenY = ', e.screenY)
-    //console.log(e.pageY)
-    //console.log(e.clientY)
-    //console.log(e.offsetY)
-console.log(window.innerHeight)
-
-
-    console.log('yPositionOfCursor = ',yPositionOfCursor)
-    var heightOfLeftClickMenu = menu.offsetHeight
-    var y = yPositionOfCursor - rect.top;
-    // left off here
-    // the x position works great
-    // now finish the y position.  It is the window.innerHeight above that gives
-    // the viewable height of the browser window.
-    // then do the same thing for the right menu
-    
     var widthOfBrowserWindow = rect.width
-    var heightOfBrowserWindow = rect.height
-    //console.log('rect.y = ',rect.y)
-    //console.log('rect.top = ',rect.top)
-    console.log('height of browser window = ',heightOfBrowserWindow)
-    
-    // If the first left click done by the user is too close to outside the
-    // viewable window, the menu will appear at least partially off the screen.
-    // This is because since the menu hasn't been put up yet to this point,
-    // it's value is zero.
-    // So just give it a default length.
-    // In general, if wanted to calculate this programatically, mutiply each
-    // character of the longest string that appears in the menu by 10, 
-    // then add 5 at the end.  The units of the numbers are in pixels
-    // Note: this may not work on a different monitor other than my 2048x1152 one
+    /*
+      If the first left click done by the user is too close to outside the
+      viewable window, the menu will appear at least partially off the screen.
+      This is because since the menu hasn't been put up yet to this point,
+      it's value is zero.
+      So just give it a default length.
+      In general, if wanted to calculate this programatically, mutiply each
+      character of the longest string that appears in the menu by 10, 
+      then add 5 at the end.  The units of the numbers are in pixels
+      Note: this may not work on a different monitor other than my 2048x1152 one
+    */
     if (widthOfLeftClickMenu === 0)
       widthOfLeftClickMenu = 130
       
-    // Set the x position of the menu
+    // Set the x position of the left click menu
     if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfBrowserWindow)
-      menu.style.left = `${x - widthOfLeftClickMenu}px`;
+      menu.style.left = `${xPositionOfCursor - widthOfLeftClickMenu}px`;
     else
-      menu.style.left = `${x}px`
-    // Set the y position of the menu
+      menu.style.left = `${xPositionOfCursor}px`
+    /* END */
+
+    /* CALCULATE & START THE LEFT CLICK MENU AT THIS Y COORDINATE */
+    var yPositionOfCursor = e.clientY
+    var heightOfLeftClickMenu = menu.offsetHeight
+    var heightOfBrowserWindow = window.innerHeight
+    var y = yPositionOfCursor - rect.top;    
+    
+    // Set the y position of the left click menu
     if ((yPositionOfCursor + heightOfLeftClickMenu) >= heightOfBrowserWindow)
       menu.style.top = `${y - heightOfLeftClickMenu}px`;
     else
       menu.style.top = `${y}px`
-
-
-    // menu.style.top = `${y+100}px`;
-    // menu.style.left = `${x+100}px`;
-    // console.log('menu.style.top = ',y,'px')
-    // console.log('menu.style.left = ',x,'px')
+    /* END */
 
     // Show the menu
     menu.classList.remove('container__menu--hidden');
