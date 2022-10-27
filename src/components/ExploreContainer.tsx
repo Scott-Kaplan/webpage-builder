@@ -14,23 +14,25 @@ var yStartPositionOfDiv: any;
 
 interface ContainerProps { }
 
-// async function writeToFirebase(msg: HTMLElement) {
-//   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
-//   var divTree = msg.outerHTML
+async function writeToFirebase(msg: HTMLElement) {
+  // need this next line otherwise HTMLDivElement object can't be saved to Firebase
+  var divTree = msg.outerHTML
 
-//   await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
-//     name: divTree
-//   });
-// }
-
-function RightMousePrintHtml() {
-  // var d1 = document.getElementById('main')!
-  //console.log(d1)
-  //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
-  // writeToFirebase(d1)
+  await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
+    name: divTree
+  });
 }
 
+function RightMousePrintHtml() {
+  // get all of the html for the whole page
+  // var d1 = document.getElementById('main')!
+  //var d1 = document.getElementById('element')!
+  var d1 = document.getElementById('id_you_like')!
 
+  console.log(d1)
+  //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
+  writeToFirebase(d1)
+}
 
 // Hide the left mouse click popup when
 // [a] left clicking an option
@@ -198,11 +200,7 @@ function initializeLeftClickMenu() {
     e.preventDefault();
 
     const rect = ele.getBoundingClientRect();
-    
-    // left off here
-    // get drawn div to persist
-    // calculate and start the right click menu for x & y coordinates
- 
+     
     /* CALCULATE & START THE LEFT CLICK MENU AT THIS X COORDINATE */
     var xPositionOfCursor = e.clientX
     var widthOfLeftClickMenu = menu.offsetWidth
@@ -334,9 +332,27 @@ function leftMouseWriteText() {
   // console.log(cssObj.overflow) // prints "hidden"
 }
 
+// left off here
+// fix part 1 of 3 below so it returns the div previously stored in the database
+// calculate and start the right click menu for x & y coordinates
 
+//part 1 of 3
+const callRestApi = async () => {
+  const restEndpoint = 'https://v1.nocodeapi.com/test_api1/fbsdk/bXQhFqXiYUlVtBtI/firestore/allDocuments?collectionName=html'
+  const response = await fetch(restEndpoint)
+  const jsonResponse = await response.json()
+  var data = jsonResponse[0]._fieldsProto.name.stringValue 
+  return document.getElementById("root")!.innerHTML = data
+}
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
+
+  //part 2 of 3
+  const [apiResponse, setApiResponse] = useState("*** now loading ***");
+  useEffect(() => {
+    callRestApi().then(
+      result => setApiResponse(result));
+  }, []);
 
   function debounce(this: any, fn: any, ms: any) {
     var _this = this;
@@ -405,6 +421,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         {/* <div className="renderedInfoClass" id="rendered info">
           Rendered at {dimensions.width} x {dimensions.height}
         </div> */}
+
+        {/* part 3 of 3*/}
+        {apiResponse}
 
         {/* <input type='button' id="buttonid" value='click me' /> */}
         <ul id="menu" className="container__menu container__menu--hidden">
