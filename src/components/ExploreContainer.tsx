@@ -337,22 +337,22 @@ function leftMouseWriteText() {
 // calculate and start the right click menu for x & y coordinates
 
 //part 1 of 3
-const callRestApi = async () => {
-  const restEndpoint = 'https://v1.nocodeapi.com/test_api1/fbsdk/bXQhFqXiYUlVtBtI/firestore/allDocuments?collectionName=html'
-  const response = await fetch(restEndpoint)
-  const jsonResponse = await response.json()
-  var data = jsonResponse[0]._fieldsProto.name.stringValue 
-  return document.getElementById("root")!.innerHTML = data
-}
+// const callRestApi = async () => {
+//   const restEndpoint = 'https://v1.nocodeapi.com/test_api1/fbsdk/bXQhFqXiYUlVtBtI/firestore/allDocuments?collectionName=html'
+//   const response = await fetch(restEndpoint)
+//   const jsonResponse = await response.json()
+//   var data = jsonResponse[0]._fieldsProto.name.stringValue 
+//   return document.getElementById("root")!.innerHTML = data
+// }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
   //part 2 of 3
-  const [apiResponse, setApiResponse] = useState("*** now loading ***");
-  useEffect(() => {
-    callRestApi().then(
-      result => setApiResponse(result));
-  }, []);
+  // const [apiResponse, setApiResponse] = useState("*** now loading ***");
+  // useEffect(() => {
+  //   callRestApi().then(
+  //     result => setApiResponse(result));
+  // }, []);
 
   function debounce(this: any, fn: any, ms: any) {
     var _this = this;
@@ -423,7 +423,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         </div> */}
 
         {/* part 3 of 3*/}
-        {apiResponse}
+        {/* {apiResponse} */}
 
         {/* <input type='button' id="buttonid" value='click me' /> */}
         <ul id="menu" className="container__menu container__menu--hidden">
