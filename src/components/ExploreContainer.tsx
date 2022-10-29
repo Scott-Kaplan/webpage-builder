@@ -1,9 +1,11 @@
 import './ExploreContainer.css';
 import React, { useState, useEffect } from 'react'
 import { doc, setDoc } from "firebase/firestore";
+import { getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
+import { firestore } from '../firebase';
 console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
@@ -200,7 +202,7 @@ function initializeLeftClickMenu() {
     e.preventDefault();
 
     const rect = ele.getBoundingClientRect();
-     
+
     /* CALCULATE & START THE LEFT CLICK MENU AT THIS X COORDINATE */
     var xPositionOfCursor = e.clientX
     var widthOfLeftClickMenu = menu.offsetWidth
@@ -218,7 +220,7 @@ function initializeLeftClickMenu() {
     */
     if (widthOfLeftClickMenu === 0)
       widthOfLeftClickMenu = 130
-      
+
     // Set the x position of the left click menu
     if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfBrowserWindow)
       menu.style.left = `${xPositionOfCursor - widthOfLeftClickMenu}px`;
@@ -230,8 +232,8 @@ function initializeLeftClickMenu() {
     var yPositionOfCursor = e.clientY
     var heightOfLeftClickMenu = menu.offsetHeight
     var heightOfBrowserWindow = window.innerHeight
-    var y = yPositionOfCursor - rect.top;    
-    
+    var y = yPositionOfCursor - rect.top;
+
     // Set the y position of the left click menu
     if ((yPositionOfCursor + heightOfLeftClickMenu) >= heightOfBrowserWindow)
       menu.style.top = `${y - heightOfLeftClickMenu}px`;
@@ -333,8 +335,8 @@ function leftMouseWriteText() {
 }
 
 // left off here
-// fix part 1 of 3 below so it returns the div previously stored in the database
-// calculate and start the right click menu for x & y coordinates
+// [1] fix part 1 of 3 below so it returns the div previously stored in the database
+// [2] calculate and start the right click menu for x & y coordinates
 
 //part 1 of 3
 // const callRestApi = async () => {
@@ -346,6 +348,28 @@ function leftMouseWriteText() {
 // }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
+
+  // left off here 2 - this works. so now put into useState, useEffect terms
+  async function readFromFirebase() {
+    const docRef = doc(getFirestore(), "html", "cloudbuddy")
+    const docSnap = await getDoc(docRef)
+  
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+  
+  // const [entries, setEntries] = useState<Entry[]>([]);
+  // useEffect(() => {
+  //   // console.log('userId',userId);
+  //   const entriesRef = firestore.collection('users').doc(userId)
+  //     .collection('entries');
+  //   return entriesRef.orderBy('date', 'desc').limit(7)
+  //     .onSnapshot(({ docs }) => setEntries(docs.map(toEntry)))
+  // }, [userId]);
 
   //part 2 of 3
   // const [apiResponse, setApiResponse] = useState("*** now loading ***");
@@ -388,6 +412,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   });
 
   useIonViewDidEnter(() => {  // after the page initially loads
+    //readFromFirebase()
     resizeCssTagNamed_container__trigger()
     initializeLeftClickMenu()
     initializeRightClickMenu()
