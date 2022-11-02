@@ -334,10 +334,6 @@ function leftMouseWriteText() {
   // console.log(cssObj.overflow) // prints "hidden"
 }
 
-// left off here
-// [1] fix part 1 of 3 below so it returns the div previously stored in the database
-// [2] calculate and start the right click menu for x & y coordinates
-
 //part 1 of 3
 // const callRestApi = async () => {
 //   const restEndpoint = 'https://v1.nocodeapi.com/test_api1/fbsdk/bXQhFqXiYUlVtBtI/firestore/allDocuments?collectionName=html'
@@ -347,20 +343,61 @@ function leftMouseWriteText() {
 //   return document.getElementById("root")!.innerHTML = data
 // }
 
+// async function readFromFirebase() {
+const readFromFirebase = async () => {
+
+  const docRef = doc(getFirestore(), "html", "cloudbuddy")
+  const docSnap = await getDoc(docRef)
+
+// left off here
+// [1] this function currently returns the string of html.  Instead return the html
+// [2] calculate and start the right click menu for x & y coordinates
+
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+    //return "HELLO" // this successfully writes to the middle of the page on screen load
+    //return docSnap.data().innerHTML // writes nothing
+    // return docSnap.data() // compiler erro
+    //return docSnap.data().name // this writes the literal html string
+    // return docSnap.data().name.outerHTML // writes nothing
+    //return docSnap.data().name.innerHTML // writes nothing
+    return docSnap.data().name
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+    return "No such document!"
+  }
+}
+
+
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
-  // left off here 2 - this works. so now put into useState, useEffect terms
-  async function readFromFirebase() {
-    const docRef = doc(getFirestore(), "html", "cloudbuddy")
-    const docSnap = await getDoc(docRef)
+  //part 2 of 3
+  // const [apiResponse, setApiResponse] = useState("*** now loading ***");
+  // useEffect(() => {
+  //   callRestApi().then(
+  //     result => setApiResponse(result));
+  // }, []);
+
+
+  const [apiResponse1, setApiResponse1] = useState();
+  useEffect(() => {
+    readFromFirebase().then(
+    result => setApiResponse1(result));
+  }, []);
+
+  // this works. so now just put into useState, useEffect terms
+  // async function readFromFirebase() {
+  //   const docRef = doc(getFirestore(), "html", "cloudbuddy")
+  //   const docSnap = await getDoc(docRef)
   
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  }
+  //   if (docSnap.exists()) {
+  //     console.log("Document data:", docSnap.data());
+  //   } else {
+  //     // doc.data() will be undefined in this case
+  //     console.log("No such document!");
+  //   }
+  // }
   
   // const [entries, setEntries] = useState<Entry[]>([]);
   // useEffect(() => {
@@ -370,13 +407,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   //   return entriesRef.orderBy('date', 'desc').limit(7)
   //     .onSnapshot(({ docs }) => setEntries(docs.map(toEntry)))
   // }, [userId]);
-
-  //part 2 of 3
-  // const [apiResponse, setApiResponse] = useState("*** now loading ***");
-  // useEffect(() => {
-  //   callRestApi().then(
-  //     result => setApiResponse(result));
-  // }, []);
 
   function debounce(this: any, fn: any, ms: any) {
     var _this = this;
@@ -449,6 +479,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
         {/* part 3 of 3*/}
         {/* {apiResponse} */}
+        {apiResponse1}
 
         {/* <input type='button' id="buttonid" value='click me' /> */}
         <ul id="menu" className="container__menu container__menu--hidden">
