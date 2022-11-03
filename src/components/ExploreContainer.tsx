@@ -351,6 +351,10 @@ const readFromFirebase = async () => {
 
 // left off here
 // [1] this function currently returns the string of html.  Instead return the html
+// hard code in
+// parentDiv.insertBefore(readFromFirebaseDiv,bottomDiv)
+// and see if it works.  If so, write a parser
+// docSnap.data() =  <div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>
 // [2] calculate and start the right click menu for x & y coordinates
 
   if (docSnap.exists()) {
@@ -361,7 +365,37 @@ const readFromFirebase = async () => {
     //return docSnap.data().name // this writes the literal html string
     // return docSnap.data().name.outerHTML // writes nothing
     //return docSnap.data().name.innerHTML // writes nothing
-    return docSnap.data().name
+    console.log(typeof docSnap.data())
+    console.log(typeof docSnap.data().name)
+    console.log('docSnap.data() = ',docSnap.data().name)
+    //undefined console.log(typeof docSnap.data().name.innerHTML)
+    //undefined console.log(typeof docSnap.data().name.outHTML)
+    // has <html> and <head> tags - so no good
+    // var markup = docSnap.data().name.innerHTML
+    // var parser = new DOMParser()
+    // const doc = parser.parseFromString(markup, 'text/html');
+    // console.log(doc)
+    //var parentDiv = document.getElementById('element')!
+    //var readFromFirebaseDiv = document.createDocumentFragment() // this is an object
+    //console.log('typeof readFromFirebaseDiv = ',typeof readFromFirebaseDiv)
+    // var readFromFirebaseDiv = document.createElement('a')
+    // console.log('typeof readFromFirebaseDiv = ',typeof readFromFirebaseDiv)
+    //var readFromFirebaseDiv = docSnap.data().name
+    
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(docSnap.data().name, 'text/html')!
+    console.log('doc = ',doc,'type = ',typeof doc)
+
+    //readFromFirebase.innerHTML
+    //console.log('typeof readFromFirebaseDiv = ',typeof readFromFirebaseDiv)
+    //var bottomDiv = document.getElementById('element')!.firstChild
+    //parentDiv.insertBefore(readFromFirebaseDiv,bottomDiv)
+
+    
+    //test.innerHTML = docSnap.data().name
+    //return doc gives compiler errors
+    return JSON.parse('{ "hello":"world" }')
+    //return docSnap.data().name //just returns string of html
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
