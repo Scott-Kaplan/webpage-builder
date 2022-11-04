@@ -349,53 +349,52 @@ const readFromFirebase = async () => {
   const docRef = doc(getFirestore(), "html", "cloudbuddy")
   const docSnap = await getDoc(docRef)
 
-// left off here
-// [1] this function currently returns the string of html.  Instead return the html
-// hard code in
-// parentDiv.insertBefore(readFromFirebaseDiv,bottomDiv)
-// and see if it works.  If so, write a parser
-// docSnap.data() =  <div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>
-// [2] calculate and start the right click menu for x & y coordinates
+  // [1] this function currently returns the string of html.  Instead return the html
+  // hard code in
+  // parentDiv.insertBefore(readFromFirebaseDiv,bottomDiv)
+  // and see if it works.  If so, write a parser
+  // docSnap.data() =  <div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>
+  // [2] calculate and start the right click menu for x & y coordinates
 
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
-    //return "HELLO" // this successfully writes to the middle of the page on screen load
-    //return docSnap.data().innerHTML // writes nothing
-    // return docSnap.data() // compiler erro
-    //return docSnap.data().name // this writes the literal html string
-    // return docSnap.data().name.outerHTML // writes nothing
-    //return docSnap.data().name.innerHTML // writes nothing
-    console.log(typeof docSnap.data())
-    console.log(typeof docSnap.data().name)
-    console.log('docSnap.data() = ',docSnap.data().name)
-    //undefined console.log(typeof docSnap.data().name.innerHTML)
-    //undefined console.log(typeof docSnap.data().name.outHTML)
-    // has <html> and <head> tags - so no good
-    // var markup = docSnap.data().name.innerHTML
-    // var parser = new DOMParser()
-    // const doc = parser.parseFromString(markup, 'text/html');
-    // console.log(doc)
-    //var parentDiv = document.getElementById('element')!
-    //var readFromFirebaseDiv = document.createDocumentFragment() // this is an object
-    //console.log('typeof readFromFirebaseDiv = ',typeof readFromFirebaseDiv)
-    // var readFromFirebaseDiv = document.createElement('a')
-    // console.log('typeof readFromFirebaseDiv = ',typeof readFromFirebaseDiv)
-    //var readFromFirebaseDiv = docSnap.data().name
-    
-    let parser = new DOMParser();
-    let doc = parser.parseFromString(docSnap.data().name, 'text/html')!
-    console.log('doc = ',doc,'type = ',typeof doc)
+    var divFromDatabase = docSnap.data()
 
-    //readFromFirebase.innerHTML
-    //console.log('typeof readFromFirebaseDiv = ',typeof readFromFirebaseDiv)
-    //var bottomDiv = document.getElementById('element')!.firstChild
-    //parentDiv.insertBefore(readFromFirebaseDiv,bottomDiv)
+    // get parent div
+    var parentDiv = document.getElementById('element')!
 
-    
-    //test.innerHTML = docSnap.data().name
-    //return doc gives compiler errors
-    return JSON.parse('{ "hello":"world" }')
-    //return docSnap.data().name //just returns string of html
+    // get bottom div within the parent div
+    var d1 = document.getElementById('element')!.firstChild
+
+    // create a new div
+    var sp1 = document.createElement('div')
+
+    // left off here
+// extract id from the string
+//var test = '<div id="you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
+//console.log(test.indexOf("id=\""))
+
+
+
+    // create an id for the div
+    sp1.setAttribute("id", "id_you_like")
+    // create a class for the div
+    sp1.classList.add("foo")
+    // create text to display in the div
+    sp1.innerHTML = "Hello";
+    // insert the newly created div before the bottom div in the parent div
+    parentDiv.insertBefore(sp1, d1)
+    // create class properties for the newly created div   
+    let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+
+    // these 3 lines create the new div at the position
+    // where the upper left corner that the left menu popup is at
+    collection1[0].style.position = "absolute"
+    collection1[0].style.left = `100px`
+    collection1[0].style.top = `100px`
+    collection1[0].style.height = "100px"
+    collection1[0].style.background = "red"
+    collection1[0].style.color = "white"
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
@@ -414,17 +413,18 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   // }, []);
 
 
-  const [apiResponse1, setApiResponse1] = useState();
+  const [apiResponse1, setApiResponse1] = useState()
   useEffect(() => {
-    readFromFirebase().then(
-    result => setApiResponse1(result));
+    readFromFirebase()
+    // readFromFirebase().then(
+    //   result => setApiResponse1());
   }, []);
 
   // this works. so now just put into useState, useEffect terms
   // async function readFromFirebase() {
   //   const docRef = doc(getFirestore(), "html", "cloudbuddy")
   //   const docSnap = await getDoc(docRef)
-  
+
   //   if (docSnap.exists()) {
   //     console.log("Document data:", docSnap.data());
   //   } else {
@@ -432,7 +432,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   //     console.log("No such document!");
   //   }
   // }
-  
+
   // const [entries, setEntries] = useState<Entry[]>([]);
   // useEffect(() => {
   //   // console.log('userId',userId);
