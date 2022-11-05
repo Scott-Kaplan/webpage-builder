@@ -1,11 +1,12 @@
 import './ExploreContainer.css';
 import React, { useState, useEffect } from 'react'
-import { doc, setDoc } from "firebase/firestore";
+import { doc, DocumentData, setDoc } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
 import { firestore } from '../firebase';
+import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
@@ -260,6 +261,13 @@ function resizeCssTagNamed_container__trigger() {
   //console.log('resized container')
 }
 
+function getStringBetween(str: string, start: string, end: string) {
+  const result = str.match(new RegExp(start + "(.*)" + end));
+
+  return result![1];
+}
+
+
 function leftMouseWriteText() {
   // this prevents  <div id="tag"></div>  from being created more than once
   if (document.getElementById("write_text"))
@@ -369,15 +377,13 @@ const readFromFirebase = async () => {
     // create a new div
     var sp1 = document.createElement('div')
 
-    // left off here
-// extract id from the string
-//var test = '<div id="you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
-//console.log(test.indexOf("id=\""))
+    // extract the id which is "id_you_like" from this example
+    // '<div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
+    var idExtracted = getStringBetween(docSnap.data().name, 'id=\"', '\" c')
+    console.log('idExtracted = ',idExtracted)
+    sp1.setAttribute("id", idExtracted)
 
-
-
-    // create an id for the div
-    sp1.setAttribute("id", "id_you_like")
+    // left off here, extract the remaining dynamically
     // create a class for the div
     sp1.classList.add("foo")
     // create text to display in the div
