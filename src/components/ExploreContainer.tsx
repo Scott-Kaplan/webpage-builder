@@ -1,12 +1,12 @@
 import './ExploreContainer.css';
 import React, { useState, useEffect } from 'react'
-import { doc, DocumentData, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
-import { firestore } from '../firebase';
-import { isCompositeComponent } from 'react-dom/test-utils';
+//import { firestore } from '../firebase';
+//import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
 
 var leftPopupPresent = false
@@ -97,7 +97,7 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.background = "red"
     collection1[0].style.color = "white"
     // display dimmensions of div
-    var text = document.getElementById("id_you_like")!
+    // var text = document.getElementById("id_you_like")!
     // console.log('height including padding and border: ', text.offsetHeight)
     // console.log('width including padding and border: ', text.offsetWidth)
   }
@@ -288,7 +288,7 @@ function leftMouseWriteText() {
   // try the 132 answer with green checkmark to try and get "buttonid"
   //https://stackoverflow.com/questions/5684811/in-queryselector-how-to-get-the-first-and-get-the-last-elements-what-traversal
   var elements = document.querySelectorAll(':hover');
-  var first = elements[0]
+  //var first = elements[0]
   var last = elements[elements.length - 1]
 
   //console.log('length', elements.length)
@@ -308,11 +308,11 @@ function leftMouseWriteText() {
   if (howdy.includes('Cancel')) return
 
   //search for id="whatever", then trim to just get "whatever"
-  var pattern1 = /id="[^"]*"/g
-  var current = pattern1.exec(howdy)!
-  let text9 = current.toString()
-  let text1 = text9.substring(4)
-  let text2 = text1.substring(0, text1.length - 1)
+  //var pattern1 = /id="[^"]*"/g
+  //var current = pattern1.exec(howdy)!
+  //let text9 = current.toString()
+  //let text1 = text9.substring(4)
+  //let text2 = text1.substring(0, text1.length - 1)
   //console.log('high there', text2)
 
   // Display text directly to the right of the click me button
@@ -366,7 +366,7 @@ const readFromFirebase = async () => {
 
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
-    var divFromDatabase = docSnap.data()
+    //var divFromDatabase = docSnap.data()
 
     // get parent div
     var parentDiv = document.getElementById('element')!
@@ -379,28 +379,37 @@ const readFromFirebase = async () => {
 
     // extract the id which is "id_you_like" from this example
     // '<div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
-    var idExtracted = getStringBetween(docSnap.data().name, 'id=\"', '\" c')
-    console.log('idExtracted = ',idExtracted)
+    var idExtracted = getStringBetween(docSnap.data().name, 'id="', '" class')
+    console.log('idExtracted = ', idExtracted)
     sp1.setAttribute("id", idExtracted)
 
-    // left off here, extract the remaining dynamically
-    // create a class for the div
-    sp1.classList.add("foo")
-    // create text to display in the div
-    sp1.innerHTML = "Hello";
+    // extract class
+    var classExtracted = getStringBetween(docSnap.data().name, 'class="', '" style')
+    console.log('classExtracted = ', classExtracted)
+    sp1.classList.add(classExtracted)
+
+    // extract text
+    var textExtracted = getStringBetween(docSnap.data().name, ';">', '</div>')
+    console.log('textExtracted = ', textExtracted)
+    //sp1.innerHTML = "Hello";
+    sp1.innerHTML = textExtracted
+
     // insert the newly created div before the bottom div in the parent div
     parentDiv.insertBefore(sp1, d1)
-    // create class properties for the newly created div   
-    let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+
+    // create class properties for the newly created div
+    //let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+    let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
+
 
     // these 3 lines create the new div at the position
     // where the upper left corner that the left menu popup is at
-    collection1[0].style.position = "absolute"
-    collection1[0].style.left = `100px`
-    collection1[0].style.top = `100px`
-    collection1[0].style.height = "100px"
-    collection1[0].style.background = "red"
-    collection1[0].style.color = "white"
+    collection[0].style.position = "absolute"
+    collection[0].style.left = `100px`
+    collection[0].style.top = `100px`
+    collection[0].style.height = "100px"
+    collection[0].style.background = "red"
+    collection[0].style.color = "white"
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
@@ -419,7 +428,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   // }, []);
 
 
-  const [apiResponse1, setApiResponse1] = useState()
+  // const [apiResponse1, setApiResponse1] = useState()
+  // runs only on the first render
+  // https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
     readFromFirebase()
     // readFromFirebase().then(
@@ -460,6 +471,8 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     };
   }
 
+  // left off here dimensions is assigned a value but never used
+  // then continue dynamic extraction on initial page load
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth
@@ -519,7 +532,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
         {/* part 3 of 3*/}
         {/* {apiResponse} */}
-        {apiResponse1}
+        {/* {apiResponse1} */}
 
         {/* <input type='button' id="buttonid" value='click me' /> */}
         <ul id="menu" className="container__menu container__menu--hidden">
