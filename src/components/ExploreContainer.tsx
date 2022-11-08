@@ -5,6 +5,7 @@ import { getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
+import { workers } from 'cluster';
 //import { firestore } from '../firebase';
 //import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
@@ -401,6 +402,29 @@ const readFromFirebase = async () => {
     //let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
     let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
 
+    // extract all styles
+    // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
+    var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
+    console.log('stylesExtracted = ',stylesExtracted)
+
+// left off here
+// the below works.  Now just need to figure out how to identify individual fields
+/*
+var str = 'position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;';
+
+var re = /([\w-]+): ([^;]+)/g;
+
+var m;
+var map = {};
+
+while ((m = re.exec(str)) != null) {
+  map[m[1]] = m[2];
+}
+
+console.log(map);
+prints this Object { position: "absolute", left: "441px", top: "178px", height: "100px", background: "red", color: "white" }
+*/
+
 
     // these 3 lines create the new div at the position
     // where the upper left corner that the left menu popup is at
@@ -469,13 +493,14 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         fn.apply(_this, arguments);
       }, ms);
     };
-  }
+  } 
 
-  // left off here dimensions is assigned a value but never used
-  // then continue dynamic extraction on initial page load
+  // suppress this compiler error 
+  // dimensions is assigned a value but never used by adding the next line
+  // eslint-disable-next-line
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
-    width: window.innerWidth
+    width: window.innerWidth 
   });
 
   useEffect(() => {
