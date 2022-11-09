@@ -5,7 +5,7 @@ import { getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
-import { workers } from 'cluster';
+//import { workers } from 'cluster';
 //import { firestore } from '../firebase';
 //import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
@@ -18,6 +18,7 @@ var yStartPositionOfDiv: any;
 
 interface ContainerProps { }
 
+// eslint-disable-next-line
 async function writeToFirebase(msg: HTMLElement) {
   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
   var divTree = msg.outerHTML
@@ -35,7 +36,7 @@ function RightMousePrintHtml() {
 
   console.log(d1)
   //< div class="container" id = "main" > <div id="write_text">left mouse click</div></div >
-  writeToFirebase(d1)
+  //writeToFirebase(d1)
 }
 
 // Hide the left mouse click popup when
@@ -98,7 +99,11 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.background = "red"
     collection1[0].style.color = "white"
     // display dimmensions of div
-    // var text = document.getElementById("id_you_like")!
+
+    //write this to firebase
+    //var text = document.getElementById("id_you_like")!
+    //writeToFirebase(text)
+
     // console.log('height including padding and border: ', text.offsetHeight)
     // console.log('width including padding and border: ', text.offsetWidth)
   }
@@ -264,10 +269,8 @@ function resizeCssTagNamed_container__trigger() {
 
 function getStringBetween(str: string, start: string, end: string) {
   const result = str.match(new RegExp(start + "(.*)" + end));
-
   return result![1];
 }
-
 
 function leftMouseWriteText() {
   // this prevents  <div id="tag"></div>  from being created more than once
@@ -308,6 +311,7 @@ function leftMouseWriteText() {
   if (howdy.includes('Second action')) return
   if (howdy.includes('Cancel')) return
 
+
   //search for id="whatever", then trim to just get "whatever"
   //var pattern1 = /id="[^"]*"/g
   //var current = pattern1.exec(howdy)!
@@ -343,27 +347,15 @@ function leftMouseWriteText() {
   // console.log(cssObj.overflow) // prints "hidden"
 }
 
-//part 1 of 3
-// const callRestApi = async () => {
-//   const restEndpoint = 'https://v1.nocodeapi.com/test_api1/fbsdk/bXQhFqXiYUlVtBtI/firestore/allDocuments?collectionName=html'
-//   const response = await fetch(restEndpoint)
-//   const jsonResponse = await response.json()
-//   var data = jsonResponse[0]._fieldsProto.name.stringValue 
-//   return document.getElementById("root")!.innerHTML = data
-// }
-
-// async function readFromFirebase() {
 const readFromFirebase = async () => {
 
   const docRef = doc(getFirestore(), "html", "cloudbuddy")
   const docSnap = await getDoc(docRef)
 
-  // [1] this function currently returns the string of html.  Instead return the html
-  // hard code in
-  // parentDiv.insertBefore(readFromFirebaseDiv,bottomDiv)
-  // and see if it works.  If so, write a parser
-  // docSnap.data() =  <div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>
-  // [2] calculate and start the right click menu for x & y coordinates
+  // left off here
+  // [1] left click down, if off the screen apply a correction initially like did for x coordinate
+  // [2] adjust x coordinate for right menu
+  // [3] adjust y coordinate for right menu
 
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
@@ -402,86 +394,46 @@ const readFromFirebase = async () => {
     //let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
     let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
 
-    // extract all styles
-    // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
+    // extract all CSS properties {name: value} pairs
+    // the entire string before started with this
+    // "<div id=\"id_you_like\" class=\"foo\" style=\"position: absolute; left: 131px; top: 66px; height: 100px; background: red; color: white;\">Hello</div>"
+    // after these 2 lines are executed
     var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
-    console.log('stylesExtracted = ',stylesExtracted)
+    console.log('stylesExtracted = ', stylesExtracted)
+    // the following is left
+    // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
 
-// left off here
-// the below works.  Now just need to figure out how to identify individual fields
-/*
-var str = 'position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;';
+    // then after these lines
+    var re = /([\w-]+): ([^;]+)/g;
+    var m: any
+    var map = {} as any
+    while ((m = re.exec(docSnap.data().name)) != null) {
+      map[m[1]] = m[2];
+    }
+    // we then have an object equal to the css property of name value pairs, like -
+    // Object { position: "absolute", left: "441px", top: "178px", height: "100px", background: "red", color: "white" }
+    // and these lines extract each property & value from the object and applies them
+    // eslint-disable-next-line
+    Object.entries(map).map(obj => {
+      const key = obj[0];
+      const value: any = obj[1];
+      collection[0].style.setProperty(key, value) 
+    });
 
-var re = /([\w-]+): ([^;]+)/g;
-
-var m;
-var map = {};
-
-while ((m = re.exec(str)) != null) {
-  map[m[1]] = m[2];
-}
-
-console.log(map);
-prints this Object { position: "absolute", left: "441px", top: "178px", height: "100px", background: "red", color: "white" }
-*/
-
-
-    // these 3 lines create the new div at the position
-    // where the upper left corner that the left menu popup is at
-    collection[0].style.position = "absolute"
-    collection[0].style.left = `100px`
-    collection[0].style.top = `100px`
-    collection[0].style.height = "100px"
-    collection[0].style.background = "red"
-    collection[0].style.color = "white"
   } else {
     // doc.data() will be undefined in this case
-    console.log("No such document!");
+    console.log("No such document!"); 
     return "No such document!"
   }
 }
 
-
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
-  //part 2 of 3
-  // const [apiResponse, setApiResponse] = useState("*** now loading ***");
-  // useEffect(() => {
-  //   callRestApi().then(
-  //     result => setApiResponse(result));
-  // }, []);
-
-
-  // const [apiResponse1, setApiResponse1] = useState()
   // runs only on the first render
   // https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
     readFromFirebase()
-    // readFromFirebase().then(
-    //   result => setApiResponse1());
   }, []);
-
-  // this works. so now just put into useState, useEffect terms
-  // async function readFromFirebase() {
-  //   const docRef = doc(getFirestore(), "html", "cloudbuddy")
-  //   const docSnap = await getDoc(docRef)
-
-  //   if (docSnap.exists()) {
-  //     console.log("Document data:", docSnap.data());
-  //   } else {
-  //     // doc.data() will be undefined in this case
-  //     console.log("No such document!");
-  //   }
-  // }
-
-  // const [entries, setEntries] = useState<Entry[]>([]);
-  // useEffect(() => {
-  //   // console.log('userId',userId);
-  //   const entriesRef = firestore.collection('users').doc(userId)
-  //     .collection('entries');
-  //   return entriesRef.orderBy('date', 'desc').limit(7)
-  //     .onSnapshot(({ docs }) => setEntries(docs.map(toEntry)))
-  // }, [userId]);
 
   function debounce(this: any, fn: any, ms: any) {
     var _this = this;
@@ -493,14 +445,14 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         fn.apply(_this, arguments);
       }, ms);
     };
-  } 
+  }
 
   // suppress this compiler error 
   // dimensions is assigned a value but never used by adding the next line
   // eslint-disable-next-line
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
-    width: window.innerWidth 
+    width: window.innerWidth
   });
 
   useEffect(() => {
