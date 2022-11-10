@@ -10,6 +10,8 @@ import { app } from '../firebase'
 //import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
 
+var idNum = 0
+
 var leftPopupPresent = false
 
 var xStartPositionOfDiv: any;
@@ -58,11 +60,12 @@ const documentClickHandler = function (e: any) {
     document.removeEventListener('click', documentClickHandler);
 
     // prints all divs
-    //var allDivTags = document.getElementsByTagName("div")
-    //console.log('by tag name\n',allDivTags)
-    //let divNodeList = document.querySelectorAll("div")
-    //console.log('by query selector\n',divNodeList)
-    //console.log(divNodeList.item(4).id)
+    // var allDivTags = document.getElementsByTagName("div")
+    // console.log('by tag name\n',allDivTags)
+    // let divNodeList = document.querySelectorAll("div")
+    // console.log('by query selector\n',divNodeList)
+    // console.log('item 4 = ',divNodeList.item(4).id)
+    //console.log('item 4 = ',divNodeList.item(4).tagName)
 
     // get parent div
     var parentDiv = document.getElementById('element')!
@@ -81,7 +84,8 @@ const documentClickHandler = function (e: any) {
     // create a new div
     var sp1 = document.createElement('div')
     // create an id for the div
-    sp1.setAttribute("id", "id_you_like")
+    // sp1.setAttribute("id", "id_you_like")
+    sp1.setAttribute("id", `id_${idNum++}`)
     // create a class for the div
     sp1.classList.add("foo")
     // create text to display in the div
@@ -100,9 +104,16 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.color = "white"
     // display dimmensions of div
 
+    // left off here
+    // make the id's unique, then try to save 2 of them firestore,
+    // then on page load try to display them
+
+    console.log(`id_${idNum} = `, document.getElementById(`id_${idNum}`)!)
+
     //write this to firebase
     //var text = document.getElementById("id_you_like")!
     //writeToFirebase(text)
+    //console.log('all divs = ', document.getElementById("element")!)
 
     // console.log('height including padding and border: ', text.offsetHeight)
     // console.log('width including padding and border: ', text.offsetWidth)
@@ -352,13 +363,9 @@ const readFromFirebase = async () => {
   const docRef = doc(getFirestore(), "html", "cloudbuddy")
   const docSnap = await getDoc(docRef)
 
-  // left off here
-  // [1] left click down, if off the screen apply a correction initially like did for x coordinate
-  // [2] adjust x coordinate for right menu
-  // [3] adjust y coordinate for right menu
-
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
+    console.log("Document data:", docSnap.data().name);
     //var divFromDatabase = docSnap.data()
 
     // get parent div
@@ -373,17 +380,17 @@ const readFromFirebase = async () => {
     // extract the id which is "id_you_like" from this example
     // '<div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
     var idExtracted = getStringBetween(docSnap.data().name, 'id="', '" class')
-    console.log('idExtracted = ', idExtracted)
+    // console.log('idExtracted = ', idExtracted)
     sp1.setAttribute("id", idExtracted)
 
     // extract class
     var classExtracted = getStringBetween(docSnap.data().name, 'class="', '" style')
-    console.log('classExtracted = ', classExtracted)
+    // console.log('classExtracted = ', classExtracted)
     sp1.classList.add(classExtracted)
 
     // extract text
     var textExtracted = getStringBetween(docSnap.data().name, ';">', '</div>')
-    console.log('textExtracted = ', textExtracted)
+    // console.log('textExtracted = ', textExtracted)
     //sp1.innerHTML = "Hello";
     sp1.innerHTML = textExtracted
 
@@ -399,7 +406,7 @@ const readFromFirebase = async () => {
     // "<div id=\"id_you_like\" class=\"foo\" style=\"position: absolute; left: 131px; top: 66px; height: 100px; background: red; color: white;\">Hello</div>"
     // after these 2 lines are executed
     var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
-    console.log('stylesExtracted = ', stylesExtracted)
+    // console.log('stylesExtracted = ', stylesExtracted)
     // the following is left
     // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
 
@@ -417,12 +424,12 @@ const readFromFirebase = async () => {
     Object.entries(map).map(obj => {
       const key = obj[0];
       const value: any = obj[1];
-      collection[0].style.setProperty(key, value) 
+      collection[0].style.setProperty(key, value)
     });
 
   } else {
     // doc.data() will be undefined in this case
-    console.log("No such document!"); 
+    console.log("No such document!");
     return "No such document!"
   }
 }
@@ -530,6 +537,11 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 };
 
 export default ExploreContainer;
+
+// long term left off here
+// [1] left click down, if off the screen apply a correction initially like did for x coordinate
+// [2] adjust x coordinate for right menu
+// [3] adjust y coordinate for right menu
 
 /*
   when left click, bring up a menu -
