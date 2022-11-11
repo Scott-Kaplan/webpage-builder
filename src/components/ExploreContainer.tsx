@@ -109,9 +109,15 @@ const documentClickHandler = function (e: any) {
     // display dimmensions of div
 
     // left off here
-    // detect if hovering over somethin
-    // assign newId to a global variable to be able to implement the solution from 
+    // detect if hovering over something
+    // assign newId to a global variable, to implement this solution
     // https://stackoverflow.com/questions/43366738/how-to-check-if-mouse-is-still-over-element-in-javascript
+    var newIdIsMouseHover = `${newId}_isMouseHover`;
+
+    // declares global variable
+    // example (window as any).id1_isMouseHover = false
+    (window as any).newIdIsMouseHover = false 
+    console.log((window as any).newIdIsMouseHover)
 
     // make the id's unique, then try to save 2 of them firestore,
     // then on page load try to display them
