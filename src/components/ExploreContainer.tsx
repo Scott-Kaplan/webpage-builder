@@ -10,6 +10,9 @@ import { app } from '../firebase'
 //import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
 
+// var userId = 0
+// var globalId[userId] = "whatever"
+
 var idNum = 0
 
 var leftPopupPresent = false
@@ -85,7 +88,8 @@ const documentClickHandler = function (e: any) {
     var sp1 = document.createElement('div')
     // create an id for the div
     // sp1.setAttribute("id", "id_you_like")
-    sp1.setAttribute("id", `id_${idNum++}`)
+    var newId = `id_${idNum++}`
+    sp1.setAttribute("id", newId)
     // create a class for the div
     sp1.classList.add("foo")
     // create text to display in the div
@@ -105,10 +109,15 @@ const documentClickHandler = function (e: any) {
     // display dimmensions of div
 
     // left off here
+    // detect if hovering over somethin
+    // assign newId to a global variable to be able to implement the solution from 
+    // https://stackoverflow.com/questions/43366738/how-to-check-if-mouse-is-still-over-element-in-javascript
+
     // make the id's unique, then try to save 2 of them firestore,
     // then on page load try to display them
 
-    console.log(`id_${idNum} = `, document.getElementById(`id_${idNum}`)!)
+    console.log('newId = ', document.getElementById(newId)!)
+
 
     //write this to firebase
     //var text = document.getElementById("id_you_like")!
@@ -284,6 +293,11 @@ function getStringBetween(str: string, start: string, end: string) {
 }
 
 function leftMouseWriteText() {
+
+  //onmouseenter, when enter the div, set to true
+  //monmouseleave, when leave div, set to false
+
+
   // this prevents  <div id="tag"></div>  from being created more than once
   if (document.getElementById("write_text"))
     return
@@ -303,6 +317,7 @@ function leftMouseWriteText() {
   // try the 132 answer with green checkmark to try and get "buttonid"
   //https://stackoverflow.com/questions/5684811/in-queryselector-how-to-get-the-first-and-get-the-last-elements-what-traversal
   var elements = document.querySelectorAll(':hover');
+  console.log('hover = ',elements)
   //var first = elements[0]
   var last = elements[elements.length - 1]
 
