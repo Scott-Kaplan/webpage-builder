@@ -13,6 +13,8 @@ console.log(app) // do this or get run time error
 // var userId = 0
 // var globalId[userId] = "whatever"
 
+var ids = {}
+
 var idNum = 0
 
 var leftPopupPresent = false
@@ -49,6 +51,7 @@ function RightMousePrintHtml() {
 // or 
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
+  console.log((window as any).newIdIsMouseHover)  
   const menu = document.getElementById('menu')!;
   //console.log(e.target.innerText) // prints the selection made
 
@@ -108,21 +111,29 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.color = "white"
     // display dimmensions of div
 
-    // left off here
-    // detect if hovering over something
-    // assign newId to a global variable, to implement this solution
-    // https://stackoverflow.com/questions/43366738/how-to-check-if-mouse-is-still-over-element-in-javascript
     var newIdIsMouseHover = `${newId}_isMouseHover`;
+    // left off here, add to ids object. see this link and try: obj["key3"] = "value3";
+    // https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
+    // then when entering left click function,loop through the entire object
+    // to see if hovering over anything.
 
-    // declares global variable
-    // example (window as any).id1_isMouseHover = false
-    (window as any).newIdIsMouseHover = false 
-    console.log((window as any).newIdIsMouseHover)
-
-    // make the id's unique, then try to save 2 of them firestore,
-    // then on page load try to display them
-
-    console.log('newId = ', document.getElementById(newId)!)
+    // for each id, set a flag (true or false) if it is being hovered over
+    // source
+    // https://stackoverflow.com/questions/43366738/how-to-check-if-mouse-is-still-over-element-in-javascript
+    // the next line declares a global variable and this is an example of what it
+    // evaluates to (window as any).id1_isMouseHover = false
+    (window as any).newIdIsMouseHover = false
+    // console.log('(window as any).newIdIsMouseHover =', (window as any).newIdIsMouseHover)
+    var test = document.getElementById(newId)!
+    test.addEventListener("mouseleave", function (event) {
+      (window as any).newIdIsMouseHover = false
+      // console.log((window as any).newIdIsMouseHover)
+    }, false);
+    test.addEventListener("mouseover", function (event) {
+      (window as any).newIdIsMouseHover = true
+      // console.log((window as any).newIdIsMouseHover)
+    }, false);
+    // console.log('newId = ', document.getElementById(newId)!)
 
 
     //write this to firebase
@@ -323,7 +334,7 @@ function leftMouseWriteText() {
   // try the 132 answer with green checkmark to try and get "buttonid"
   //https://stackoverflow.com/questions/5684811/in-queryselector-how-to-get-the-first-and-get-the-last-elements-what-traversal
   var elements = document.querySelectorAll(':hover');
-  console.log('hover = ',elements)
+  console.log('hover = ', elements)
   //var first = elements[0]
   var last = elements[elements.length - 1]
 
@@ -426,7 +437,7 @@ const readFromFirebase = async () => {
     // the entire string before started with this
     // "<div id=\"id_you_like\" class=\"foo\" style=\"position: absolute; left: 131px; top: 66px; height: 100px; background: red; color: white;\">Hello</div>"
     // after these 2 lines are executed
-    var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
+    // var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
     // console.log('stylesExtracted = ', stylesExtracted)
     // the following is left
     // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
