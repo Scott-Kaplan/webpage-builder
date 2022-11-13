@@ -124,7 +124,7 @@ const documentClickHandler = function (e: any) {
     }, false);
 
     // left off here
-    // create two divs
+    // create two divs, then try to print just them
     var text = document.getElementById("element")!
     console.log('everything under div "element" = ')
     // save them to firebase
