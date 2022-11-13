@@ -13,7 +13,7 @@ console.log(app) // do this or get run time error
 // var userId = 0
 // var globalId[userId] = "whatever"
 
-var ids = {}
+var ids: any = {}
 
 var idNum = 0
 
@@ -51,7 +51,7 @@ function RightMousePrintHtml() {
 // or 
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
-  console.log((window as any).newIdIsMouseHover)  
+  //console.log((window as any).newIdIsMouseHover)  
   const menu = document.getElementById('menu')!;
   //console.log(e.target.innerText) // prints the selection made
 
@@ -91,7 +91,7 @@ const documentClickHandler = function (e: any) {
     var sp1 = document.createElement('div')
     // create an id for the div
     // sp1.setAttribute("id", "id_you_like")
-    var newId = `id_${idNum++}`
+    var newId = `id${idNum++}`
     sp1.setAttribute("id", newId)
     // create a class for the div
     sp1.classList.add("foo")
@@ -111,29 +111,24 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.color = "white"
     // display dimmensions of div
 
+    // when bringing up the left menu anytime in the future, need to know
+    // whether hovering over this new id.  If yes, will will need to
+    // display an option in the left menu so the user can do something with it
     var newIdIsMouseHover = `${newId}_isMouseHover`;
-    // left off here, add to ids object. see this link and try: obj["key3"] = "value3";
-    // https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
-    // then when entering left click function,loop through the entire object
-    // to see if hovering over anything.
-
-    // for each id, set a flag (true or false) if it is being hovered over
-    // source
-    // https://stackoverflow.com/questions/43366738/how-to-check-if-mouse-is-still-over-element-in-javascript
-    // the next line declares a global variable and this is an example of what it
-    // evaluates to (window as any).id1_isMouseHover = false
-    (window as any).newIdIsMouseHover = false
-    // console.log('(window as any).newIdIsMouseHover =', (window as any).newIdIsMouseHover)
     var test = document.getElementById(newId)!
     test.addEventListener("mouseleave", function (event) {
-      (window as any).newIdIsMouseHover = false
-      // console.log((window as any).newIdIsMouseHover)
+      ids[newIdIsMouseHover] = false
     }, false);
     test.addEventListener("mouseover", function (event) {
-      (window as any).newIdIsMouseHover = true
-      // console.log((window as any).newIdIsMouseHover)
+      ids[newIdIsMouseHover] = true
     }, false);
-    // console.log('newId = ', document.getElementById(newId)!)
+
+    // left off here
+    // create two divs
+    var text = document.getElementById("element")!
+    console.log('everything under div "element" = ')
+    // save them to firebase
+    // read them from firebase at startup
 
 
     //write this to firebase
@@ -242,6 +237,10 @@ function initializeLeftClickMenu() {
   // proceedurally the user moves the cursor from its previous position and left clicks.
   // This function is not executed when the user selects an option from the left popup.
   ele.addEventListener('click', function (e) {
+    for (let key in ids) {
+      console.log('key=', key, 'value=', ids[key])
+    }
+
     // console.log('moved popup')
     e.preventDefault();
 
@@ -334,7 +333,7 @@ function leftMouseWriteText() {
   // try the 132 answer with green checkmark to try and get "buttonid"
   //https://stackoverflow.com/questions/5684811/in-queryselector-how-to-get-the-first-and-get-the-last-elements-what-traversal
   var elements = document.querySelectorAll(':hover');
-  console.log('hover = ', elements)
+  //console.log('hover = ', elements)
   //var first = elements[0]
   var last = elements[elements.length - 1]
 
