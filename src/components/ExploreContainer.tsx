@@ -124,12 +124,11 @@ const documentClickHandler = function (e: any) {
     }, false);
 
     // left off here
-    // create two divs, then try to print just them
-    var text = document.getElementById("element")!
-    console.log('everything under div "element" = ')
-    // save them to firebase
-    // read them from firebase at startup
-
+    // extract the id of each div
+    var text = document.getElementById("element")!.querySelectorAll('div')
+    for (let i = 0; i < text.length; i++) {
+      console.log(`${i}`,text[i])
+    }
 
     //write this to firebase
     //var text = document.getElementById("id_you_like")!
@@ -238,7 +237,7 @@ function initializeLeftClickMenu() {
   // This function is not executed when the user selects an option from the left popup.
   ele.addEventListener('click', function (e) {
     for (let key in ids) {
-      console.log('key=', key, 'value=', ids[key])
+      // console.log('key=', key, 'value=', ids[key])
     }
 
     // console.log('moved popup')
