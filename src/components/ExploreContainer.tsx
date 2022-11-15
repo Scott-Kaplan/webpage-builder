@@ -10,10 +10,11 @@ import { app } from '../firebase'
 //import { isCompositeComponent } from 'react-dom/test-utils';
 console.log(app) // do this or get run time error
 
-// var userId = 0
-// var globalId[userId] = "whatever"
 
-var ids: any = {}
+
+const ids = [] // declare global array to store all created id names
+var idCounter = 0
+var mouseHover: any = {} // mouseHover[idX] = true | false
 
 var idNum = 0
 
@@ -111,24 +112,21 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.color = "white"
     // display dimmensions of div
 
+    ids[++idCounter] = newId
+    // left off here
+    // print all ids
+
     // when bringing up the left menu anytime in the future, need to know
-    // whether hovering over this new id.  If yes, will will need to
+    // whether hovering over this new id.  If yes, will need to
     // display an option in the left menu so the user can do something with it
-    var newIdIsMouseHover = `${newId}_isMouseHover`;
     var test = document.getElementById(newId)!
     test.addEventListener("mouseleave", function (event) {
-      ids[newIdIsMouseHover] = false
+      mouseHover[newId] = false
     }, false);
     test.addEventListener("mouseover", function (event) {
-      ids[newIdIsMouseHover] = true
+      mouseHover[newId] = true
     }, false);
 
-    // left off here
-    // extract the id of each div
-    var text = document.getElementById("element")!.querySelectorAll('div')
-    for (let i = 0; i < text.length; i++) {
-      console.log(`${i}`,text[i])
-    }
 
     //write this to firebase
     //var text = document.getElementById("id_you_like")!
@@ -236,9 +234,11 @@ function initializeLeftClickMenu() {
   // proceedurally the user moves the cursor from its previous position and left clicks.
   // This function is not executed when the user selects an option from the left popup.
   ele.addEventListener('click', function (e) {
-    for (let key in ids) {
-      // console.log('key=', key, 'value=', ids[key])
-    }
+
+    /* this prints the hover status over each div */
+    // for (let key in mouseHover) {
+    //   console.log('key=', key, 'value=', mouseHover[key])
+    // }
 
     // console.log('moved popup')
     e.preventDefault();
