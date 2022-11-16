@@ -129,6 +129,8 @@ const documentClickHandler = function (e: any) {
     // print all ids
     // left off here, need to figure out how to store multiple htmldivelements
     // can't seem to figure out how to add them together
+    // it would be nightmarish to delete a div if they were all together in one
+    // so, instead seriosly consider saving to Firebase each individually
     var alldivs:HTMLElement
     for (var i=0; i<ids.length; i++) {
       console.log(`id[${i}] = `,ids[i])
