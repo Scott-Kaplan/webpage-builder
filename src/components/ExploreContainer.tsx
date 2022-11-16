@@ -12,7 +12,7 @@ console.log(app) // do this or get run time error
 
 
 
-const ids = [] // declare global array to store all created id names
+const ids:any = [] // declare global array to store all created id names
 var idCounter = 0
 var mouseHover: any = {} // mouseHover[idX] = true | false
 
@@ -110,11 +110,6 @@ const documentClickHandler = function (e: any) {
     collection1[0].style.height = "100px"
     collection1[0].style.background = "red"
     collection1[0].style.color = "white"
-    // display dimmensions of div
-
-    ids[++idCounter] = newId
-    // left off here
-    // print all ids
 
     // when bringing up the left menu anytime in the future, need to know
     // whether hovering over this new id.  If yes, will need to
@@ -127,12 +122,29 @@ const documentClickHandler = function (e: any) {
       mouseHover[newId] = true
     }, false);
 
-
+    // globally store the div's new id
+    // create one variable containing all new divs
+    ids[idCounter++] = newId
+    
+    // print all ids
+    // left off here, need to figure out how to store multiple htmldivelements
+    // can't seem to figure out how to add them together
+    var alldivs:HTMLElement
+    for (var i=0; i<ids.length; i++) {
+      console.log(`id[${i}] = `,ids[i])
+      alldivs = document.getElementById(ids[i])!
+    }
+    console.log('all divs = ',alldivs)
+    
     //write this to firebase
-    //var text = document.getElementById("id_you_like")!
+    // var text = document.getElementById("id_you_like")!
+    //var text = document.getElementById(newId)!
+    //this prints <div id ... </div>
+    //console.log('getElementById(newId) = ',text)
     //writeToFirebase(text)
     //console.log('all divs = ', document.getElementById("element")!)
 
+    // display dimmensions of div
     // console.log('height including padding and border: ', text.offsetHeight)
     // console.log('width including padding and border: ', text.offsetWidth)
   }
