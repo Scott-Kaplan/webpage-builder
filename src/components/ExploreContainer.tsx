@@ -4,7 +4,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
-import { app } from '../firebase'
+import { app, firestore } from '../firebase'
 //import { workers } from 'cluster';
 //import { firestore } from '../firebase';
 //import { isCompositeComponent } from 'react-dom/test-utils';
@@ -12,7 +12,7 @@ console.log(app) // do this or get run time error
 
 
 
-const ids:any = [] // declare global array to store all created id names
+const ids: any = [] // declare global array to store all created id names
 var idCounter = 0
 var mouseHover: any = {} // mouseHover[idX] = true | false
 
@@ -125,19 +125,19 @@ const documentClickHandler = function (e: any) {
     // globally store the div's new id
     // create one variable containing all new divs
     ids[idCounter++] = newId
-    
+
     // print all ids
-    // left off here, need to figure out how to store multiple htmldivelements
+    // need to figure out how to store multiple htmldivelements
     // can't seem to figure out how to add them together
     // it would be nightmarish to delete a div if they were all together in one
     // so, instead seriosly consider saving to Firebase each individually
-    var alldivs:HTMLElement
-    for (var i=0; i<ids.length; i++) {
-      console.log(`id[${i}] = `,ids[i])
-      alldivs = document.getElementById(ids[i])!
-    }
-    console.log('all divs = ',alldivs)
-    
+    // var alldivs: HTMLElement
+    // for (var i = 0; i < ids.length; i++) {
+    //   console.log(`id[${i}] = `, ids[i])
+    //   alldivs = document.getElementById(ids[i])!
+    // }
+    // console.log('all divs = ', alldivs)
+
     //write this to firebase
     // var text = document.getElementById("id_you_like")!
     //var text = document.getElementById(newId)!
@@ -402,8 +402,23 @@ function leftMouseWriteText() {
   // console.log(cssObj.overflow) // prints "hidden"
 }
 
-const readFromFirebase = async () => {
+// left off here
+//Uncaught (in promise) FirebaseError: Invalid document reference. Document references must have an even number of segments, but html has 1.
+const readFromFirebase1 = async () => {
+  const docRef1 = doc(getFirestore(), "html")
+  const docSnap1 = await getDoc(docRef1)
+  if (docSnap1.exists()) {
+    console.log("Document data:", docSnap1.data());
+    console.log("Document data:", docSnap1.data().name);
+  }
+  else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+    return "No such document!"
+  }
+}
 
+const readFromFirebase = async () => {
   const docRef = doc(getFirestore(), "html", "cloudbuddy")
   const docSnap = await getDoc(docRef)
 
@@ -483,7 +498,8 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   // runs only on the first render
   // https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
-    readFromFirebase()
+    readFromFirebase1()
+    // readFromFirebase()
   }, []);
 
   function debounce(this: any, fn: any, ms: any) {
@@ -523,7 +539,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   });
 
   useIonViewDidEnter(() => {  // after the page initially loads
-    //readFromFirebase()
     resizeCssTagNamed_container__trigger()
     initializeLeftClickMenu()
     initializeRightClickMenu()
