@@ -12,13 +12,14 @@ import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
 console.log(app) // do this or get run time error
 
-const ids: any = [] // declare global array to store all created id names
-var idCounter = 0
+//const ids: any = [] // declare global array to store all created id names
+//var idCounter = 0
 var mouseHover: any = {} // mouseHover[idX] = true | false
 var idNum = 0
 var leftPopupPresent = false
-var xStartPositionOfDiv: any;
-var yStartPositionOfDiv: any;
+var xStartPositionOfDiv: any
+var yStartPositionOfDiv: any
+var divNumber = 0 // globally counter for amount of divs
 
 interface ContainerProps { }
 
@@ -26,8 +27,10 @@ interface ContainerProps { }
 async function writeToFirebase(msg: HTMLElement) {
   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
   var divTree = msg.outerHTML
-  await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
-    name: divTree
+  await setDoc(doc(getFirestore(), "html", `div${divNumber++}`), {
+    //await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
+    tag: divTree
+    // name: divTree
   });
 }
 
@@ -116,11 +119,11 @@ const documentClickHandler = function (e: any) {
     test.addEventListener("mouseover", function (event) {
       mouseHover[newId] = true
     }, false);
+    //writeToFirebase(test)
 
     // globally store the div's new id
     // create one variable containing all new divs
-    ids[idCounter++] = newId
-
+    //ids[idCounter++] = newId
     // print all ids
     // need to figure out how to store multiple htmldivelements
     // can't seem to figure out how to add them together
@@ -397,21 +400,79 @@ function leftMouseWriteText() {
   // console.log(cssObj.overflow) // prints "hidden"
 }
 
-// left off here
-// change in code ability to save "divX" instead of "cloudbuddyX" document
-// change in code ability to save "tag" instead of "name" field
-// run and create 2 new divs
-// verify the firestore saved them correctly
-// rename function readFromFirebase to readFromFirebaseORG
-// create function readFromFirebase() and combine
-//    readFromFirebaseORG with readFromFirebase1
-//    with accounting for "divX" & "tag"
-// test the new readFromFirebase() & ensure on page load that the 2 divs are properly displayed
-// delete readFromFirebase1
-// delete readFromFirebaseORG
-// delete cloudbuddy document in firestore
-// delete cloudbuddy1 document in firestore
+// left off here.  Search email for left off here
 
+const readFromFirebase = async () => {
+  // https://firebase.google.com/docs/firestore/query-data/get-data
+  const querySnapshot = await getDocs(collection(getFirestore(), "html"));
+  querySnapshot.forEach((doc) => { // for every divX document in firebase
+    console.log(doc.id, " => ", doc.data().tag);
+
+    // get parent div
+    var parentDiv = document.getElementById('element')!
+
+    // get bottom div within the parent div
+    var d1 = document.getElementById('element')!.firstChild
+
+    // create a new div
+    var sp1 = document.createElement('div')
+
+    // extract the id which is "id_you_like" from this example
+    // '<div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
+    //var idExtracted = getStringBetween(docSnap.data().name, 'id="', '" class')
+    var idExtracted = getStringBetween(doc.data().tag, 'id="', '" class')
+    //console.log('idExtracted = ', idExtracted)
+    sp1.setAttribute("id", idExtracted)
+
+    // extract class
+    //var classExtracted = getStringBetween(docSnap.data().name, 'class="', '" style')
+    var classExtracted = getStringBetween(doc.data().tag, 'class="', '" style')
+    // console.log('classExtracted = ', classExtracted)
+    sp1.classList.add(classExtracted)
+
+    // extract text
+    //var textExtracted = getStringBetween(docSnap.data().name, ';">', '</div>')
+    var textExtracted = getStringBetween(doc.data().tag, ';">', '</div>')
+    // console.log('textExtracted = ', textExtracted)
+    //sp1.innerHTML = "Hello";
+    sp1.innerHTML = textExtracted
+
+    // insert the newly created div before the bottom div in the parent div
+    parentDiv.insertBefore(sp1, d1)
+
+    // create class properties for the newly created div
+    //let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
+    let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
+
+    // extract all CSS properties {name: value} pairs
+    // the entire string before started with this
+    // "<div id=\"id_you_like\" class=\"foo\" style=\"position: absolute; left: 131px; top: 66px; height: 100px; background: red; color: white;\">Hello</div>"
+    // after these 2 lines are executed
+    // var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
+    // console.log('stylesExtracted = ', stylesExtracted)
+    // the following is left
+    // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
+    // then after these lines
+    var re = /([\w-]+): ([^;]+)/g;
+    var m: any
+    var map = {} as any
+    //while ((m = re.exec(docSnap.data().name)) != null) {
+    while ((m = re.exec(doc.data().tag)) != null) {
+      map[m[1]] = m[2];
+    }
+    // we then have an object equal to the css property of name value pairs, like -
+    // Object { position: "absolute", left: "441px", top: "178px", height: "100px", background: "red", color: "white" }
+    // and these lines extract each property & value from the object and applies them
+    // eslint-disable-next-line
+    Object.entries(map).map(obj => {
+      const key = obj[0];
+      const value: any = obj[1];
+      collection[0].style.setProperty(key, value)
+    });
+  });
+}
+
+/*
 // merge readFromFirebase1 to 
 const readFromFirebase1 = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
@@ -421,8 +482,10 @@ const readFromFirebase1 = async () => {
     console.log(doc.id, " => ", doc.data().name);
   });
 }
+*/
 
-const readFromFirebase = async () => {
+/*
+const readFromFirebaseORG = async () => {
   const docRef = doc(getFirestore(), "html", "cloudbuddy")
   const docSnap = await getDoc(docRef)
 
@@ -496,14 +559,16 @@ const readFromFirebase = async () => {
     return "No such document!"
   }
 }
+*/
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
   // runs only on the first render
   // https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
-    readFromFirebase1()
-    // readFromFirebase()
+    //readFromFirebaseORG()
+    //readFromFirebase1()
+    readFromFirebase()
   }, []);
 
   function debounce(this: any, fn: any, ms: any) {
