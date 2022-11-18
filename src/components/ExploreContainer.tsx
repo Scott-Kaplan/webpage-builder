@@ -1,28 +1,24 @@
 import './ExploreContainer.css';
 import React, { useState, useEffect } from 'react'
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 import { getDoc } from "firebase/firestore";
-import { getFirestore } from 'firebase/firestore';
 import { useIonViewDidEnter } from '@ionic/react';
-import { app, firestore } from '../firebase'
-//import { workers } from 'cluster';
-//import { firestore } from '../firebase';
-//import { isCompositeComponent } from 'react-dom/test-utils';
+import { app } from '../firebase'
 console.log(app) // do this or get run time error
-
-
 
 const ids: any = [] // declare global array to store all created id names
 var idCounter = 0
 var mouseHover: any = {} // mouseHover[idX] = true | false
-
 var idNum = 0
-
 var leftPopupPresent = false
-
 var xStartPositionOfDiv: any;
 var yStartPositionOfDiv: any;
-//var widthOfLeftClickMenu: any; // made no difference
 
 interface ContainerProps { }
 
@@ -30,7 +26,6 @@ interface ContainerProps { }
 async function writeToFirebase(msg: HTMLElement) {
   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
   var divTree = msg.outerHTML
-
   await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
     name: divTree
   });
@@ -403,19 +398,28 @@ function leftMouseWriteText() {
 }
 
 // left off here
-//Uncaught (in promise) FirebaseError: Invalid document reference. Document references must have an even number of segments, but html has 1.
+// change in code ability to save "divX" instead of "cloudbuddyX" document
+// change in code ability to save "tag" instead of "name" field
+// run and create 2 new divs
+// verify the firestore saved them correctly
+// rename function readFromFirebase to readFromFirebaseORG
+// create function readFromFirebase() and combine
+//    readFromFirebaseORG with readFromFirebase1
+//    with accounting for "divX" & "tag"
+// test the new readFromFirebase() & ensure on page load that the 2 divs are properly displayed
+// delete readFromFirebase1
+// delete readFromFirebaseORG
+// delete cloudbuddy document in firestore
+// delete cloudbuddy1 document in firestore
+
+// merge readFromFirebase1 to 
 const readFromFirebase1 = async () => {
-  const docRef1 = doc(getFirestore(), "html")
-  const docSnap1 = await getDoc(docRef1)
-  if (docSnap1.exists()) {
-    console.log("Document data:", docSnap1.data());
-    console.log("Document data:", docSnap1.data().name);
-  }
-  else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!");
-    return "No such document!"
-  }
+  // https://firebase.google.com/docs/firestore/query-data/get-data
+  const querySnapshot = await getDocs(collection(getFirestore(), "html"));
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data().name);
+  });
 }
 
 const readFromFirebase = async () => {
