@@ -7,10 +7,10 @@ import {
   getFirestore,
   setDoc,
 } from "firebase/firestore";
-import { getDoc } from "firebase/firestore";
 import { useIonViewDidEnter } from '@ionic/react';
+
 import { app } from '../firebase'
-console.log(app) // do this or get run time error
+app.automaticDataCollectionEnabled = false // need this line or get run time error.  console.log(app) also resolves it but annoying to see this output in the chrome console.
 
 //const ids: any = [] // declare global array to store all created id names
 //var idCounter = 0
@@ -406,7 +406,7 @@ const readFromFirebase = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
   const querySnapshot = await getDocs(collection(getFirestore(), "html"));
   querySnapshot.forEach((doc) => { // for every divX document in firebase
-    console.log(doc.id, " => ", doc.data().tag);
+    // console.log(doc.id, " => ", doc.data().tag);
 
     // get parent div
     var parentDiv = document.getElementById('element')!
