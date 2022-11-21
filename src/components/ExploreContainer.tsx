@@ -12,14 +12,12 @@ import { useIonViewDidEnter } from '@ionic/react';
 import { app } from '../firebase'
 app.automaticDataCollectionEnabled = false // need this line or get run time error.  console.log(app) also resolves it but annoying to see this output in the chrome console.
 
-//const ids: any = [] // declare global array to store all created id names
-//var idCounter = 0
 var mouseHover: any = {} // mouseHover[idX] = true | false
 var idNum = 0
 var leftPopupPresent = false
 var xStartPositionOfDiv: any
 var yStartPositionOfDiv: any
-var divNumber = 0 // globally counter for amount of divs
+var divNumber = 0 // global counter for quantity of divs
 
 interface ContainerProps { }
 
@@ -28,9 +26,7 @@ async function writeToFirebase(msg: HTMLElement) {
   // need this next line otherwise HTMLDivElement object can't be saved to Firebase
   var divTree = msg.outerHTML
   await setDoc(doc(getFirestore(), "html", `div${divNumber++}`), {
-    //await setDoc(doc(getFirestore(), "html", "cloudbuddy"), {
     tag: divTree
-    // name: divTree
   });
 }
 
@@ -89,7 +85,6 @@ const documentClickHandler = function (e: any) {
     // create a new div
     var sp1 = document.createElement('div')
     // create an id for the div
-    // sp1.setAttribute("id", "id_you_like")
     var newId = `id${idNum++}`
     sp1.setAttribute("id", newId)
     // create a class for the div
@@ -120,29 +115,6 @@ const documentClickHandler = function (e: any) {
       mouseHover[newId] = true
     }, false);
     //writeToFirebase(test)
-
-    // globally store the div's new id
-    // create one variable containing all new divs
-    //ids[idCounter++] = newId
-    // print all ids
-    // need to figure out how to store multiple htmldivelements
-    // can't seem to figure out how to add them together
-    // it would be nightmarish to delete a div if they were all together in one
-    // so, instead seriosly consider saving to Firebase each individually
-    // var alldivs: HTMLElement
-    // for (var i = 0; i < ids.length; i++) {
-    //   console.log(`id[${i}] = `, ids[i])
-    //   alldivs = document.getElementById(ids[i])!
-    // }
-    // console.log('all divs = ', alldivs)
-
-    //write this to firebase
-    // var text = document.getElementById("id_you_like")!
-    //var text = document.getElementById(newId)!
-    //this prints <div id ... </div>
-    //console.log('getElementById(newId) = ',text)
-    //writeToFirebase(text)
-    //console.log('all divs = ', document.getElementById("element")!)
 
     // display dimmensions of div
     // console.log('height including padding and border: ', text.offsetHeight)
@@ -320,11 +292,6 @@ function getStringBetween(str: string, start: string, end: string) {
 }
 
 function leftMouseWriteText() {
-
-  //onmouseenter, when enter the div, set to true
-  //monmouseleave, when leave div, set to false
-
-
   // this prevents  <div id="tag"></div>  from being created more than once
   if (document.getElementById("write_text"))
     return
@@ -400,8 +367,6 @@ function leftMouseWriteText() {
   // console.log(cssObj.overflow) // prints "hidden"
 }
 
-// left off here.  Search email for left off here
-
 const readFromFirebase = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
   const querySnapshot = await getDocs(collection(getFirestore(), "html"));
@@ -417,21 +382,18 @@ const readFromFirebase = async () => {
     // create a new div
     var sp1 = document.createElement('div')
 
-    // extract the id which is "id_you_like" from this example
-    // '<div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
-    //var idExtracted = getStringBetween(docSnap.data().name, 'id="', '" class')
+    // extract the id name (id1) from this example
+    // '<div id="id1" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
     var idExtracted = getStringBetween(doc.data().tag, 'id="', '" class')
     //console.log('idExtracted = ', idExtracted)
     sp1.setAttribute("id", idExtracted)
 
     // extract class
-    //var classExtracted = getStringBetween(docSnap.data().name, 'class="', '" style')
     var classExtracted = getStringBetween(doc.data().tag, 'class="', '" style')
     // console.log('classExtracted = ', classExtracted)
     sp1.classList.add(classExtracted)
 
     // extract text
-    //var textExtracted = getStringBetween(docSnap.data().name, ';">', '</div>')
     var textExtracted = getStringBetween(doc.data().tag, ';">', '</div>')
     // console.log('textExtracted = ', textExtracted)
     //sp1.innerHTML = "Hello";
@@ -441,7 +403,6 @@ const readFromFirebase = async () => {
     parentDiv.insertBefore(sp1, d1)
 
     // create class properties for the newly created div
-    //let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
     let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
 
     // extract all CSS properties {name: value} pairs
@@ -472,102 +433,11 @@ const readFromFirebase = async () => {
   });
 }
 
-/*
-// merge readFromFirebase1 to 
-const readFromFirebase1 = async () => {
-  // https://firebase.google.com/docs/firestore/query-data/get-data
-  const querySnapshot = await getDocs(collection(getFirestore(), "html"));
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data().name);
-  });
-}
-*/
-
-/*
-const readFromFirebaseORG = async () => {
-  const docRef = doc(getFirestore(), "html", "cloudbuddy")
-  const docSnap = await getDoc(docRef)
-
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-    console.log("Document data:", docSnap.data().name);
-    //var divFromDatabase = docSnap.data()
-
-    // get parent div
-    var parentDiv = document.getElementById('element')!
-
-    // get bottom div within the parent div
-    var d1 = document.getElementById('element')!.firstChild
-
-    // create a new div
-    var sp1 = document.createElement('div')
-
-    // extract the id which is "id_you_like" from this example
-    // '<div id="id_you_like" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
-    var idExtracted = getStringBetween(docSnap.data().name, 'id="', '" class')
-    // console.log('idExtracted = ', idExtracted)
-    sp1.setAttribute("id", idExtracted)
-
-    // extract class
-    var classExtracted = getStringBetween(docSnap.data().name, 'class="', '" style')
-    // console.log('classExtracted = ', classExtracted)
-    sp1.classList.add(classExtracted)
-
-    // extract text
-    var textExtracted = getStringBetween(docSnap.data().name, ';">', '</div>')
-    // console.log('textExtracted = ', textExtracted)
-    //sp1.innerHTML = "Hello";
-    sp1.innerHTML = textExtracted
-
-    // insert the newly created div before the bottom div in the parent div
-    parentDiv.insertBefore(sp1, d1)
-
-    // create class properties for the newly created div
-    //let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
-    let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
-
-    // extract all CSS properties {name: value} pairs
-    // the entire string before started with this
-    // "<div id=\"id_you_like\" class=\"foo\" style=\"position: absolute; left: 131px; top: 66px; height: 100px; background: red; color: white;\">Hello</div>"
-    // after these 2 lines are executed
-    // var stylesExtracted = getStringBetween(docSnap.data().name, 'style="', '">')
-    // console.log('stylesExtracted = ', stylesExtracted)
-    // the following is left
-    // position: absolute; left: 441px; top: 178px; height: 100px; background: red; color: white;
-
-    // then after these lines
-    var re = /([\w-]+): ([^;]+)/g;
-    var m: any
-    var map = {} as any
-    while ((m = re.exec(docSnap.data().name)) != null) {
-      map[m[1]] = m[2];
-    }
-    // we then have an object equal to the css property of name value pairs, like -
-    // Object { position: "absolute", left: "441px", top: "178px", height: "100px", background: "red", color: "white" }
-    // and these lines extract each property & value from the object and applies them
-    // eslint-disable-next-line
-    Object.entries(map).map(obj => {
-      const key = obj[0];
-      const value: any = obj[1];
-      collection[0].style.setProperty(key, value)
-    });
-
-  } else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!");
-    return "No such document!"
-  }
-}
-*/
-
 const ExploreContainer: React.FC<ContainerProps> = () => {
 
   // runs only on the first render
   // https://www.w3schools.com/react/react_useeffect.asp
   useEffect(() => {
-    //readFromFirebaseORG()
-    //readFromFirebase1()
     readFromFirebase()
   }, []);
 
@@ -611,12 +481,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     resizeCssTagNamed_container__trigger()
     initializeLeftClickMenu()
     initializeRightClickMenu()
-
-    // menu.offsetWidth is initially zero.  The 2nd time and on it is fine
-    //const menu = document.getElementById('menu')!;
-    // made no differencevar widthOfLeftClickMenu = menu.offsetWidth
-    //widthOfLeftClickMenu = menu.offsetWidth
-    //console.log('initial widthOfLeftClickMenu = ',widthOfLeftClickMenu)
 
     // capture left mouse click
     document.addEventListener('click', function (e) {
@@ -665,6 +529,10 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 };
 
 export default ExploreContainer;
+
+//left off here
+// on mobile, one div appears off the page to the right
+// adjust the css so they are relative to the screen size.  
 
 // long term left off here
 // [1] left click down, if off the screen apply a correction initially like did for x coordinate
