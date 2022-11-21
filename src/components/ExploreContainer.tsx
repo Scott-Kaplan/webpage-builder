@@ -47,17 +47,17 @@ function RightMousePrintHtml() {
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
   //console.log((window as any).newIdIsMouseHover)  
-  const menu = document.getElementById('menu')!;
+  const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
 
   // the user left clicked on "Cancel"
   if (e.target.innerText === 'Cancel') {
-    menu.classList.add('container__menu--hidden');
+    leftMenu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
   }
   // the user left clicked on "Create div"
   else if (e.target.innerText === 'Create div') {
-    menu.classList.add('container__menu--hidden');
+    leftMenu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
 
     // prints all divs
@@ -122,7 +122,7 @@ const documentClickHandler = function (e: any) {
   }
   // the user left clicked on "Second action"
   else if (e.target.innerText === 'Second action') {
-    menu.classList.add('container__menu--hidden');
+    leftMenu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
   }
   else {
@@ -135,28 +135,36 @@ const documentClickHandler = function (e: any) {
 }
 
 // Hide the right popup when left clicking
-const documentClickHandler1 = function (e: any) {
+const handleLeftMouseClick = function (e: any) {
+  // console.log('left clicked')
 
-  const menu2 = document.getElementById('menu2')!;
-  const menu = document.getElementById('menu')!;
+  // left off here
+  // see https://code-boxx.com/add-remove-list-items-javascript/
+  // the user just left clicked
+  // if the user was hovering over an element
+  // show that in the left menu as the very first option
+  var myList = document.getElementById("myList")
+
+  const rightMenu = document.getElementById('rightMenu')!;
+  const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
 
   // the user left clicked on "disable designer"
   if (e.target.innerText === 'disable designer') {
-    menu2.classList.add('container__menu--hidden');
-    document.removeEventListener('click', documentClickHandler1);
+    rightMenu.classList.add('container__menu--hidden');
+    document.removeEventListener('click', handleLeftMouseClick);
     // without these next 2 lines, the left popup opens up
-    menu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', documentClickHandler1);
+    leftMenu.classList.add('container__menu--hidden');
+    document.removeEventListener('click', handleLeftMouseClick);
   }
   // the user left clicked on "enable designer"
   else if (e.target.innerText === 'enable designer') {
     //console.log('close the right click menu')
-    menu2.classList.add('container__menu--hidden');
-    document.removeEventListener('click', documentClickHandler1);
+    rightMenu.classList.add('container__menu--hidden');
+    document.removeEventListener('click', handleLeftMouseClick);
     // without these next 2 lines, the left popup opens up
-    menu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', documentClickHandler1);
+    leftMenu.classList.add('container__menu--hidden');
+    document.removeEventListener('click', handleLeftMouseClick);
   }
 
   // Test case:
@@ -167,14 +175,14 @@ const documentClickHandler1 = function (e: any) {
   else {
     // close the right popup, because want the left popup only to appear
     // otherwise both popups will appear at the same time
-    menu2.classList.add('container__menu--hidden');
-    document.removeEventListener('click', documentClickHandler1);
+    rightMenu.classList.add('container__menu--hidden');
+    document.removeEventListener('click', handleLeftMouseClick);
   }
 }
 
 function initializeRightClickMenu() {
   const ele2 = document.getElementById('element')!;
-  const menu2 = document.getElementById('menu2')!;
+  const rightMenu = document.getElementById('rightMenu')!;
 
   // 'contextmenu' is for right click
   ele2.addEventListener('contextmenu', function (e) {
@@ -186,13 +194,13 @@ function initializeRightClickMenu() {
     const y = e.clientY - rect.top;
 
     // Set the position for menu
-    menu2.style.top = `${y}px`;
-    menu2.style.left = `${x}px`;
+    rightMenu.style.top = `${y}px`;
+    rightMenu.style.left = `${x}px`;
 
     // Show the menu
-    menu2.classList.remove('container__menu--hidden');
+    rightMenu.classList.remove('container__menu--hidden');
 
-    document.addEventListener('click', documentClickHandler1);
+    document.addEventListener('click', handleLeftMouseClick);
 
     // Test case:
     // [1] bring up left popup
@@ -202,8 +210,8 @@ function initializeRightClickMenu() {
     if (leftPopupPresent) {
       // close the left popup, because want the right popup only to appear
       // otherwise both popups will appear at the same time
-      const menu = document.getElementById('menu')!;
-      menu.classList.add('container__menu--hidden');
+      const leftMenu = document.getElementById('leftMenu')!;
+      leftMenu.classList.add('container__menu--hidden');
       document.removeEventListener('click', documentClickHandler);
       leftPopupPresent = false
     }
@@ -212,7 +220,7 @@ function initializeRightClickMenu() {
 
 function initializeLeftClickMenu() {
   const ele = document.getElementById('element')!;
-  const menu = document.getElementById('menu')!;
+  const leftMenu = document.getElementById('leftMenu')!;
 
   // This function is executed when the user moves the left popup.
   // proceedurally the user moves the cursor from its previous position and left clicks.
@@ -231,7 +239,7 @@ function initializeLeftClickMenu() {
 
     /* CALCULATE & START THE LEFT CLICK MENU AT THIS X COORDINATE */
     var xPositionOfCursor = e.clientX
-    var widthOfLeftClickMenu = menu.offsetWidth
+    var widthOfLeftClickMenu = leftMenu.offsetWidth
     var widthOfBrowserWindow = rect.width
     /*
       If the first left click done by the user is too close to outside the
@@ -249,26 +257,26 @@ function initializeLeftClickMenu() {
 
     // Set the x position of the left click menu
     if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfBrowserWindow)
-      menu.style.left = `${xPositionOfCursor - widthOfLeftClickMenu}px`;
+      leftMenu.style.left = `${xPositionOfCursor - widthOfLeftClickMenu}px`;
     else
-      menu.style.left = `${xPositionOfCursor}px`
+      leftMenu.style.left = `${xPositionOfCursor}px`
     /* END */
 
     /* CALCULATE & START THE LEFT CLICK MENU AT THIS Y COORDINATE */
     var yPositionOfCursor = e.clientY
-    var heightOfLeftClickMenu = menu.offsetHeight
+    var heightOfLeftClickMenu = leftMenu.offsetHeight
     var heightOfBrowserWindow = window.innerHeight
     var y = yPositionOfCursor - rect.top;
 
     // Set the y position of the left click menu
     if ((yPositionOfCursor + heightOfLeftClickMenu) >= heightOfBrowserWindow)
-      menu.style.top = `${y - heightOfLeftClickMenu}px`;
+      leftMenu.style.top = `${y - heightOfLeftClickMenu}px`;
     else
-      menu.style.top = `${y}px`
+      leftMenu.style.top = `${y}px`
     /* END */
 
     // Show the menu
-    menu.classList.remove('container__menu--hidden');
+    leftMenu.classList.remove('container__menu--hidden');
 
     document.addEventListener('click', documentClickHandler);
     leftPopupPresent = true
@@ -485,8 +493,8 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     // capture left mouse click
     document.addEventListener('click', function (e) {
       if (e.button === 0) {
-        documentClickHandler1(e)
-        leftMouseWriteText();
+        handleLeftMouseClick(e)
+        //leftMouseWriteText();
       }
     }, false);
 
@@ -511,14 +519,14 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         {/* {apiResponse1} */}
 
         {/* <input type='button' id="buttonid" value='click me' /> */}
-        <ul id="menu" className="container__menu container__menu--hidden">
+        <ul id="leftMenu" className="container__menu container__menu--hidden">
           <li className="container__item">Create div</li>
           <li className="container__item">Second action</li>
           <li className="container__divider"></li>
           <li className="container__item">Cancel</li>
         </ul>
 
-        <ul id="menu2" className="container__menu container__menu--hidden">
+        <ul id="rightMenu" className="container__menu container__menu--hidden">
           <li className="container__item">enable designer</li>
           <li className="container__divider"></li>
           <li className="container__item">disable designer</li>
@@ -530,11 +538,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
 export default ExploreContainer;
 
-//left off here
-// on mobile, one div appears off the page to the right
-// adjust the css so they are relative to the screen size.  
-
 // long term left off here
+// [0] on mobile, one div appears off the page to the right
+//     adjust the css so they are relative to the screen size.       
 // [1] left click down, if off the screen apply a correction initially like did for x coordinate
 // [2] adjust x coordinate for right menu
 // [3] adjust y coordinate for right menu
