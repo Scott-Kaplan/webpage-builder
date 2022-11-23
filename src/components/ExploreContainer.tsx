@@ -139,11 +139,27 @@ const handleLeftMouseClick = function (e: any) {
   // console.log('left clicked')
 
   // left off here
-  // see https://code-boxx.com/add-remove-list-items-javascript/
-  // the user just left clicked
-  // if the user was hovering over an element
-  // show that in the left menu as the very first option
-  var myList = document.getElementById("myList")
+  // replace "Just added" with whatever is being hovered over; otherwise don't add to the list
+  //  https://code-boxx.com/add-remove-list-items-javascript/
+  /* 
+  If was already hovering over something when left click, display
+  that option first to the user in the menu
+  */
+  // Create a new list item
+  var newListItem = document.createElement("li")
+  // Assign it text that the user will see
+  var node: any = document.createTextNode("Just added")
+  // Have it match the className as the hard coded ones, so it doesn't look different
+  newListItem.classList.add("container__item")
+  // Add the item
+  newListItem.appendChild(node)
+  // The next 3 lines place this new option at the beggining of the list in the menu
+  var element = document.getElementById("leftMenu")
+  var child = document.getElementById("lM1")
+  element?.insertBefore(newListItem, child)
+  /*
+  end
+  */
 
   const rightMenu = document.getElementById('rightMenu')!;
   const leftMenu = document.getElementById('leftMenu')!;
@@ -299,6 +315,8 @@ function getStringBetween(str: string, start: string, end: string) {
   return result![1];
 }
 
+
+/*
 function leftMouseWriteText() {
   // this prevents  <div id="tag"></div>  from being created more than once
   if (document.getElementById("write_text"))
@@ -306,11 +324,9 @@ function leftMouseWriteText() {
 
   // assuming there is button already on the screen
   // dynamically change the background color of the button
-  /*
-     1 get boundry of button
-     2 is cursor within the boundry
-     3 yes - get element
-  */
+     // 1 get boundry of button
+     // 2 is cursor within the boundry
+     // 3 yes - get element
 
   // steps of how to get here
   // hover over the click me button
@@ -374,6 +390,7 @@ function leftMouseWriteText() {
   // console.log(cssObj.color) // prints "rgb(0, 0, 255)"
   // console.log(cssObj.overflow) // prints "hidden"
 }
+*/
 
 const readFromFirebase = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
@@ -520,10 +537,10 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
         {/* <input type='button' id="buttonid" value='click me' /> */}
         <ul id="leftMenu" className="container__menu container__menu--hidden">
-          <li className="container__item">Create div</li>
-          <li className="container__item">Second action</li>
-          <li className="container__divider"></li>
-          <li className="container__item">Cancel</li>
+          <li id="lM1" className="container__item">Create div</li>
+          <li id="lM2" className="container__item">Second action</li>
+          <li id="lM3" className="container__divider"></li>
+          <li id="lM4" className="container__item">Cancel</li>
         </ul>
 
         <ul id="rightMenu" className="container__menu container__menu--hidden">
