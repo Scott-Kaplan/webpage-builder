@@ -315,7 +315,6 @@ function getStringBetween(str: string, start: string, end: string) {
   return result![1];
 }
 
-
 /*
 function leftMouseWriteText() {
   // this prevents  <div id="tag"></div>  from being created more than once
@@ -556,11 +555,14 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 export default ExploreContainer;
 
 // long term left off here
-// [0] on mobile, one div appears off the page to the right
+// Want to do the first page, similar to the one when I log on to Figma
+// delete the 2nd div
+// modify the 1st div to match just the hero section of the Figma page
+//
+// [1] on mobile, one div appears off the page to the right
 //     adjust the css so they are relative to the screen size.       
-// [1] left click down, if off the screen apply a correction initially like did for x coordinate
-// [2] adjust x coordinate for right menu
-// [3] adjust y coordinate for right menu
+// [2] left click down, if off the screen apply a correction initially like did for x coordinate
+// [3] do the same as above if first click is for the right menu
 
 /*
   when left click, bring up a menu -
