@@ -138,61 +138,70 @@ const documentClickHandler = function (e: any) {
 const handleLeftMouseClick = function (e: any) {
   // console.log('left clicked')
 
-  // left off here
-  // replace "Just added" with whatever is being hovered over; otherwise don't add to the list
-  //  https://code-boxx.com/add-remove-list-items-javascript/
   /* 
-  If was already hovering over something when left click, display
-  that option first to the user in the menu
+  if hovering over a div when left clicking,
+  give the user the option to do something with it
+  by putting it at the top of the list
   */
-  // Create a new list item
-  var newListItem = document.createElement("li")
-  // Assign it text that the user will see
-  var node: any = document.createTextNode("Just added")
-  // Have it match the className as the hard coded ones, so it doesn't look different
-  newListItem.classList.add("container__item")
-  // Add the item
-  newListItem.appendChild(node)
-  // The next 3 lines place this new option at the beggining of the list in the menu
-  var element = document.getElementById("leftMenu")
-  var child = document.getElementById("lM1")
-  element?.insertBefore(newListItem, child)
-  /*
-  end
-  */
+  for (let divId in mouseHover) {
+    //console.log('div id=', divId, 'value=', mouseHover[divId])
+    if (mouseHover[divId] === true)
+      console.log('hovering over div id =', divId)
 
-  const rightMenu = document.getElementById('rightMenu')!;
-  const leftMenu = document.getElementById('leftMenu')!;
-  //console.log(e.target.innerText) // prints the selection made
+    // left off here
+    // run and notice too much is being added to the list.  prevent this from happening
+    // https://code-boxx.com/add-remove-list-items-javascript/
 
-  // the user left clicked on "disable designer"
-  if (e.target.innerText === 'disable designer') {
-    rightMenu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', handleLeftMouseClick);
-    // without these next 2 lines, the left popup opens up
-    leftMenu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', handleLeftMouseClick);
-  }
-  // the user left clicked on "enable designer"
-  else if (e.target.innerText === 'enable designer') {
-    //console.log('close the right click menu')
-    rightMenu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', handleLeftMouseClick);
-    // without these next 2 lines, the left popup opens up
-    leftMenu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', handleLeftMouseClick);
-  }
+    // Create a new list item
+    var newListItem = document.createElement("li")
+    // Assign it text that the user will see
+    //var node: any = document.createTextNode("Just added")
+    var node: any = document.createTextNode(divId)
+    // Have it match the className as the hard coded ones, so it doesn't look different
+    newListItem.classList.add("container__item")
+    // Add the item
+    newListItem.appendChild(node)
+    // The next 3 lines place this new option at the beggining of the list in the menu
+    var element = document.getElementById("leftMenu")
+    var child = document.getElementById("lM1")
+    element?.insertBefore(newListItem, child)
+    /*
+    end
+    */
 
-  // Test case:
-  // [1] bring up right popup
-  // [2] bring up left popup
-  // [3] verify --> the right popup should close
-  // passes
-  else {
-    // close the right popup, because want the left popup only to appear
-    // otherwise both popups will appear at the same time
-    rightMenu.classList.add('container__menu--hidden');
-    document.removeEventListener('click', handleLeftMouseClick);
+    const rightMenu = document.getElementById('rightMenu')!;
+    const leftMenu = document.getElementById('leftMenu')!;
+    //console.log(e.target.innerText) // prints the selection made
+
+    // the user left clicked on "disable designer"
+    if (e.target.innerText === 'disable designer') {
+      rightMenu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', handleLeftMouseClick);
+      // without these next 2 lines, the left popup opens up
+      leftMenu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', handleLeftMouseClick);
+    }
+    // the user left clicked on "enable designer"
+    else if (e.target.innerText === 'enable designer') {
+      //console.log('close the right click menu')
+      rightMenu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', handleLeftMouseClick);
+      // without these next 2 lines, the left popup opens up
+      leftMenu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', handleLeftMouseClick);
+    }
+
+    // Test case:
+    // [1] bring up right popup
+    // [2] bring up left popup
+    // [3] verify --> the right popup should close
+    // passes
+    else {
+      // close the right popup, because want the left popup only to appear
+      // otherwise both popups will appear at the same time
+      rightMenu.classList.add('container__menu--hidden');
+      document.removeEventListener('click', handleLeftMouseClick);
+    }
   }
 }
 
@@ -391,6 +400,16 @@ function leftMouseWriteText() {
 }
 */
 
+function listenForHoverOverId(newId: string) {
+  var test = document.getElementById(newId)!
+  test.addEventListener("mouseleave", function (event) {
+    mouseHover[newId] = false
+  }, false);
+  test.addEventListener("mouseover", function (event) {
+    mouseHover[newId] = true
+  }, false);
+}
+
 const readFromFirebase = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
   const querySnapshot = await getDocs(collection(getFirestore(), "html"));
@@ -410,6 +429,7 @@ const readFromFirebase = async () => {
     // '<div id="id1" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
     var idExtracted = getStringBetween(doc.data().tag, 'id="', '" class')
     //console.log('idExtracted = ', idExtracted)
+
     sp1.setAttribute("id", idExtracted)
 
     // extract class
@@ -454,6 +474,7 @@ const readFromFirebase = async () => {
       const value: any = obj[1];
       collection[0].style.setProperty(key, value)
     });
+    listenForHoverOverId(idExtracted)
   });
 }
 
@@ -554,15 +575,15 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
 export default ExploreContainer;
 
-// long term left off here
+// left off here
 // Want to do the first page, similar to the one when I log on to Figma
-// delete the 2nd div
-// modify the 1st div to match just the hero section of the Figma page
+// 0 delete the 2nd div
+// 1 modify the 1st div to match just the hero section of the Figma page
 //
-// [1] on mobile, one div appears off the page to the right
+// 2 on mobile, one div appears off the page to the right
 //     adjust the css so they are relative to the screen size.       
-// [2] left click down, if off the screen apply a correction initially like did for x coordinate
-// [3] do the same as above if first click is for the right menu
+// 3 left click down, if off the screen apply a correction initially like did for x coordinate
+// 4 do the same as above if first click is for the right menu
 
 /*
   when left click, bring up a menu -
