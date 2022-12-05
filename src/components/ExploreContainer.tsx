@@ -13,6 +13,7 @@ import { app } from '../firebase'
 app.automaticDataCollectionEnabled = false // need this line or get run time error.  console.log(app) also resolves it but annoying to see this output in the chrome console.
 
 var mouseHover: any = {} // mouseHover[idX] = true | false
+var lastDivHoveredOver = "none"
 var idNum = 0
 var leftPopupPresent = false
 var xStartPositionOfDiv: any
@@ -137,6 +138,9 @@ const documentClickHandler = function (e: any) {
 // Hide the right popup when left clicking
 const handleLeftMouseClick = function (e: any) {
   // console.log('left clicked')
+  const rightMenu = document.getElementById('rightMenu')!;
+  const leftMenu = document.getElementById('leftMenu')!;
+  //console.log(e.target.innerText) // prints the selection made
 
   /* 
   if hovering over a div when left clicking,
@@ -145,34 +149,42 @@ const handleLeftMouseClick = function (e: any) {
   */
   for (let divId in mouseHover) {
     //console.log('div id=', divId, 'value=', mouseHover[divId])
-    if (mouseHover[divId] === true)
+    if (mouseHover[divId] === true) {
       console.log('hovering over div id =', divId)
 
-    // left off here
-    // run and notice too much is being added to the list.  prevent this from happening
-    // https://code-boxx.com/add-remove-list-items-javascript/
+      // prevent id from being added to the menu if was already hovering over it
+      // when last left clicked
+      if (divId === lastDivHoveredOver) {
+        console.log(`was previously hovering over ${divId} when last left clicked.  So don't add it again to the left menu`)
+        return
+      }
+      else {
+        lastDivHoveredOver = divId
+        console.log(`the last id hovered over is ${divId}`)
+      }
 
-    // Create a new list item
-    var newListItem = document.createElement("li")
-    // Assign it text that the user will see
-    //var node: any = document.createTextNode("Just added")
-    var node: any = document.createTextNode(divId)
-    // Have it match the className as the hard coded ones, so it doesn't look different
-    newListItem.classList.add("container__item")
-    // Add the item
-    newListItem.appendChild(node)
-    // The next 3 lines place this new option at the beggining of the list in the menu
-    var element = document.getElementById("leftMenu")
-    var child = document.getElementById("lM1")
-    element?.insertBefore(newListItem, child)
-    /*
-    end
-    */
+      // left off here
+      // run and notice too much is being added to the list.  prevent this from happening
+      // https://code-boxx.com/add-remove-list-items-javascript/
 
-    const rightMenu = document.getElementById('rightMenu')!;
-    const leftMenu = document.getElementById('leftMenu')!;
-    //console.log(e.target.innerText) // prints the selection made
+      // Create a new list item
+      var newListItem = document.createElement("li")
+      // Assign it text that the user will see
+      //var node: any = document.createTextNode("Just added")
+      var node: any = document.createTextNode(divId)
+      // Have it match the className as the hard coded ones, so it doesn't look different
+      newListItem.classList.add("container__item")
+      // Add the item
+      newListItem.appendChild(node)
+      // The next 3 lines place this new option at the beggining of the list in the menu
+      var element = document.getElementById("leftMenu")
+      var child = document.getElementById("lM1")
+      element?.insertBefore(newListItem, child)
+      /*
+      end
+      */
 
+    }
     // the user left clicked on "disable designer"
     if (e.target.innerText === 'disable designer') {
       rightMenu.classList.add('container__menu--hidden');
