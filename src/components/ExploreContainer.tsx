@@ -13,7 +13,7 @@ import { app } from '../firebase'
 app.automaticDataCollectionEnabled = false // need this line or get run time error.  console.log(app) also resolves it but annoying to see this output in the chrome console.
 
 var mouseHover: any = {} // mouseHover[idX] = true | false
-var lastDivHoveredOver = "none"
+var lastDivHoveredOver = ''
 var idNum = 0
 var leftPopupPresent = false
 var xStartPositionOfDiv: any
@@ -135,12 +135,20 @@ const documentClickHandler = function (e: any) {
   }
 }
 
+var alistItemHasBeenAddedDynamically = false
+
 // Hide the right popup when left clicking
 const handleLeftMouseClick = function (e: any) {
   // console.log('left clicked')
   const rightMenu = document.getElementById('rightMenu')!;
   const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
+
+  var hoveringOverSomethingNow = false
+
+  // left off here
+  // when selected the dynamically added item in the list
+  // display options for the user for that item
 
   /* 
   if hovering over a div when left clicking,
@@ -150,22 +158,34 @@ const handleLeftMouseClick = function (e: any) {
   for (let divId in mouseHover) {
     //console.log('div id=', divId, 'value=', mouseHover[divId])
     if (mouseHover[divId] === true) {
-      console.log('hovering over div id =', divId)
+      hoveringOverSomethingNow = true
+      //console.log('----------')
+      //console.log('hovering over div id =', divId)
+      //console.log('lastDivHoveredOver =', lastDivHoveredOver)
 
-      // prevent id from being added to the menu if was already hovering over it
-      // when last left clicked
+      // prevent the same id from being added to the menu on this left click
+      // if was previously hovering over it when last left clicked
       if (divId === lastDivHoveredOver) {
-        console.log(`was previously hovering over ${divId} when last left clicked.  So don't add it again to the left menu`)
+        // console.log(`was previously hovering over ${divId} when last left clicked.  So don't add it again to the left menu`)
         return
       }
-      else {
+
+      // delete the previously dynamically added list item from the top of menu
+      // because we want to replace it with that of the current div id that is
+      // being hovered over now
+      // then set the lastDivHoveredOver flag to the current divId that is now being hovered over
+      else if ((lastDivHoveredOver !== '') && (alistItemHasBeenAddedDynamically === true)) {
+        // console.log(`try to remove ${lastDivHoveredOver}`)
+        var items = document.querySelectorAll("#leftMenu li")
+        leftMenu.removeChild(items[0])
         lastDivHoveredOver = divId
-        console.log(`the last id hovered over is ${divId}`)
       }
 
-      // left off here
-      // run and notice too much is being added to the list.  prevent this from happening
-      // https://code-boxx.com/add-remove-list-items-javascript/
+      // set the lastDivHoveredOver flag to the current divId that is now being hovered over
+      else {
+        lastDivHoveredOver = divId
+        //console.log(`the last id hovered over is ${divId}`)
+      }
 
       // Create a new list item
       var newListItem = document.createElement("li")
@@ -183,8 +203,11 @@ const handleLeftMouseClick = function (e: any) {
       /*
       end
       */
-
+      // since just added a list item to the menu,
+      // set the dynamically added list item flag to true
+      alistItemHasBeenAddedDynamically = true
     }
+
     // the user left clicked on "disable designer"
     if (e.target.innerText === 'disable designer') {
       rightMenu.classList.add('container__menu--hidden');
@@ -214,6 +237,17 @@ const handleLeftMouseClick = function (e: any) {
       rightMenu.classList.add('container__menu--hidden');
       document.removeEventListener('click', handleLeftMouseClick);
     }
+  }
+  // the current left click is not hovering over anything but
+  // the previous left click was hovering over something
+  // remove the previous list item and reset the counters
+  if ((hoveringOverSomethingNow === false) && (alistItemHasBeenAddedDynamically === true)) {
+    // console.log(`remove the dynamically added ${lastDivHoveredOver}`)
+    var items1 = document.querySelectorAll("#leftMenu li")
+    leftMenu.removeChild(items1[0])
+    // console.log('items1[0]', items1[0])
+    lastDivHoveredOver = ''
+    alistItemHasBeenAddedDynamically = false
   }
 }
 
@@ -596,6 +630,10 @@ export default ExploreContainer;
 //     adjust the css so they are relative to the screen size.       
 // 3 left click down, if off the screen apply a correction initially like did for x coordinate
 // 4 do the same as above if first click is for the right menu
+
+/*
+  // https://code-boxx.com/add-remove-list-items-javascript/
+*/
 
 /*
   when left click, bring up a menu -
