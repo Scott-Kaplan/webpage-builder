@@ -456,6 +456,29 @@ function listenForHoverOverId(newId: string) {
   }, false);
 }
 
+// left off here
+/*
+store the below information into a global array of objects
+how to initialize -
+
+look at the 2nd part of the top post of this
+https://stackoverflow.com/questions/7858385/how-to-add-values-to-an-array-of-objects-dynamically-in-javascript
+or
+top post of this - https://stackoverflow.com/questions/15742442/declaring-array-of-objects
+
+parentDiv -- this is always 'element'  --- does not have to be stored
+  bottomDivWithinParent --- does not have to be stored
+  newDiv
+  idOfNewDiv
+  classNameofNewDiv
+  textOfNewDiv
+  classPropertiesOfNewDiv
+     position: "absolute",
+     left: "441px",
+     ...
+*/
+
+
 const readFromFirebase = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
   const querySnapshot = await getDocs(collection(getFirestore(), "html"));
