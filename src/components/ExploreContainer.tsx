@@ -13,6 +13,7 @@ import { app } from '../firebase'
 app.automaticDataCollectionEnabled = false // need this line or get run time error.  console.log(app) also resolves it but annoying to see this output in the chrome console.
 
 var mouseHover: any = {} // mouseHover[idX] = true | false
+var globalDiv: any = {}
 var lastDivHoveredOver = ''
 var idNum = 0
 var leftPopupPresent = false
@@ -84,16 +85,16 @@ const documentClickHandler = function (e: any) {
     var d1 = document.getElementById('element')!.firstChild
     //console.log('first child = ', d1)
     // create a new div
-    var sp1 = document.createElement('div')
+    var newDiv = document.createElement('div')
     // create an id for the div
     var newId = `id${idNum++}`
-    sp1.setAttribute("id", newId)
+    newDiv.setAttribute("id", newId)
     // create a class for the div
-    sp1.classList.add("foo")
+    newDiv.classList.add("foo")
     // create text to display in the div
-    sp1.innerHTML = "Hello";
+    newDiv.innerHTML = "Hello";
     // insert the newly created div before the bottom div in the parent div
-    parentDiv.insertBefore(sp1, d1)
+    parentDiv.insertBefore(newDiv, d1)
     // create class properties for the newly created div   
     let collection1 = document.getElementsByClassName("foo") as HTMLCollectionOf<HTMLElement>
     // these 3 lines create the new div at the position
@@ -485,38 +486,25 @@ const readFromFirebase = async () => {
   querySnapshot.forEach((doc) => { // for every divX document in firebase
     // console.log(doc.id, " => ", doc.data().tag);
 
-    // get parent div
     var parentDiv = document.getElementById('element')!
-
-    // get bottom div within the parent div
-    var d1 = document.getElementById('element')!.firstChild
-
-    // create a new div
-    var sp1 = document.createElement('div')
-
-    // extract the id name (id1) from this example
+    var bottomDivWithinParentDiv = document.getElementById('element')!.firstChild
+    var newDiv = document.createElement('div')
+    // extract id1 in this example (idOfNewDiv)
     // '<div id="id1" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
-    var idExtracted = getStringBetween(doc.data().tag, 'id="', '" class')
-    //console.log('idExtracted = ', idExtracted)
-
-    sp1.setAttribute("id", idExtracted)
-
-    // extract class
-    var classExtracted = getStringBetween(doc.data().tag, 'class="', '" style')
-    // console.log('classExtracted = ', classExtracted)
-    sp1.classList.add(classExtracted)
-
-    // extract text
-    var textExtracted = getStringBetween(doc.data().tag, ';">', '</div>')
-    // console.log('textExtracted = ', textExtracted)
-    //sp1.innerHTML = "Hello";
-    sp1.innerHTML = textExtracted
-
-    // insert the newly created div before the bottom div in the parent div
-    parentDiv.insertBefore(sp1, d1)
+    var idOfNewDiv = getStringBetween(doc.data().tag, 'id="', '" class')
+    newDiv.setAttribute("id", idOfNewDiv)
+    var classNameOfNewDiv = getStringBetween(doc.data().tag, 'class="', '" style')
+    newDiv.classList.add(classNameOfNewDiv)
+    var textOfNewDiv = getStringBetween(doc.data().tag, ';">', '</div>')
+    newDiv.innerHTML = textOfNewDiv
+    parentDiv.insertBefore(newDiv, bottomDivWithinParentDiv)
 
     // create class properties for the newly created div
-    let collection = document.getElementsByClassName(classExtracted) as HTMLCollectionOf<HTMLElement>
+    /*
+    left off here.  rename collection to something that makes sense
+    then rename above instead of "New" to "existing".
+    */
+    let collection = document.getElementsByClassName(classNameOfNewDiv) as HTMLCollectionOf<HTMLElement>
 
     // extract all CSS properties {name: value} pairs
     // the entire string before started with this
@@ -530,7 +518,6 @@ const readFromFirebase = async () => {
     var re = /([\w-]+): ([^;]+)/g;
     var m: any
     var map = {} as any
-    //while ((m = re.exec(docSnap.data().name)) != null) {
     while ((m = re.exec(doc.data().tag)) != null) {
       map[m[1]] = m[2];
     }
@@ -543,7 +530,7 @@ const readFromFirebase = async () => {
       const value: any = obj[1];
       collection[0].style.setProperty(key, value)
     });
-    listenForHoverOverId(idExtracted)
+    listenForHoverOverId(idOfNewDiv)
   });
 }
 
