@@ -145,11 +145,15 @@ const handleLeftMouseClick = function (e: any) {
   const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
 
-  var hoveringOverSomethingNow = false
-
   // left off here
   // when selected the dynamically added item in the list
-  // display options for the user for that item
+  // display options for the user for that item  
+  for (let i in globalDiv) {
+    console.log('idOfNewDiv =',globalDiv[i].idOfNewDiv)
+  }
+
+  var hoveringOverSomethingNow = false
+
 
   /* 
   if hovering over a div when left clicking,
@@ -478,13 +482,14 @@ parentDiv -- this is always 'element'  --- does not have to be stored
      left: "441px",
      ...
 */
-
+var readFromFirebaseCounter = 0
 
 const readFromFirebase = async () => {
   // https://firebase.google.com/docs/firestore/query-data/get-data
   const querySnapshot = await getDocs(collection(getFirestore(), "html"));
   querySnapshot.forEach((doc) => { // for every divX document in firebase
     // console.log(doc.id, " => ", doc.data().tag);
+    globalDiv[readFromFirebaseCounter] = {}
 
     var parentDiv = document.getElementById('element')!
     var bottomDivWithinParentDiv = document.getElementById('element')!.firstChild
@@ -492,6 +497,7 @@ const readFromFirebase = async () => {
     // extract id1 in this example (idOfNewDiv)
     // '<div id="id1" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
     var idOfNewDiv = getStringBetween(doc.data().tag, 'id="', '" class')
+    globalDiv[readFromFirebaseCounter++].idOfNewDiv = idOfNewDiv
     newDiv.setAttribute("id", idOfNewDiv)
     var classNameOfNewDiv = getStringBetween(doc.data().tag, 'class="', '" style')
     newDiv.classList.add(classNameOfNewDiv)
@@ -500,10 +506,6 @@ const readFromFirebase = async () => {
     parentDiv.insertBefore(newDiv, bottomDivWithinParentDiv)
 
     // create class properties for the newly created div
-    /*
-    left off here.  rename collection to something that makes sense
-    then rename above instead of "New" to "existing".
-    */
     let collection = document.getElementsByClassName(classNameOfNewDiv) as HTMLCollectionOf<HTMLElement>
 
     // extract all CSS properties {name: value} pairs
