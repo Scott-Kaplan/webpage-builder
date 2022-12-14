@@ -145,15 +145,7 @@ const handleLeftMouseClick = function (e: any) {
   const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
 
-  // left off here
-  // when selected the dynamically added item in the list
-  // display options for the user for that item  
-  for (let i in globalDiv) {
-    console.log('idOfNewDiv =',globalDiv[i].idOfNewDiv)
-  }
-
   var hoveringOverSomethingNow = false
-
 
   /* 
   if hovering over a div when left clicking,
@@ -164,9 +156,19 @@ const handleLeftMouseClick = function (e: any) {
     //console.log('div id=', divId, 'value=', mouseHover[divId])
     if (mouseHover[divId] === true) {
       hoveringOverSomethingNow = true
-      //console.log('----------')
-      //console.log('hovering over div id =', divId)
-      //console.log('lastDivHoveredOver =', lastDivHoveredOver)
+      console.log('----------')
+      console.log('hovering over div id =', divId)
+      // left off here
+      // when selected the dynamically added item in the list (the top item)
+      // display options for the user for that item so the user can modify it
+      for (let i in globalDiv) {
+        //console.log('idOfNewDiv =', globalDiv[i].idOfNewDiv)
+        if (globalDiv[i].idOfNewDiv === divId) {
+          console.log('newDiv = ',globalDiv[i].idOfNewDiv)
+          console.log('classNameOfNewDiv = ',globalDiv[i].classNameOfNewDiv)
+          console.log('textOfNewDiv = ',globalDiv[i].textOfNewDiv)
+        }
+      }
 
       // prevent the same id from being added to the menu on this left click
       // if was previously hovering over it when last left clicked
@@ -497,11 +499,13 @@ const readFromFirebase = async () => {
     // extract id1 in this example (idOfNewDiv)
     // '<div id="id1" class="foo" style="position: absolute; left: 268px; top: 181px; height: 100px; background: red; color: white;">Hello</div>'
     var idOfNewDiv = getStringBetween(doc.data().tag, 'id="', '" class')
-    globalDiv[readFromFirebaseCounter++].idOfNewDiv = idOfNewDiv
+    globalDiv[readFromFirebaseCounter].idOfNewDiv = idOfNewDiv
     newDiv.setAttribute("id", idOfNewDiv)
     var classNameOfNewDiv = getStringBetween(doc.data().tag, 'class="', '" style')
+    globalDiv[readFromFirebaseCounter].classNameOfNewDiv = classNameOfNewDiv
     newDiv.classList.add(classNameOfNewDiv)
     var textOfNewDiv = getStringBetween(doc.data().tag, ';">', '</div>')
+    globalDiv[readFromFirebaseCounter++].textOfNewDiv = textOfNewDiv
     newDiv.innerHTML = textOfNewDiv
     parentDiv.insertBefore(newDiv, bottomDivWithinParentDiv)
 
@@ -530,6 +534,9 @@ const readFromFirebase = async () => {
     Object.entries(map).map(obj => {
       const key = obj[0];
       const value: any = obj[1];
+      // console.log(`key=${key}, value=${value}`)
+      // left off here, how to store multiple key,value in globalDiv
+
       collection[0].style.setProperty(key, value)
     });
     listenForHoverOverId(idOfNewDiv)
