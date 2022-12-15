@@ -162,12 +162,13 @@ const handleLeftMouseClick = function (e: any) {
       // when selected the dynamically added item in the list (the top item)
       // display options for the user for that item so the user can modify it
       for (let i in globalDiv) {
+        console.log(`globalDiv[${i}] = `,globalDiv[i])
         //console.log('idOfNewDiv =', globalDiv[i].idOfNewDiv)
-        if (globalDiv[i].idOfNewDiv === divId) {
-          console.log('newDiv = ',globalDiv[i].idOfNewDiv)
-          console.log('classNameOfNewDiv = ',globalDiv[i].classNameOfNewDiv)
-          console.log('textOfNewDiv = ',globalDiv[i].textOfNewDiv)
-        }
+        // if (globalDiv[i].idOfNewDiv === divId) {
+        //   console.log('newDiv = ',globalDiv[i].idOfNewDiv)
+        //   console.log('classNameOfNewDiv = ',globalDiv[i].classNameOfNewDiv)
+        //   console.log('textOfNewDiv = ',globalDiv[i].textOfNewDiv)
+        // }
       }
 
       // prevent the same id from being added to the menu on this left click
@@ -505,7 +506,7 @@ const readFromFirebase = async () => {
     globalDiv[readFromFirebaseCounter].classNameOfNewDiv = classNameOfNewDiv
     newDiv.classList.add(classNameOfNewDiv)
     var textOfNewDiv = getStringBetween(doc.data().tag, ';">', '</div>')
-    globalDiv[readFromFirebaseCounter++].textOfNewDiv = textOfNewDiv
+    globalDiv[readFromFirebaseCounter].textOfNewDiv = textOfNewDiv
     newDiv.innerHTML = textOfNewDiv
     parentDiv.insertBefore(newDiv, bottomDivWithinParentDiv)
 
@@ -530,15 +531,18 @@ const readFromFirebase = async () => {
     // we then have an object equal to the css property of name value pairs, like -
     // Object { position: "absolute", left: "441px", top: "178px", height: "100px", background: "red", color: "white" }
     // and these lines extract each property & value from the object and applies them
-    // eslint-disable-next-line
+    var allCssAttributesOfDiv: any = []
+    // the next line ignores this warning
+    // Array.prototype.map() expects a return value from arrow function  array-callback-return
+    // eslint-disable-next-line  
     Object.entries(map).map(obj => {
       const key = obj[0];
       const value: any = obj[1];
-      // console.log(`key=${key}, value=${value}`)
-      // left off here, how to store multiple key,value in globalDiv
-
+      allCssAttributesOfDiv.push({key: key, value: value})
       collection[0].style.setProperty(key, value)
     });
+    globalDiv[readFromFirebaseCounter].cssAttributes = allCssAttributesOfDiv
+    readFromFirebaseCounter++
     listenForHoverOverId(idOfNewDiv)
   });
 }
