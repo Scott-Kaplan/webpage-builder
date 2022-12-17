@@ -14,6 +14,8 @@ app.automaticDataCollectionEnabled = false // need this line or get run time err
 
 var mouseHover: any = {} // mouseHover[idX] = true | false
 var globalDiv: any = {}
+var indexOfGlobalDivAddedToLeftMenu = 0
+//var divAddedToLeftClickMenu: any = {}
 var lastDivHoveredOver = ''
 var idNum = 0
 var leftPopupPresent = false
@@ -158,17 +160,22 @@ const handleLeftMouseClick = function (e: any) {
       hoveringOverSomethingNow = true
       console.log('----------')
       console.log('hovering over div id =', divId)
-      // left off here
+
       // when selected the dynamically added item in the list (the top item)
       // display options for the user for that item so the user can modify it
       for (let i in globalDiv) {
-        console.log(`globalDiv[${i}] = `,globalDiv[i])
+        //console.log(`globalDiv[${i}] = `,globalDiv[i])
         //console.log('idOfNewDiv =', globalDiv[i].idOfNewDiv)
-        // if (globalDiv[i].idOfNewDiv === divId) {
-        //   console.log('newDiv = ',globalDiv[i].idOfNewDiv)
-        //   console.log('classNameOfNewDiv = ',globalDiv[i].classNameOfNewDiv)
-        //   console.log('textOfNewDiv = ',globalDiv[i].textOfNewDiv)
-        // }
+        if (globalDiv[i].idOfNewDiv === divId) {
+          
+          //LEFT OFF HERE
+          // STORE GLOBALDIV COUNTER = i, then adjust line 261 to put up a menu so the user can adjust that global div
+          //
+          //console.log('newDiv = ',globalDiv[i].idOfNewDiv)
+          //console.log('classNameOfNewDiv = ',globalDiv[i].classNameOfNewDiv)
+          //console.log('textOfNewDiv = ',globalDiv[i].textOfNewDiv)
+          //console.log('Css Attributes = ',globalDiv[i].cssAttributes)
+        }
       }
 
       // prevent the same id from being added to the menu on this left click
@@ -249,7 +256,9 @@ const handleLeftMouseClick = function (e: any) {
   // the current left click is not hovering over anything but
   // the previous left click was hovering over something
   // remove the previous list item and reset the counters
+  // IF not selecting the dynamic item in the list.
   if ((hoveringOverSomethingNow === false) && (alistItemHasBeenAddedDynamically === true)) {
+    console.log('HERE',e.target.innerText)
     // console.log(`remove the dynamically added ${lastDivHoveredOver}`)
     var items1 = document.querySelectorAll("#leftMenu li")
     leftMenu.removeChild(items1[0])
