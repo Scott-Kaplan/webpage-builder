@@ -148,6 +148,7 @@ const handleLeftMouseClick = function (e: any) {
   //console.log(e.target.innerText) // prints the selection made
 
   var hoveringOverSomethingNow = false
+  var divIdAddedToLeftMenu = 'none'
 
   /* 
   if hovering over a div when left clicking,
@@ -169,6 +170,7 @@ const handleLeftMouseClick = function (e: any) {
         if (globalDiv[i].idOfNewDiv === divId) {
           
           //LEFT OFF HERE
+          divIdAddedToLeftMenu = i
           // STORE GLOBALDIV COUNTER = i, then adjust line 261 to put up a menu so the user can adjust that global div
           //
           //console.log('newDiv = ',globalDiv[i].idOfNewDiv)
@@ -253,12 +255,24 @@ const handleLeftMouseClick = function (e: any) {
       document.removeEventListener('click', handleLeftMouseClick);
     }
   }
-  // the current left click is not hovering over anything but
-  // the previous left click was hovering over something
+
+  // this case is when the user selects the dynamic item at the top of the
+  // left menu options because they intend to modify the div
+  // (name, css properties, etc)
+
+  // the last time through this function the div was added to the top of the list,
+  // at that time 
+  // not this time through (which means alistItemHasBeenAddedDynamically is currently false )
+  // left off here
+  if (divIdAddedToLeftMenu !== 'none') {
+    console.log('the user wants to modify this',globalDiv[divIdAddedToLeftMenu].idOfNewDiv)
+  }
+
+  // the current left click is not hovering over anything even though that last was
   // remove the previous list item and reset the counters
-  // IF not selecting the dynamic item in the list.
+  // as long as not selecting that div
+  // (in this case the user wants to change something about it: name, css properties, etc)
   if ((hoveringOverSomethingNow === false) && (alistItemHasBeenAddedDynamically === true)) {
-    console.log('HERE',e.target.innerText)
     // console.log(`remove the dynamically added ${lastDivHoveredOver}`)
     var items1 = document.querySelectorAll("#leftMenu li")
     leftMenu.removeChild(items1[0])
@@ -267,6 +281,8 @@ const handleLeftMouseClick = function (e: any) {
     alistItemHasBeenAddedDynamically = false
   }
 }
+
+
 
 function initializeRightClickMenu() {
   const ele2 = document.getElementById('element')!;
