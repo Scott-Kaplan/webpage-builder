@@ -14,8 +14,8 @@ app.automaticDataCollectionEnabled = false // need this line or get run time err
 
 var mouseHover: any = {} // mouseHover[idX] = true | false
 var globalDiv: any = {}
-var indexOfGlobalDivAddedToLeftMenu = 0
-//var divAddedToLeftClickMenu: any = {}
+var divIdAddedToLeftMenu = 'none'
+var alistItemHasBeenAddedDynamically = false
 var lastDivHoveredOver = ''
 var idNum = 0
 var leftPopupPresent = false
@@ -138,8 +138,6 @@ const documentClickHandler = function (e: any) {
   }
 }
 
-var alistItemHasBeenAddedDynamically = false
-
 // Hide the right popup when left clicking
 const handleLeftMouseClick = function (e: any) {
   // console.log('left clicked')
@@ -148,7 +146,6 @@ const handleLeftMouseClick = function (e: any) {
   //console.log(e.target.innerText) // prints the selection made
 
   var hoveringOverSomethingNow = false
-  var divIdAddedToLeftMenu = 'none'
 
   /* 
   if hovering over a div when left clicking,
@@ -168,11 +165,7 @@ const handleLeftMouseClick = function (e: any) {
         //console.log(`globalDiv[${i}] = `,globalDiv[i])
         //console.log('idOfNewDiv =', globalDiv[i].idOfNewDiv)
         if (globalDiv[i].idOfNewDiv === divId) {
-          
-          //LEFT OFF HERE
-          divIdAddedToLeftMenu = i
-          // STORE GLOBALDIV COUNTER = i, then adjust line 261 to put up a menu so the user can adjust that global div
-          //
+          divIdAddedToLeftMenu = globalDiv[i].idOfNewDiv
           //console.log('newDiv = ',globalDiv[i].idOfNewDiv)
           //console.log('classNameOfNewDiv = ',globalDiv[i].classNameOfNewDiv)
           //console.log('textOfNewDiv = ',globalDiv[i].textOfNewDiv)
@@ -224,9 +217,17 @@ const handleLeftMouseClick = function (e: any) {
       // set the dynamically added list item flag to true
       alistItemHasBeenAddedDynamically = true
     }
-
+    else
+      console.log('----------')
+      console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
+      console.log('e.target.innerText', e.target.innerText)
+    
+    // The user left clicked on the previously added dynamic id (to modify it)
+    if (divIdAddedToLeftMenu === e.target.innerText) {
+      console.log('the user wants to modify this', divIdAddedToLeftMenu)
+    }
     // the user left clicked on "disable designer"
-    if (e.target.innerText === 'disable designer') {
+    else if (e.target.innerText === 'disable designer') {
       rightMenu.classList.add('container__menu--hidden');
       document.removeEventListener('click', handleLeftMouseClick);
       // without these next 2 lines, the left popup opens up
@@ -256,24 +257,9 @@ const handleLeftMouseClick = function (e: any) {
     }
   }
 
-  // this case is when the user selects the dynamic item at the top of the
-  // left menu options because they intend to modify the div
-  // (name, css properties, etc)
-
-  // the last time through this function the div was added to the top of the list,
-  // at that time 
-  // not this time through (which means alistItemHasBeenAddedDynamically is currently false )
-  // left off here
-  if (divIdAddedToLeftMenu !== 'none') {
-    console.log('the user wants to modify this',globalDiv[divIdAddedToLeftMenu].idOfNewDiv)
-  }
-
-  // the current left click is not hovering over anything even though that last was
-  // remove the previous list item and reset the counters
-  // as long as not selecting that div
-  // (in this case the user wants to change something about it: name, css properties, etc)
+  // Remove the dynamic added list item from the top of the menu and reset the counters
   if ((hoveringOverSomethingNow === false) && (alistItemHasBeenAddedDynamically === true)) {
-    // console.log(`remove the dynamically added ${lastDivHoveredOver}`)
+    //console.log(`remove the dynamically added ${lastDivHoveredOver}`)
     var items1 = document.querySelectorAll("#leftMenu li")
     leftMenu.removeChild(items1[0])
     // console.log('items1[0]', items1[0])
@@ -281,8 +267,6 @@ const handleLeftMouseClick = function (e: any) {
     alistItemHasBeenAddedDynamically = false
   }
 }
-
-
 
 function initializeRightClickMenu() {
   const ele2 = document.getElementById('element')!;
@@ -489,7 +473,7 @@ function listenForHoverOverId(newId: string) {
   }, false);
 }
 
-// left off here
+// left off here - since this all working, cleanup this comment
 /*
 store the below information into a global array of objects
 how to initialize -
@@ -563,7 +547,7 @@ const readFromFirebase = async () => {
     Object.entries(map).map(obj => {
       const key = obj[0];
       const value: any = obj[1];
-      allCssAttributesOfDiv.push({key: key, value: value})
+      allCssAttributesOfDiv.push({ key: key, value: value })
       collection[0].style.setProperty(key, value)
     });
     globalDiv[readFromFirebaseCounter].cssAttributes = allCssAttributesOfDiv
