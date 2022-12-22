@@ -219,12 +219,26 @@ const handleLeftMouseClick = function (e: any) {
     }
     else
       console.log('----------')
-      console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
-      console.log('e.target.innerText', e.target.innerText)
-    
+    console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
+    console.log('e.target.innerText', e.target.innerText)
+
     // The user left clicked on the previously added dynamic id (to modify it)
     if (divIdAddedToLeftMenu === e.target.innerText) {
       console.log('the user wants to modify this', divIdAddedToLeftMenu)
+      // left off here display all edit options for div that user left clicked on
+      /*
+      put this in another function
+      make it similar to leftMenu.  Create empty leftMenu equivalent to start
+      it will be the same layout as leftMenu but be 2 column
+      Name: asfds
+      Text: adfsdf
+      CSS class name: fasdf
+      CSS Properties
+        position: absolute
+        left: 441px
+        ...
+      */
+
     }
     // the user left clicked on "disable designer"
     else if (e.target.innerText === 'disable designer') {
@@ -473,26 +487,19 @@ function listenForHoverOverId(newId: string) {
   }, false);
 }
 
-// left off here - since this all working, cleanup this comment
 /*
-store the below information into a global array of objects
-how to initialize -
-
-look at the 2nd part of the top post of this
-https://stackoverflow.com/questions/7858385/how-to-add-values-to-an-array-of-objects-dynamically-in-javascript
-or
-top post of this - https://stackoverflow.com/questions/15742442/declaring-array-of-objects
-
-parentDiv -- this is always 'element'  --- does not have to be stored
-  bottomDivWithinParent --- does not have to be stored
-  newDiv
-  idOfNewDiv
-  classNameofNewDiv
-  textOfNewDiv
-  classPropertiesOfNewDiv
-     position: "absolute",
-     left: "441px",
-     ...
+globalDiv in the below function stores this
+  parentDiv -- this is always 'element'  --- does not have to be stored
+    bottomDivWithinParent --- does not have to be stored
+    newDiv - nothing unique here, just the next new div
+    idOfNewDiv
+    classNameofNewDiv
+    textOfNewDiv
+    classPropertiesOfNewDiv
+      position: "absolute",
+      left: "441px",
+      ...
+into an array of objects
 */
 var readFromFirebaseCounter = 0
 
@@ -654,6 +661,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 export default ExploreContainer;
 
 // left off here
+
 // Want to do the first page, similar to the one when I log on to Figma
 // 0 delete the 2nd div
 // 1 modify the 1st div to match just the hero section of the Figma page
