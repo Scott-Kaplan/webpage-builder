@@ -50,6 +50,7 @@ function RightMousePrintHtml() {
 // or 
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
+  console.log('documentClickHandler')
   //console.log((window as any).newIdIsMouseHover)  
   const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
@@ -138,6 +139,37 @@ const documentClickHandler = function (e: any) {
   }
 }
 
+const modifyDiv = function (e: any) {
+
+  // left off here
+  // first how to put up modifydiv menu?
+  // documentClickHandler might be putting up the left & right menu
+  // try commenting out where this occurs and see if it has an impact
+
+  // display all edit options for div that user left clicked on
+  /*
+  make it similar to leftMenu.  Create empty leftMenu equivalent to start
+  it will be the same layout as leftMenu but be 2 column
+  Name: asfds
+  Text: adfsdf
+  CSS class name: fasdf
+  CSS Properties
+    position: absolute
+    left: 441px
+    ...
+  */
+  console.log('the user wants to modify this', e.target.innerText)
+  // find the div to be edited
+  for (let i in globalDiv) {
+    if (globalDiv[i].idOfNewDiv === e.target.innerText) {
+      console.log('newDiv = ', globalDiv[i].idOfNewDiv)
+      console.log('classNameOfNewDiv = ', globalDiv[i].classNameOfNewDiv)
+      console.log('textOfNewDiv = ', globalDiv[i].textOfNewDiv)
+      console.log('Css Attributes = ', globalDiv[i].cssAttributes)
+    }
+  }
+}
+
 // Hide the right popup when left clicking
 const handleLeftMouseClick = function (e: any) {
   // console.log('left clicked')
@@ -222,23 +254,11 @@ const handleLeftMouseClick = function (e: any) {
     console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
     console.log('e.target.innerText', e.target.innerText)
 
-    // The user left clicked on the previously added dynamic id (to modify it)
+    // The user left clicked on the previously added dynamic id
+    // because the user wants to modify it
     if (divIdAddedToLeftMenu === e.target.innerText) {
-      console.log('the user wants to modify this', divIdAddedToLeftMenu)
-      // left off here display all edit options for div that user left clicked on
-      /*
-      put this in another function
-      make it similar to leftMenu.  Create empty leftMenu equivalent to start
-      it will be the same layout as leftMenu but be 2 column
-      Name: asfds
-      Text: adfsdf
-      CSS class name: fasdf
-      CSS Properties
-        position: absolute
-        left: 441px
-        ...
-      */
-
+      // console.log('the user wants to modify this', divIdAddedToLeftMenu)
+      modifyDiv(e)
     }
     // the user left clicked on "disable designer"
     else if (e.target.innerText === 'disable designer') {
@@ -318,6 +338,35 @@ function initializeRightClickMenu() {
       leftPopupPresent = false
     }
   });
+}
+
+function initializeEditDivMenu() {
+  const ele = document.getElementById('element')!
+  const editDivMenu = document.getElementById('editDivMenu')!;
+  ele.addEventListener('click', function (e) {
+    e.preventDefault()
+    const rect = ele.getBoundingClientRect();
+    var xPositionOfCursor = e.clientX
+    var widthOfEditDivMenu = editDivMenu.offsetWidth
+    var widthOfBrowserWindow = rect.width
+    if (widthOfEditDivMenu === 0)
+      widthOfEditDivMenu = 130
+    if ((xPositionOfCursor + widthOfEditDivMenu) >= widthOfBrowserWindow)
+      editDivMenu.style.left = `${xPositionOfCursor - widthOfEditDivMenu}px`;
+    else
+      editDivMenu.style.left = `${xPositionOfCursor}px`
+    var yPositionOfCursor = e.clientY
+    var heightOfEditDivMenu = editDivMenu.offsetHeight
+    var heightOfBrowserWindow = window.innerHeight
+    var y = yPositionOfCursor - rect.top;
+    if ((yPositionOfCursor + heightOfEditDivMenu) >= heightOfBrowserWindow)
+      editDivMenu.style.top = `${y - heightOfEditDivMenu}px`;
+    else
+      editDivMenu.style.top = `${y}px`
+    editDivMenu.classList.remove('container__menu--hidden');
+    document.addEventListener('click', documentClickHandler);
+    leftPopupPresent = true
+  })
 }
 
 function initializeLeftClickMenu() {
@@ -610,6 +659,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   useIonViewDidEnter(() => {  // after the page initially loads
     resizeCssTagNamed_container__trigger()
     initializeLeftClickMenu()
+    initializeEditDivMenu()
     initializeRightClickMenu()
 
     // capture left mouse click
@@ -646,6 +696,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
           <li id="lM2" className="container__item">Second action</li>
           <li id="lM3" className="container__divider"></li>
           <li id="lM4" className="container__item">Cancel</li>
+        </ul>
+
+        <ul id="editDivMenu" className="container__menu container__menu--hidden">
         </ul>
 
         <ul id="rightMenu" className="container__menu container__menu--hidden">
