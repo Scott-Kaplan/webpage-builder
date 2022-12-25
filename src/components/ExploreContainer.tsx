@@ -57,6 +57,7 @@ const documentClickHandler = function (e: any) {
 
   // the user left clicked on "Cancel"
   if (e.target.innerText === 'Cancel') {
+    // these next 2 lines remove the left menu
     leftMenu.classList.add('container__menu--hidden');
     document.removeEventListener('click', documentClickHandler);
   }
@@ -143,8 +144,9 @@ const modifyDiv = function (e: any) {
 
   // left off here
   // first how to put up modifydiv menu?
-  // documentClickHandler might be putting up the left & right menu
-  // try commenting out where this occurs and see if it has an impact
+  // this is what puts up the leftmenu
+  // ele.addEventListener('click', function (e) {
+  // notes on this - see email "what code puts up the left menu"
 
   // display all edit options for div that user left clicked on
   /*
@@ -370,6 +372,8 @@ function initializeEditDivMenu() {
 }
 
 function initializeLeftClickMenu() {
+  console.log('-----')
+  console.log('start of initializeLeftClickMenu')
   const ele = document.getElementById('element')!;
   const leftMenu = document.getElementById('leftMenu')!;
 
@@ -426,11 +430,12 @@ function initializeLeftClickMenu() {
       leftMenu.style.top = `${y}px`
     /* END */
 
-    // Show the menu
+    // Show the left menu
     leftMenu.classList.remove('container__menu--hidden');
 
     document.addEventListener('click', documentClickHandler);
     leftPopupPresent = true
+    console.log('end of initializeLeftClickMenu')
   });
 }
 
