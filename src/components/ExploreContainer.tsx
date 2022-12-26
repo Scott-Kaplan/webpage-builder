@@ -14,6 +14,7 @@ app.automaticDataCollectionEnabled = false // need this line or get run time err
 
 var mouseHover: any = {} // mouseHover[idX] = true | false
 var globalDiv: any = {}
+var theUserWantsTheModifyDivMenu = false
 var divIdAddedToLeftMenu = 'none'
 var alistItemHasBeenAddedDynamically = false
 var lastDivHoveredOver = ''
@@ -50,7 +51,7 @@ function RightMousePrintHtml() {
 // or 
 // [b] right clicking to bring up the right click popup
 const documentClickHandler = function (e: any) {
-  console.log('documentClickHandler')
+  // console.log('documentClickHandler')
   //console.log((window as any).newIdIsMouseHover)  
   const leftMenu = document.getElementById('leftMenu')!;
   //console.log(e.target.innerText) // prints the selection made
@@ -143,10 +144,11 @@ const documentClickHandler = function (e: any) {
 const modifyDiv = function (e: any) {
 
   // left off here
-  // first how to put up modifydiv menu?
-  // this is what puts up the leftmenu
+  // the editdivmenu is being put up however it is on the 2nd left click
+  // after selecting the edit div.  Maybe just need one of these
   // ele.addEventListener('click', function (e) {
-  // notes on this - see email "what code puts up the left menu"
+  // and control which left menu comes up based on the theUserWantsTheModifyDivMenu
+  // flag
 
   // display all edit options for div that user left clicked on
   /*
@@ -190,8 +192,8 @@ const handleLeftMouseClick = function (e: any) {
     //console.log('div id=', divId, 'value=', mouseHover[divId])
     if (mouseHover[divId] === true) {
       hoveringOverSomethingNow = true
-      console.log('----------')
-      console.log('hovering over div id =', divId)
+      // console.log('----------')
+      // console.log('hovering over div id =', divId)
 
       // when selected the dynamically added item in the list (the top item)
       // display options for the user for that item so the user can modify it
@@ -253,13 +255,13 @@ const handleLeftMouseClick = function (e: any) {
     }
     else
       console.log('----------')
-    console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
-    console.log('e.target.innerText', e.target.innerText)
+    //console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
+    //console.log('e.target.innerText', e.target.innerText)
 
     // The user left clicked on the previously added dynamic id
     // because the user wants to modify it
     if (divIdAddedToLeftMenu === e.target.innerText) {
-      // console.log('the user wants to modify this', divIdAddedToLeftMenu)
+      theUserWantsTheModifyDivMenu = true
       modifyDiv(e)
     }
     // the user left clicked on "disable designer"
@@ -342,38 +344,51 @@ function initializeRightClickMenu() {
   });
 }
 
+// This function is called once at startup
+// However, the function inside (addEventListener for editDivMenu)
+// is executed everytime the user left clicks
 function initializeEditDivMenu() {
   const ele = document.getElementById('element')!
   const editDivMenu = document.getElementById('editDivMenu')!;
+  //var flag = false
+
   ele.addEventListener('click', function (e) {
-    e.preventDefault()
-    const rect = ele.getBoundingClientRect();
-    var xPositionOfCursor = e.clientX
-    var widthOfEditDivMenu = editDivMenu.offsetWidth
-    var widthOfBrowserWindow = rect.width
-    if (widthOfEditDivMenu === 0)
-      widthOfEditDivMenu = 130
-    if ((xPositionOfCursor + widthOfEditDivMenu) >= widthOfBrowserWindow)
-      editDivMenu.style.left = `${xPositionOfCursor - widthOfEditDivMenu}px`;
-    else
-      editDivMenu.style.left = `${xPositionOfCursor}px`
-    var yPositionOfCursor = e.clientY
-    var heightOfEditDivMenu = editDivMenu.offsetHeight
-    var heightOfBrowserWindow = window.innerHeight
-    var y = yPositionOfCursor - rect.top;
-    if ((yPositionOfCursor + heightOfEditDivMenu) >= heightOfBrowserWindow)
-      editDivMenu.style.top = `${y - heightOfEditDivMenu}px`;
-    else
-      editDivMenu.style.top = `${y}px`
-    editDivMenu.classList.remove('container__menu--hidden');
-    document.addEventListener('click', documentClickHandler);
-    leftPopupPresent = true
+    console.log('-----')
+    console.log('entering addEventListener() for editDivMenu')
+    if (theUserWantsTheModifyDivMenu === true) {
+      e.preventDefault()
+      const rect = ele.getBoundingClientRect();
+      var xPositionOfCursor = e.clientX
+      var widthOfEditDivMenu = editDivMenu.offsetWidth
+      var widthOfBrowserWindow = rect.width
+      if (widthOfEditDivMenu === 0)
+        widthOfEditDivMenu = 130
+      if ((xPositionOfCursor + widthOfEditDivMenu) >= widthOfBrowserWindow)
+        editDivMenu.style.left = `${xPositionOfCursor - widthOfEditDivMenu}px`;
+      else
+        editDivMenu.style.left = `${xPositionOfCursor}px`
+      var yPositionOfCursor = e.clientY
+      var heightOfEditDivMenu = editDivMenu.offsetHeight
+      var heightOfBrowserWindow = window.innerHeight
+      var y = yPositionOfCursor - rect.top;
+      if ((yPositionOfCursor + heightOfEditDivMenu) >= heightOfBrowserWindow)
+        editDivMenu.style.top = `${y - heightOfEditDivMenu}px`;
+      else
+        editDivMenu.style.top = `${y}px`
+      editDivMenu.classList.remove('container__menu--hidden');
+      document.addEventListener('click', documentClickHandler);
+      leftPopupPresent = true
+      theUserWantsTheModifyDivMenu = false
+    }
+    else {
+      console.log('nope, didn\'t put up editDivMenu')
+    }
   })
 }
 
 function initializeLeftClickMenu() {
-  console.log('-----')
-  console.log('start of initializeLeftClickMenu')
+  // console.log('-----')
+  // console.log('start of initializeLeftClickMenu')
   const ele = document.getElementById('element')!;
   const leftMenu = document.getElementById('leftMenu')!;
 
@@ -435,7 +450,7 @@ function initializeLeftClickMenu() {
 
     document.addEventListener('click', documentClickHandler);
     leftPopupPresent = true
-    console.log('end of initializeLeftClickMenu')
+    // console.log('end of initializeLeftClickMenu')
   });
 }
 
@@ -704,6 +719,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
         </ul>
 
         <ul id="editDivMenu" className="container__menu container__menu--hidden">
+          <li id="em1" className="container__item">Hello</li>
         </ul>
 
         <ul id="rightMenu" className="container__menu container__menu--hidden">
