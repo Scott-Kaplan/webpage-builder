@@ -23,6 +23,8 @@ var leftPopupPresent = false
 var xStartPositionOfDiv: any
 var yStartPositionOfDiv: any
 var divNumber = 0 // global counter for quantity of divs
+var editDivXMenuPosition = 0
+var editDivYMenuPosition = 0
 
 interface ContainerProps { }
 
@@ -169,6 +171,18 @@ const modifyDiv = function (e: any) {
   // ele.addEventListener('click', function (e)
   // to run again so that the editDivmenu will be displayed
   document.getElementById('element')!.click()
+
+  // var ev = new MouseEvent('click', {
+  //   'view': window,
+  //   'bubbles': true,
+  //   'cancelable': true,
+  //   'screenX': 100,
+  //   'screenY': 100
+  // });
+  // var el = document.elementFromPoint(100, 100);
+  // el!.dispatchEvent(ev)
+  // let howdy: HTMLElement = document.elementFromPoint(100,100) as HTMLElement
+  // howdy.click()
 }
 
 // Hide the right popup when left clicking
@@ -259,6 +273,8 @@ const handleLeftMouseClick = function (e: any) {
     // because the user wants to modify it
     if (divIdAddedToLeftMenu === e.target.innerText) {
       theUserWantsTheModifyDivMenu = true
+      editDivXMenuPosition = e.clientX
+      editDivYMenuPosition = e.clientY
       modifyDiv(e)
     }
     // the user left clicked on "disable designer"
@@ -392,31 +408,29 @@ function initializeLeftMenuAndEditDivMenu() {
   const leftMenu = document.getElementById('leftMenu')!;
   const editDivMenu = document.getElementById('editDivMenu')!;
   ele.addEventListener('click', function (e) {
+    console.log('-----')
     if (theUserWantsTheModifyDivMenu) {
-      console.log('-----')
       console.log('entering addEventListener() for editDivMenu')
-
-      // left off here - somehow this isn't hiding the left menu
       console.log('Hide the leftMenu')
-      leftMenu.classList.remove('container__menu--hidden')
-      document.removeEventListener('click', documentClickHandler)
+
+      //hide the left menu, so just the edit div menu appears
+      leftMenu.classList.remove('container__menu')
+      //document.removeEventListener('click', documentClickHandler)
 
       e.preventDefault()
       const rect = ele.getBoundingClientRect();
-      var xPositionOfCursor = e.clientX
       var widthOfEditDivMenu = editDivMenu.offsetWidth
       var widthOfBrowserWindow = rect.width
       if (widthOfEditDivMenu === 0)
         widthOfEditDivMenu = 130
-      if ((xPositionOfCursor + widthOfEditDivMenu) >= widthOfBrowserWindow)
-        editDivMenu.style.left = `${xPositionOfCursor - widthOfEditDivMenu}px`;
+      if ((editDivXMenuPosition + widthOfEditDivMenu) >= widthOfBrowserWindow)
+        editDivMenu.style.left = `${editDivXMenuPosition - widthOfEditDivMenu}px`;
       else
-        editDivMenu.style.left = `${xPositionOfCursor}px`
-      var yPositionOfCursor = e.clientY
+        editDivMenu.style.left = `${editDivXMenuPosition}px`
       var heightOfEditDivMenu = editDivMenu.offsetHeight
       var heightOfBrowserWindow = window.innerHeight
-      var y = yPositionOfCursor - rect.top;
-      if ((yPositionOfCursor + heightOfEditDivMenu) >= heightOfBrowserWindow)
+      var y = editDivYMenuPosition - rect.top;
+      if ((editDivYMenuPosition + heightOfEditDivMenu) >= heightOfBrowserWindow)
         editDivMenu.style.top = `${y - heightOfEditDivMenu}px`;
       else
         editDivMenu.style.top = `${y}px`
@@ -426,7 +440,6 @@ function initializeLeftMenuAndEditDivMenu() {
       theUserWantsTheModifyDivMenu = false
     }
     else {
-      console.log('-----')
       console.log('entering addEventListener() for leftMenu')
 
       e.preventDefault();
