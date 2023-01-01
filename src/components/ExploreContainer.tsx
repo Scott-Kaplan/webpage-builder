@@ -171,18 +171,6 @@ const modifyDiv = function (e: any) {
   // ele.addEventListener('click', function (e)
   // to run again so that the editDivmenu will be displayed
   document.getElementById('element')!.click()
-
-  // var ev = new MouseEvent('click', {
-  //   'view': window,
-  //   'bubbles': true,
-  //   'cancelable': true,
-  //   'screenX': 100,
-  //   'screenY': 100
-  // });
-  // var el = document.elementFromPoint(100, 100);
-  // el!.dispatchEvent(ev)
-  // let howdy: HTMLElement = document.elementFromPoint(100,100) as HTMLElement
-  // howdy.click()
 }
 
 // Hide the right popup when left clicking
@@ -265,7 +253,7 @@ const handleLeftMouseClick = function (e: any) {
       alistItemHasBeenAddedDynamically = true
     }
     else
-      console.log('----------')
+      // console.log('----------')
     //console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
     //console.log('e.target.innerText', e.target.innerText)
 
@@ -361,66 +349,31 @@ function initializeRightClickMenu() {
   });
 }
 
+// left off here
+// continue cleanup
+
 // This function is called once at startup
-// However, the function inside (addEventListener for editDivMenu)
+// However, the function inside-  ele.addEventListener('click', function (e)
 // is executed everytime the user left clicks
-// function initializeEditDivMenu() {
-//   const ele = document.getElementById('element')!
-//   const editDivMenu = document.getElementById('editDivMenu')!;
-//   //var flag = false
-
-//   ele.addEventListener('click', function (e) {
-//     console.log('-----')
-//     console.log('entering addEventListener() for editDivMenu')
-//     if (theUserWantsTheModifyDivMenu === true) {
-//       e.preventDefault()
-//       const rect = ele.getBoundingClientRect();
-//       var xPositionOfCursor = e.clientX
-//       var widthOfEditDivMenu = editDivMenu.offsetWidth
-//       var widthOfBrowserWindow = rect.width
-//       if (widthOfEditDivMenu === 0)
-//         widthOfEditDivMenu = 130
-//       if ((xPositionOfCursor + widthOfEditDivMenu) >= widthOfBrowserWindow)
-//         editDivMenu.style.left = `${xPositionOfCursor - widthOfEditDivMenu}px`;
-//       else
-//         editDivMenu.style.left = `${xPositionOfCursor}px`
-//       var yPositionOfCursor = e.clientY
-//       var heightOfEditDivMenu = editDivMenu.offsetHeight
-//       var heightOfBrowserWindow = window.innerHeight
-//       var y = yPositionOfCursor - rect.top;
-//       if ((yPositionOfCursor + heightOfEditDivMenu) >= heightOfBrowserWindow)
-//         editDivMenu.style.top = `${y - heightOfEditDivMenu}px`;
-//       else
-//         editDivMenu.style.top = `${y}px`
-//       editDivMenu.classList.remove('container__menu--hidden');
-//       document.addEventListener('click', documentClickHandler);
-//       leftPopupPresent = true
-//       theUserWantsTheModifyDivMenu = false
-//     }
-//     else {
-//       console.log('nope, didn\'t put up editDivMenu')
-//     }
-//   })
-// }
-
 function initializeLeftMenuAndEditDivMenu() {
-  const ele = document.getElementById('element')!;
-  const leftMenu = document.getElementById('leftMenu')!;
-  const editDivMenu = document.getElementById('editDivMenu')!;
+  const ele = document.getElementById('element')!
+  const leftMenu = document.getElementById('leftMenu')!
+  const editDivMenu = document.getElementById('editDivMenu')!
+  var y = 0
+  var widthOfBrowserWindow = 0
+  var heightOfBrowserWindow = 0
   ele.addEventListener('click', function (e) {
-    console.log('-----')
+    // console.log('-----')
     if (theUserWantsTheModifyDivMenu) {
-      console.log('entering addEventListener() for editDivMenu')
-      console.log('Hide the leftMenu')
-
+      // console.log('entering addEventListener() for editDivMenu')
+      // console.log('Hide the leftMenu')
       //hide the left menu, so just the edit div menu appears
       leftMenu.classList.remove('container__menu')
       //document.removeEventListener('click', documentClickHandler)
-
       e.preventDefault()
       const rect = ele.getBoundingClientRect();
       var widthOfEditDivMenu = editDivMenu.offsetWidth
-      var widthOfBrowserWindow = rect.width
+      widthOfBrowserWindow = rect.width
       if (widthOfEditDivMenu === 0)
         widthOfEditDivMenu = 130
       if ((editDivXMenuPosition + widthOfEditDivMenu) >= widthOfBrowserWindow)
@@ -428,8 +381,8 @@ function initializeLeftMenuAndEditDivMenu() {
       else
         editDivMenu.style.left = `${editDivXMenuPosition}px`
       var heightOfEditDivMenu = editDivMenu.offsetHeight
-      var heightOfBrowserWindow = window.innerHeight
-      var y = editDivYMenuPosition - rect.top;
+      heightOfBrowserWindow = window.innerHeight
+      y = editDivYMenuPosition - rect.top
       if ((editDivYMenuPosition + heightOfEditDivMenu) >= heightOfBrowserWindow)
         editDivMenu.style.top = `${y - heightOfEditDivMenu}px`;
       else
@@ -440,16 +393,13 @@ function initializeLeftMenuAndEditDivMenu() {
       theUserWantsTheModifyDivMenu = false
     }
     else {
-      console.log('entering addEventListener() for leftMenu')
-
+      // console.log('entering addEventListener() for leftMenu')
       e.preventDefault();
-
       const rect = ele.getBoundingClientRect();
-
       // CALCULATE & START THE LEFT CLICK MENU AT THIS X COORDINATE
       var xPositionOfCursor = e.clientX
       var widthOfLeftClickMenu = leftMenu.offsetWidth
-      var widthOfBrowserWindow = rect.width
+      widthOfBrowserWindow = rect.width
       ///
       // If the first left click done by the user is too close to outside the
       // viewable window, the menu will appear at least partially off the screen.
@@ -463,106 +413,30 @@ function initializeLeftMenuAndEditDivMenu() {
       //
       if (widthOfLeftClickMenu === 0)
         widthOfLeftClickMenu = 130
-
       // Set the x position of the left click menu
       if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfBrowserWindow)
         leftMenu.style.left = `${xPositionOfCursor - widthOfLeftClickMenu}px`;
       else
         leftMenu.style.left = `${xPositionOfCursor}px`
       // END //
-
       // CALCULATE & START THE LEFT CLICK MENU AT THIS Y COORDINATE
       var yPositionOfCursor = e.clientY
       var heightOfLeftClickMenu = leftMenu.offsetHeight
-      var heightOfBrowserWindow = window.innerHeight
-      var y = yPositionOfCursor - rect.top;
-
+      heightOfBrowserWindow = window.innerHeight
+      y = yPositionOfCursor - rect.top
       // Set the y position of the left click menu
       if ((yPositionOfCursor + heightOfLeftClickMenu) >= heightOfBrowserWindow)
         leftMenu.style.top = `${y - heightOfLeftClickMenu}px`;
       else
         leftMenu.style.top = `${y}px`
       // END //
-
       // Show the left menu
       leftMenu.classList.remove('container__menu--hidden');
-
       document.addEventListener('click', documentClickHandler);
       leftPopupPresent = true
-      // console.log('end of initializeLeftClickMenu')      
     }
   })
 }
-
-/*
-function initializeLeftClickMenu() {
-  // console.log('-----')
-  // console.log('start of initializeLeftClickMenu')
-  const ele = document.getElementById('element')!;
-  const leftMenu = document.getElementById('leftMenu')!;
-
-  // This function is executed when the user moves the left popup.
-  // proceedurally the user moves the cursor from its previous position and left clicks.
-  // This function is not executed when the user selects an option from the left popup.
-  ele.addEventListener('click', function (e) {
-
-    // this prints the hover status over each div
-    // for (let key in mouseHover) {
-    //   console.log('key=', key, 'value=', mouseHover[key])
-    // }
-
-    // console.log('moved popup')
-    e.preventDefault();
-
-    const rect = ele.getBoundingClientRect();
-
-    // CALCULATE & START THE LEFT CLICK MENU AT THIS X COORDINATE
-    var xPositionOfCursor = e.clientX
-    var widthOfLeftClickMenu = leftMenu.offsetWidth
-    var widthOfBrowserWindow = rect.width
-    ///
-    // If the first left click done by the user is too close to outside the
-    // viewable window, the menu will appear at least partially off the screen.
-    // This is because since the menu hasn't been put up yet to this point,
-    // it's value is zero.
-    // So just give it a default length.
-    // In general, if wanted to calculate this programatically, mutiply each
-    // character of the longest string that appears in the menu by 10, 
-    // then add 5 at the end.  The units of the numbers are in pixels
-    // Note: this may not work on a different monitor other than my 2048x1152 one
-    //
-    if (widthOfLeftClickMenu === 0)
-      widthOfLeftClickMenu = 130
-
-    // Set the x position of the left click menu
-    if ((xPositionOfCursor + widthOfLeftClickMenu) >= widthOfBrowserWindow)
-      leftMenu.style.left = `${xPositionOfCursor - widthOfLeftClickMenu}px`;
-    else
-      leftMenu.style.left = `${xPositionOfCursor}px`
-    // END //
-
-    // CALCULATE & START THE LEFT CLICK MENU AT THIS Y COORDINATE
-    var yPositionOfCursor = e.clientY
-    var heightOfLeftClickMenu = leftMenu.offsetHeight
-    var heightOfBrowserWindow = window.innerHeight
-    var y = yPositionOfCursor - rect.top;
-
-    // Set the y position of the left click menu
-    if ((yPositionOfCursor + heightOfLeftClickMenu) >= heightOfBrowserWindow)
-      leftMenu.style.top = `${y - heightOfLeftClickMenu}px`;
-    else
-      leftMenu.style.top = `${y}px`
-    // END //
-
-    // Show the left menu
-    leftMenu.classList.remove('container__menu--hidden');
-
-    document.addEventListener('click', documentClickHandler);
-    leftPopupPresent = true
-    // console.log('end of initializeLeftClickMenu')
-  });
-}
-*/
 
 // This function changes the css height & width of container where the popup can appear.
 // it matches the size of the browser window.  If the browser window is made larger
@@ -789,8 +663,6 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   useIonViewDidEnter(() => {  // after the page initially loads
     resizeCssTagNamed_container__trigger()
     initializeLeftMenuAndEditDivMenu()
-    //initializeLeftClickMenu()
-    // initializeEditDivMenu()
     initializeRightClickMenu()
 
     // capture left mouse click
