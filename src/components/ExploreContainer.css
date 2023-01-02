@@ -83,6 +83,10 @@
   display: none;
 }
 
+.two {
+  columns: 2 auto
+}
+
 .container__item {
   padding: 0.5rem 1rem;
   white-space: nowrap;

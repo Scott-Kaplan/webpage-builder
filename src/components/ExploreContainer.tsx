@@ -144,6 +144,11 @@ const documentClickHandler = function (e: any) {
 }
 
 const modifyDiv = function (e: any) {
+  // left off here
+  // dynamically show all of this in 2 column pop up
+  // http://jsfiddle.net/HP85j/8/
+  // https://stackoverflow.com/questions/48848462/how-to-show-results-of-a-map-in-two-or-more-columns-using-react
+
   // display all edit options for div that user left clicked on
   /*
   make it similar to leftMenu.  Create empty leftMenu equivalent to start
@@ -167,7 +172,7 @@ const modifyDiv = function (e: any) {
     }
   }
 
-  // intentionally cause
+  // this next line simulates the user left clicking which intentionally causes
   // ele.addEventListener('click', function (e)
   // to run again so that the editDivmenu will be displayed
   document.getElementById('element')!.click()
@@ -254,46 +259,46 @@ const handleLeftMouseClick = function (e: any) {
     }
     else
       // console.log('----------')
-    //console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
-    //console.log('e.target.innerText', e.target.innerText)
+      //console.log('divIdAddedToLeftMenu', divIdAddedToLeftMenu)
+      //console.log('e.target.innerText', e.target.innerText)
 
-    // The user left clicked on the previously added dynamic id
-    // because the user wants to modify it
-    if (divIdAddedToLeftMenu === e.target.innerText) {
-      theUserWantsTheModifyDivMenu = true
-      editDivXMenuPosition = e.clientX
-      editDivYMenuPosition = e.clientY
-      modifyDiv(e)
-    }
-    // the user left clicked on "disable designer"
-    else if (e.target.innerText === 'disable designer') {
-      rightMenu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', handleLeftMouseClick);
-      // without these next 2 lines, the left popup opens up
-      leftMenu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', handleLeftMouseClick);
-    }
-    // the user left clicked on "enable designer"
-    else if (e.target.innerText === 'enable designer') {
-      //console.log('close the right click menu')
-      rightMenu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', handleLeftMouseClick);
-      // without these next 2 lines, the left popup opens up
-      leftMenu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', handleLeftMouseClick);
-    }
+      // The user left clicked on the previously added dynamic id
+      // because the user wants to modify it
+      if (divIdAddedToLeftMenu === e.target.innerText) {
+        theUserWantsTheModifyDivMenu = true
+        editDivXMenuPosition = e.clientX
+        editDivYMenuPosition = e.clientY
+        modifyDiv(e)
+      }
+      // the user left clicked on "disable designer"
+      else if (e.target.innerText === 'disable designer') {
+        rightMenu.classList.add('container__menu--hidden');
+        document.removeEventListener('click', handleLeftMouseClick);
+        // without these next 2 lines, the left popup opens up
+        leftMenu.classList.add('container__menu--hidden');
+        document.removeEventListener('click', handleLeftMouseClick);
+      }
+      // the user left clicked on "enable designer"
+      else if (e.target.innerText === 'enable designer') {
+        //console.log('close the right click menu')
+        rightMenu.classList.add('container__menu--hidden');
+        document.removeEventListener('click', handleLeftMouseClick);
+        // without these next 2 lines, the left popup opens up
+        leftMenu.classList.add('container__menu--hidden');
+        document.removeEventListener('click', handleLeftMouseClick);
+      }
 
-    // Test case:
-    // [1] bring up right popup
-    // [2] bring up left popup
-    // [3] verify --> the right popup should close
-    // passes
-    else {
-      // close the right popup, because want the left popup only to appear
-      // otherwise both popups will appear at the same time
-      rightMenu.classList.add('container__menu--hidden');
-      document.removeEventListener('click', handleLeftMouseClick);
-    }
+      // Test case:
+      // [1] bring up right popup
+      // [2] bring up left popup
+      // [3] verify --> the right popup should close
+      // passes
+      else {
+        // close the right popup, because want the left popup only to appear
+        // otherwise both popups will appear at the same time
+        rightMenu.classList.add('container__menu--hidden');
+        document.removeEventListener('click', handleLeftMouseClick);
+      }
   }
 
   // Remove the dynamic added list item from the top of the menu and reset the counters
@@ -304,10 +309,6 @@ const handleLeftMouseClick = function (e: any) {
     // console.log('items1[0]', items1[0])
     lastDivHoveredOver = ''
     alistItemHasBeenAddedDynamically = false
-    // if (divIdAddedToLeftMenu === e.target.innerText) {
-    //   theUserWantsTheModifyDivMenu = true
-    //   modifyDiv(e)
-    // }
   }
 }
 
@@ -348,9 +349,6 @@ function initializeRightClickMenu() {
     }
   });
 }
-
-// left off here
-// continue cleanup
 
 // This function is called once at startup
 // However, the function inside-  ele.addEventListener('click', function (e)
@@ -701,8 +699,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
           <li id="lM4" className="container__item">Cancel</li>
         </ul>
 
-        <ul id="editDivMenu" className="container__menu container__menu--hidden">
+        <ul id="editDivMenu" className="container__menu container__menu--hidden two">
           <li id="em1" className="container__item">Hello</li>
+          <li id="em2" className="container__item">Hello2</li>
         </ul>
 
         <ul id="rightMenu" className="container__menu container__menu--hidden">
