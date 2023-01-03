@@ -145,7 +145,7 @@ const documentClickHandler = function (e: any) {
 
 const modifyDiv = function (e: any) {
   // left off here
-  // dynamically show all of this in 2 column pop up
+  // dynamically show all of this in 2 column pop up in a new window
   // http://jsfiddle.net/HP85j/8/
   // https://stackoverflow.com/questions/48848462/how-to-show-results-of-a-map-in-two-or-more-columns-using-react
 
@@ -161,6 +161,15 @@ const modifyDiv = function (e: any) {
     left: 441px
     ...
   */
+
+    // left is followed as long as on the left monitor, however can't launch on the right monitor
+    // 
+    const windowFeatures = "left=2100,top=100,width=320,height=320";
+    const handle = window.open("https://www.mozilla.org/", "mozillaWindow", windowFeatures);
+    if (!handle) {
+      console.log('A window wasn\'t allowed to open, which is likely caused by a built in popup blocker')
+    }
+
   console.log('the user wants to modify this', e.target.innerText)
   // find the div to be edited
   for (let i in globalDiv) {
