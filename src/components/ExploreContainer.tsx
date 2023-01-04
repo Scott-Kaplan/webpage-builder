@@ -169,6 +169,16 @@ const modifyDiv = function (e: any) {
     if (!handle) {
       console.log('A window wasn\'t allowed to open, which is likely caused by a built in popup blocker')
     }
+    handle?.moveTo(200, 50)
+    console.log('availWidth = ',window.screen.availWidth)
+    console.log('width = ',window.screen.width)
+    // left off here
+    // get this error with the below line
+    // Property 'isExtended' does not exist on type 'Screen'.ts(2339)
+    // from this website: https://developer.chrome.com/articles/multi-screen-window-placement/
+    // and another website
+    // https://stackoverflow.com/questions/72911664/can-not-get-multi-screen-window-placement-to-work
+    window.screen.isExtended
 
   console.log('the user wants to modify this', e.target.innerText)
   // find the div to be edited
