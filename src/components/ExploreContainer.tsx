@@ -162,23 +162,39 @@ const modifyDiv = function (e: any) {
     ...
   */
 
-    // left is followed as long as on the left monitor, however can't launch on the right monitor
-    // 
-    const windowFeatures = "left=2100,top=100,width=320,height=320";
-    const handle = window.open("https://www.mozilla.org/", "mozillaWindow", windowFeatures);
-    if (!handle) {
-      console.log('A window wasn\'t allowed to open, which is likely caused by a built in popup blocker')
-    }
-    handle?.moveTo(200, 50)
-    console.log('availWidth = ',window.screen.availWidth)
-    console.log('width = ',window.screen.width)
-    // left off here
-    // get this error with the below line
-    // Property 'isExtended' does not exist on type 'Screen'.ts(2339)
-    // from this website: https://developer.chrome.com/articles/multi-screen-window-placement/
-    // and another website
-    // https://stackoverflow.com/questions/72911664/can-not-get-multi-screen-window-placement-to-work
-    window.screen.isExtended
+  // open another window.  The user can move it to another monitor as they see fit
+  // const windowFeatures = "left=2100,top=100,width=320,height=320"
+  // // const handle = window.open("https://www.mozilla.org/", "mozillaWindow", windowFeatures)
+  // const handle = window.open("", "", windowFeatures)
+  // if (!handle) {
+  //   console.log('A window wasn\'t allowed to open, which is likely caused by a built in popup blocker')
+  // }
+
+  // left off here.  Display a form in the second window
+  var form = document.createElement("form");
+  form.setAttribute("method", "post");
+  form.setAttribute("action", "test.jsp");
+
+  // setting form target to a window named 'formresult'
+  form.setAttribute("target", "formresult");
+
+  var hiddenField = document.createElement("input");
+  hiddenField.setAttribute("name", "id");
+  hiddenField.setAttribute("value", "bob");
+  form.appendChild(hiddenField);
+  document.body.appendChild(form);
+
+  // creating the 'formresult' window with custom features prior to submitting the form
+  window.open('test.html', 'formresult', 'scrollbars=no,menubar=no,height=600,width=800,resizable=yes,toolbar=no,status=no');
+
+  form.submit()
+
+
+  // THIS WORKS
+  // set something in the 2nd window and send it to the first window
+  // https://stackoverflow.com/questions/22075738/javascript-passing-value-from-a-popup-window-to-its-parent-window
+  // https://www.w3schools.com/jsref/prop_win_opener.asp
+
 
   console.log('the user wants to modify this', e.target.innerText)
   // find the div to be edited
