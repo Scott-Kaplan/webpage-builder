@@ -170,25 +170,38 @@ const modifyDiv = function (e: any) {
   //   console.log('A window wasn\'t allowed to open, which is likely caused by a built in popup blocker')
   // }
 
-  // left off here.  Display a form in the second window
+// left off here, try to get rid of the ?, then build the form out
+  var myWindow=window.open('','','width=200,height=100')
+  myWindow?.document.write("<p>This is 'myWindow'</p>")
+  myWindow?.document.close(); //missing code
+  // myWindow?.focus();
+  // myWindow?.print(); // to print
+
+  // Nothing shows up in the second window with this code
+ /*
   var form = document.createElement("form");
-  form.setAttribute("method", "post");
-  form.setAttribute("action", "test.jsp");
+
+  // form.setAttribute("method", "post");
+  // form.setAttribute("action", "test.jsp");
 
   // setting form target to a window named 'formresult'
   form.setAttribute("target", "formresult");
 
   var hiddenField = document.createElement("input");
-  hiddenField.setAttribute("name", "id");
-  hiddenField.setAttribute("value", "bob");
-  form.appendChild(hiddenField);
+  //hiddenField.setAttribute("name", "id");
+  //hiddenField.setAttribute("value", "bob");
+  //form.appendChild(hiddenField);
+  hiddenField.type = "text"
+  hiddenField.name = "myformvar"
+  form.appendChild(hiddenField)
+
   document.body.appendChild(form);
 
   // creating the 'formresult' window with custom features prior to submitting the form
   window.open('test.html', 'formresult', 'scrollbars=no,menubar=no,height=600,width=800,resizable=yes,toolbar=no,status=no');
 
   form.submit()
-
+*/
 
   // THIS WORKS
   // set something in the 2nd window and send it to the first window
