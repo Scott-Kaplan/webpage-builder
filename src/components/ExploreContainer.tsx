@@ -164,16 +164,32 @@ const modifyDiv = function (e: any) {
 
   // open another window.  The user can move it to another monitor as they see fit
   // const windowFeatures = "left=2100,top=100,width=320,height=320"
-  // // const handle = window.open("https://www.mozilla.org/", "mozillaWindow", windowFeatures)
-  // const handle = window.open("", "", windowFeatures)
+  // const handle = window.open("https://www.mozilla.org/", "mozillaWindow", windowFeatures)
+  // //const handle = window.open("", "", windowFeatures)
   // if (!handle) {
   //   console.log('A window wasn\'t allowed to open, which is likely caused by a built in popup blocker')
   // }
+  // handle.document.write("<p>This is 'myWindow'</p>")
 
-// left off here, try to get rid of the ?, then build the form out
-  var myWindow=window.open('','','width=200,height=100')
-  myWindow?.document.write("<p>This is 'myWindow'</p>")
-  myWindow?.document.close(); //missing code
+  var myWindow=window.open('','','width=200,height=100')!
+  myWindow.document.write("<p>This is 'myWindow'</p>")
+  // left off here
+  // ensure that can submit information to main window
+  // then see if better way to create the form than this
+  // then see if can get chrome inspector to show up at the bottom of the window vs another window
+  var text = `<h1>If you are interested to buy it or if you have any question please contact me through the form below .</h1>
+  <p><a name="contactustop"></a></p>
+  <form action="http://autotraderuae.net/members/process.php" id="contactus" method="POST">
+  <label for="email" style="font-size: 14px; font-family:arial,helvetica,sans-serif; font-weight:bold">Email *</label><br />
+  <input class="textfield" id="email" name="fields[Email]" style="width: 400px;" type="text"/>
+  <div class="fieldblock" id="fieldblock-comments">
+  <label for="comments" style="font-size: 14px; font-family:arial,helvetica,sans-serif; font-weight:bold">Your question</label><br />
+  <textarea class="textfield" cols="20" id="comments" name="fields[Comments]" rows="4" style="width: 400px;"></textarea>
+  </div>
+  <p><input type="submit"></p>
+  </form>`
+  myWindow.document.write(text)
+  myWindow.document.close();
   // myWindow?.focus();
   // myWindow?.print(); // to print
 
