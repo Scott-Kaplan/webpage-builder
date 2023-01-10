@@ -174,7 +174,10 @@ const modifyDiv = function (e: any) {
   var myWindow=window.open('','','width=200,height=100')!
   myWindow.document.write("<p>This is 'myWindow'</p>")
   // left off here
-  // ensure that can submit information to main window
+  // DONE ensure that can submit information to main window
+  // change below form, that when submitting ... myWindow.opener... is called
+  // see html folder login_p1.html to see when check_password() is called
+
   // then see if better way to create the form than this
   // then see if can get chrome inspector to show up at the bottom of the window vs another window
   var text = `<h1>If you are interested to buy it or if you have any question please contact me through the form below .</h1>
@@ -190,6 +193,7 @@ const modifyDiv = function (e: any) {
   </form>`
   myWindow.document.write(text)
   myWindow.document.close();
+  myWindow.opener.document.getElementById('id0').innerHTML = "Changed"
   // myWindow?.focus();
   // myWindow?.print(); // to print
 
