@@ -171,12 +171,24 @@ const modifyDiv = function (e: any) {
   // }
   // handle.document.write("<p>This is 'myWindow'</p>")
 
-  var myWindow=window.open('','','width=200,height=100')!
+  var myWindow = window.open('', '', 'width=200,height=100')!
   myWindow.document.write("<p>This is 'myWindow'</p>")
   // left off here
   // DONE ensure that can submit information to main window
-  // change below form, that when submitting ... myWindow.opener... is called
-  // see html folder login_p1.html to see when check_password() is called
+  // DONEchange below form, that when submitting ... myWindow.opener... is called
+  //     see html folder login_p1.html to see when check_password() is called
+  // 
+  // this works onclick=alert('Hello') in the line below
+  // but this does not onclick=checkFormAndSend()
+
+  var javascriptText = `
+  <script type="text/javascript">
+  function checkFormAndSend() {
+    console.log('hello')
+  }
+  </script>
+  `
+  myWindow.document.write(javascriptText)
 
   // then see if better way to create the form than this
   // then see if can get chrome inspector to show up at the bottom of the window vs another window
@@ -189,8 +201,10 @@ const modifyDiv = function (e: any) {
   <label for="comments" style="font-size: 14px; font-family:arial,helvetica,sans-serif; font-weight:bold">Your question</label><br />
   <textarea class="textfield" cols="20" id="comments" name="fields[Comments]" rows="4" style="width: 400px;"></textarea>
   </div>
-  <p><input type="submit"></p>
+  <p><input type="submit" onclick=alert('Hello')></p>
   </form>`
+  // <p><input type="submit"></p>
+  // <p><input type="Button" value="Submit" onclick checkFormAndSend()></p>
   myWindow.document.write(text)
   myWindow.document.close();
   myWindow.opener.document.getElementById('id0').innerHTML = "Changed"
@@ -198,30 +212,30 @@ const modifyDiv = function (e: any) {
   // myWindow?.print(); // to print
 
   // Nothing shows up in the second window with this code
- /*
-  var form = document.createElement("form");
-
-  // form.setAttribute("method", "post");
-  // form.setAttribute("action", "test.jsp");
-
-  // setting form target to a window named 'formresult'
-  form.setAttribute("target", "formresult");
-
-  var hiddenField = document.createElement("input");
-  //hiddenField.setAttribute("name", "id");
-  //hiddenField.setAttribute("value", "bob");
-  //form.appendChild(hiddenField);
-  hiddenField.type = "text"
-  hiddenField.name = "myformvar"
-  form.appendChild(hiddenField)
-
-  document.body.appendChild(form);
-
-  // creating the 'formresult' window with custom features prior to submitting the form
-  window.open('test.html', 'formresult', 'scrollbars=no,menubar=no,height=600,width=800,resizable=yes,toolbar=no,status=no');
-
-  form.submit()
-*/
+  /*
+   var form = document.createElement("form");
+ 
+   // form.setAttribute("method", "post");
+   // form.setAttribute("action", "test.jsp");
+ 
+   // setting form target to a window named 'formresult'
+   form.setAttribute("target", "formresult");
+ 
+   var hiddenField = document.createElement("input");
+   //hiddenField.setAttribute("name", "id");
+   //hiddenField.setAttribute("value", "bob");
+   //form.appendChild(hiddenField);
+   hiddenField.type = "text"
+   hiddenField.name = "myformvar"
+   form.appendChild(hiddenField)
+ 
+   document.body.appendChild(form);
+ 
+   // creating the 'formresult' window with custom features prior to submitting the form
+   window.open('test.html', 'formresult', 'scrollbars=no,menubar=no,height=600,width=800,resizable=yes,toolbar=no,status=no');
+ 
+   form.submit()
+ */
 
   // THIS WORKS
   // set something in the 2nd window and send it to the first window
