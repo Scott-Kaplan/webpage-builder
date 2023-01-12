@@ -172,6 +172,24 @@ const modifyDiv = function (e: any) {
   // handle.document.write("<p>This is 'myWindow'</p>")
 
   var myWindow = window.open('', '', 'width=200,height=100')!
+
+  myWindow.document.write("<html><head>")
+  var javascriptText = `
+  <script type="text/javascript">
+  function checkFormAndSend() {
+    //left off here.  It works.  it hits this line
+    // https://stackoverflow.com/questions/10946800/how-to-add-script-files-in-child-window-using-javascript
+    // from this search: add javascript to "mywindow.document"
+    debugger;
+    throw new Error("Something went badly wrong!")
+    console.log('hello')
+  }
+  </script>
+  `
+  myWindow.document.write(javascriptText)
+
+  myWindow.document.write("</head><body>")
+
   myWindow.document.write("<p>This is 'myWindow'</p>")
   // left off here
   // DONE ensure that can submit information to main window
@@ -181,31 +199,28 @@ const modifyDiv = function (e: any) {
   // this works onclick=alert('Hello') in the line below
   // but this does not onclick=checkFormAndSend()
 
-  var javascriptText = `
-  <script type="text/javascript">
-  function checkFormAndSend() {
-    console.log('hello')
-  }
-  </script>
-  `
-  myWindow.document.write(javascriptText)
 
   // then see if better way to create the form than this
   // then see if can get chrome inspector to show up at the bottom of the window vs another window
   var text = `<h1>If you are interested to buy it or if you have any question please contact me through the form below .</h1>
   <p><a name="contactustop"></a></p>
-  <form action="http://autotraderuae.net/members/process.php" id="contactus" method="POST">
+  <form id="contactus" method="POST">
   <label for="email" style="font-size: 14px; font-family:arial,helvetica,sans-serif; font-weight:bold">Email *</label><br />
   <input class="textfield" id="email" name="fields[Email]" style="width: 400px;" type="text"/>
   <div class="fieldblock" id="fieldblock-comments">
   <label for="comments" style="font-size: 14px; font-family:arial,helvetica,sans-serif; font-weight:bold">Your question</label><br />
   <textarea class="textfield" cols="20" id="comments" name="fields[Comments]" rows="4" style="width: 400px;"></textarea>
   </div>
-  <p><input type="submit" onclick=alert('Hello')></p>
+  <p><input type="Button" value="Submit" onclick=checkFormAndSend()></p>
   </form>`
   // <p><input type="submit"></p>
-  // <p><input type="Button" value="Submit" onclick checkFormAndSend()></p>
+  // <p><input type="Button" value="Submit" onclick=checkFormAndSend()></p>
+  // <p><input type="submit" onclick=alert('Hello')></p>
+  // <p><input type="submit" onclick=console.log('Hello')></p>
   myWindow.document.write(text)
+
+  myWindow.document.write("</body></html>")
+
   myWindow.document.close();
   myWindow.opener.document.getElementById('id0').innerHTML = "Changed"
   // myWindow?.focus();
